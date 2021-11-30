@@ -1,0 +1,13 @@
+.vc_ui-help-block {
+  color: #929292;
+  font-style: italic;
+}
+.vc_ui-help-block a {
+  font-weight: 600;
+  color: #858585;
+  text-decoration: none;
+  border: none;
+}
+.vc_ui-help-block a:hover {
+  color: #6c6c6c;
+}

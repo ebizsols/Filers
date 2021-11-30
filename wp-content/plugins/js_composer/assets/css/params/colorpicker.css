@@ -1,0 +1,52 @@
+/** Color picker field **/
+.wpb_el_type_colorpicker .colorpicker_field,
+.vc_edit_form_elements .wpb_el_type_colorpicker .colorpicker_field {
+  display: inline-block;
+  width: 90px;
+  padding: 4px 3px 3px;
+  margin-right: 4px;
+}
+.wpb_el_type_colorpicker .wp-picker-clear,
+.vc_edit_form_elements .wpb_el_type_colorpicker .wp-picker-clear {
+  width: auto;
+}
+.edit_form_line .updated {
+  margin: 5px 0px 2px;
+}
+.vc_ui-front {
+  z-index: 100052 !important;
+}
+.vc_color-picker.wp-picker-container {
+  width: auto;
+}
+.vc_color-picker .wp-picker-clear {
+  padding: 2px 4px;
+}
+.vc_color-picker .wp-picker-holder {
+  z-index: 10000;
+  position: relative;
+}
+.vc_color-picker .wp-picker-holder .vc_alpha-container {
+  border-radius: 0;
+  border: 1px solid #dfdfdf;
+  padding: 6px;
+  background: #ffffff;
+  position: absolute;
+  width: 243px;
+  left: -1px;
+  z-index: 1000;
+  bottom: -64px;
+}
+.vc_color-picker .wp-picker-holder .vc_alpha-container label {
+  display: block;
+}
+.vc_color-picker .wp-picker-holder .vc_alpha-container label output {
+  padding-top: 0px;
+  display: inline;
+  vertical-align: top;
+}
+.vc_color-picker .wp-picker-holder .vc_alpha-container input {
+  padding: 0;
+  margin: 0;
+  width: 100%;
+}

@@ -1,0 +1,16 @@
+{
+    "alias": "quickbooks",
+    "icon": "fas fa-exchange-alt",
+    "version": "1.0.4",
+    "active": 1,
+    "providers": [
+        "Modules\\Quickbooks\\Providers\\Event",
+        "Modules\\Quickbooks\\Providers\\Main"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": [],
+    "reports": [],
+    "widgets": [],
+    "settings": []
+}

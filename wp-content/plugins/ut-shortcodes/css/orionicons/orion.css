@@ -1,0 +1,510 @@
+@font-face {
+	font-family: orionicons;
+	src: url("font/orionicons.eot");
+	src: url("font/orionicons.eot?#iefix") format('embedded-opentype'), 
+		 url("font/orionicons.woff2") format('woff2'), 
+		 url("font/orionicons.woff") format('woff'), 
+		 url("font/orionicons.ttf") format('truetype'), 
+		 url("font/orionicons.svg?#orionicons") format('svg');
+	font-weight: 400;
+	font-style: normal
+}
+
+[class*="icon-orion-"]:before, 
+[class^="icon-orion-"]:before {
+	font-family: orionicons;
+	font-style: normal;
+	font-weight: 400;
+	speak: none;
+	display: inline-block;
+	text-decoration: inherit;
+	width: 1em;
+	margin-right: .2em;
+	text-align: center;
+	font-variant: normal;
+	text-transform: none;
+	line-height: 1em;
+	margin-left: .2em;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale
+}
+.icon-orion-photos:before {
+	content: '\e800'
+}
+.icon-orion-cart-settings:before {
+	content: '\e801'
+}
+.icon-orion-smartphone-1:before {
+	content: '\e802'
+}
+.icon-orion-umbrella:before {
+	content: '\e803'
+}
+.icon-orion-upload-to-cloud:before {
+	content: '\e804'
+}
+.icon-orion-paper-stack:before {
+	content: '\e805'
+}
+.icon-orion-menu:before {
+	content: '\e806'
+}
+.icon-orion-sync-files:before {
+	content: '\e807'
+}
+.icon-orion-missile:before {
+	content: '\e808'
+}
+.icon-orion-play:before {
+	content: '\e809'
+}
+.icon-orion-wifi:before {
+	content: '\e80a'
+}
+.icon-orion-storage-box:before {
+	content: '\e80b'
+}
+.icon-orion-ssl-ecommerce:before {
+	content: '\e80c'
+}
+.icon-orion-truck:before {
+	content: '\e80d'
+}
+.icon-orion-messaging:before {
+	content: '\e80e'
+}
+.icon-orion-responsive:before {
+	content: '\e80f'
+}
+.icon-orion-undo:before {
+	content: '\e810'
+}
+.icon-orion-stack:before {
+	content: '\e811'
+}
+.icon-orion-pinterest:before {
+	content: '\e812'
+}
+.icon-orion-star:before {
+	content: '\e813'
+}
+.icon-orion-presentation:before {
+	content: '\e814'
+}
+.icon-orion-router:before {
+	content: '\e815'
+}
+.icon-orion-pictures:before {
+	content: '\e816'
+}
+.icon-orion-multiple-windows:before {
+	content: '\e817'
+}
+.icon-orion-map-marker:before {
+	content: '\e818'
+}
+.icon-orion-pin:before {
+	content: '\e819'
+}
+.icon-orion-remote-control:before {
+	content: '\e81a'
+}
+.icon-orion-stopwatch:before {
+	content: '\e81b'
+}
+.icon-orion-minus:before {
+	content: '\e81c'
+}
+.icon-orion-shield:before {
+	content: '\e81d'
+}
+.icon-orion-restore-window:before {
+	content: '\e81e'
+}
+.icon-orion-reset-window:before {
+	content: '\e81f'
+}
+.icon-orion-server:before {
+	content: '\e820'
+}
+.icon-orion-pro-laptop:before {
+	content: '\e821'
+}
+.icon-orion-network:before {
+	content: '\e822'
+}
+.icon-orion-text-message:before {
+	content: '\e823'
+}
+.icon-orion-tv-screen:before {
+	content: '\e824'
+}
+.icon-orion-wireless:before {
+	content: '\e825'
+}
+.icon-orion-smartphone:before {
+	content: '\e826'
+}
+.icon-orion-settings-database:before {
+	content: '\e827'
+}
+.icon-orion-software-service:before {
+	content: '\e828'
+}
+.icon-orion-settings:before {
+	content: '\e829'
+}
+.icon-orion-angle-down:before {
+	content: '\e82a'
+}
+.icon-orion-behance:before {
+	content: '\e82b'
+}
+.icon-orion-cutlery:before {
+	content: '\e82c'
+}
+.icon-orion-data-content:before {
+	content: '\e82d'
+}
+.icon-orion-burst-mode:before {
+	content: '\e82e'
+}
+.icon-orion-hide-document:before {
+	content: '\e82f'
+}
+.icon-orion-champion:before {
+	content: '\e830'
+}
+.icon-orion-landline:before {
+	content: '\e831'
+}
+.icon-orion-open-box:before {
+	content: '\e832'
+}
+.icon-orion-schedule-database:before {
+	content: '\e833'
+}
+.icon-orion-mouse-1:before {
+	content: '\e834'
+}
+.icon-orion-portfolio-grid:before {
+	content: '\e835'
+}
+.icon-orion-photo-gallery:before {
+	content: '\e836'
+}
+.icon-puzzle:before {
+	content: '\e837'
+}
+.icon-orion-angle:before {
+	content: '\e838'
+}
+.icon-orion-coins:before {
+	content: '\e839'
+}
+.icon-orion-items-list:before {
+	content: '\e83a'
+}
+.icon-orion-connect:before {
+	content: '\e83b'
+}
+.icon-orion-image:before {
+	content: '\e83c'
+}
+.icon-orion-linkedin:before {
+	content: '\e83d'
+}
+.icon-orion-map:before {
+	content: '\e83e'
+}
+.icon-orion-equalizer:before {
+	content: '\e83f'
+}
+.icon-orion-in-love:before {
+	content: '\e840'
+}
+.icon-orion-download-cloud:before {
+	content: '\e841'
+}
+.icon-orion-facebook:before {
+	content: '\e842'
+}
+.icon-orion-puzzle-2:before {
+	content: '\e843'
+}
+.icon-orion-settings-mixer:before {
+	content: '\e844'
+}
+.icon-orion-mouse-2:before {
+	content: '\e845'
+}
+.icon-orion-paint-bucket:before {
+	content: '\e846'
+}
+.icon-orion-bluetooth:before {
+	content: '\e847'
+}
+.icon-orion-imac-screen:before {
+	content: '\e848'
+}
+.icon-orion-flame:before {
+	content: '\e849'
+}
+.icon-orion-focus:before {
+	content: '\e84a'
+}
+.icon-orion-camera-shutter:before {
+	content: '\e84b'
+}
+.icon-orion-cd:before {
+	content: '\e84c'
+}
+.icon-orion-document-stack:before {
+	content: '\e84d'
+}
+.icon-orion-download-1:before {
+	content: '\e84e'
+}
+.icon-orion-amazon:before {
+	content: '\e84f'
+}
+.icon-orion-twitter:before {
+	content: '\e850'
+}
+.icon-orion-mouse-3:before {
+	content: '\e851'
+}
+.icon-orion-pie-chart:before {
+	content: '\e852'
+}
+.icon-orion-vintage-camera:before {
+	content: '\e853'
+}
+.icon-orion-image-gallery:before {
+	content: '\e854'
+}
+.icon-orion-instagram:before {
+	content: '\e855'
+}
+.icon-orion-flickr:before {
+	content: '\e856'
+}
+.icon-orion-iphone:before {
+	content: '\e857'
+}
+.icon-orion-archive-box:before {
+	content: '\e858'
+}
+.icon-orion-add:before {
+	content: '\e859'
+}
+.icon-orion-cart:before {
+	content: '\e85a'
+}
+.icon-orion-color-wheel:before {
+	content: '\e85b'
+}
+.icon-orion-paypal:before {
+	content: '\e85c'
+}
+.icon-orion-reload-database:before {
+	content: '\e85d'
+}
+.icon-orion-menu-hamburger:before {
+	content: '\e85e'
+}
+.icon-orion-vimeo:before {
+	content: '\e85f'
+}
+.icon-orion-tv-display:before {
+	content: '\e860'
+}
+.icon-orion-sailing:before {
+	content: '\e861'
+}
+.icon-orion-play-movie:before {
+	content: '\e862'
+}
+.icon-orion-share:before {
+	content: '\e863'
+}
+.icon-orion-sliders:before {
+	content: '\e864'
+}
+.icon-orion-vk:before {
+	content: '\e865'
+}
+.icon-orion-sedan:before {
+	content: '\e866'
+}
+.icon-orion-skype:before {
+	content: '\e867'
+}
+.icon-orion-set-square:before {
+	content: '\e868'
+}
+.icon-orion-github:before {
+	content: '\e869'
+}
+.icon-orion-full-screen:before {
+	content: '\e86a'
+}
+.icon-orion-dribbble:before {
+	content: '\e86b'
+}
+.icon-orion-files:before {
+	content: '\e86c'
+}
+.icon-orion-direction-arrow-gps:before {
+	content: '\e86d'
+}
+.icon-orion-computer-network:before {
+	content: '\e86e'
+}
+.icon-orion-data-app:before {
+	content: '\e86f'
+}
+.icon-orion-ipad:before {
+	content: '\e870'
+}
+.icon-orion-apple:before {
+	content: '\e871'
+}
+.icon-orion-camera:before {
+	content: '\e872'
+}
+.icon-crop:before {
+	content: '\e873'
+}
+.icon-orion-compact-disc:before {
+	content: '\e874'
+}
+.icon-orion-control:before {
+	content: '\e875'
+}
+.icon-orion-luxury:before {
+	content: '\e876'
+}
+.icon-orion-crown:before {
+	content: '\e877'
+}
+.icon-layers:before {
+	content: '\e878'
+}
+.icon-orion-lifebelt:before {
+	content: '\e879'
+}
+.icon-orion-headphones:before {
+	content: '\e87a'
+}
+.icon-orion-clouds:before {
+	content: '\e87b'
+}
+.icon-orion-hamburger:before {
+	content: '\e87c'
+}
+.icon-orion-database:before {
+	content: '\e87d'
+}
+.icon-orion-donut:before {
+	content: '\e87e'
+}
+.icon-orion-documents:before {
+	content: '\e87f'
+}
+.icon-orion-brush:before {
+	content: '\e880'
+}
+.icon-orion-statistics:before {
+	content: '\e881'
+}
+.icon-orion-multiple-files:before {
+	content: '\e882'
+}
+.icon-orion-cinema-reel:before {
+	content: '\e883'
+}
+.icon-orion-file-cabinet:before {
+	content: '\e884'
+}
+.icon-orion-camera-phone:before {
+	content: '\e885'
+}
+.icon-orion-sorting:before {
+	content: '\e886'
+}
+.icon-orion-images:before {
+	content: '\e887'
+}
+.icon-orion-hand-truck:before {
+	content: '\e888'
+}
+.icon-orion-wifi-router:before {
+	content: '\e889'
+}
+.icon-orion-grid-layout:before {
+	content: '\e88a'
+}
+.icon-orion-hourglass:before {
+	content: '\e88b'
+}
+.icon-orion-google-drive:before {
+	content: '\e88c'
+}
+.icon-orion-shopping-trolley:before {
+	content: '\e88d'
+}
+.icon-orion-twitch:before {
+	content: '\e88e'
+}
+.icon-orion-lock-window:before {
+	content: '\e88f'
+}
+.icon-orion-airplane-mode:before {
+	content: '\e890'
+}
+.icon-orion-hot-coffee:before {
+	content: '\e891'
+}
+.icon-orion-keyboard:before {
+	content: '\e892'
+}
+.icon-orion-search-glass:before {
+	content: '\e893'
+}
+.icon-orion-wind-turbine:before {
+	content: '\e894'
+}
+.icon-orion-angle-right:before {
+	content: '\e895'
+}
+.icon-orion-delivery-truck:before {
+	content: '\e896'
+}
+.icon-orion-angle-left:before {
+	content: '\e897'
+}
+.icon-orion-hide-layer:before {
+	content: '\e898'
+}
+.icon-orion-upload:before {
+	content: '\e899'
+}
+.icon-orion-shopping-bag:before {
+	content: '\e89a'
+}
+.icon-orion-envelope:before {
+	content: '\e89b'
+}
+.icon-orion-display:before {
+	content: '\e89c'
+}
+.icon-orion-download-2:before {
+	content: '\e89d'
+}
+.icon-orion-instagram-camera:before {
+	content: '\e89e'
+}
+.icon-orion-signal-bars:before {
+	content: '\e89f'
+}

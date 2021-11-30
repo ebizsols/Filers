@@ -1,0 +1,125 @@
+.vc_general.vc_ui-tabs-line {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+.vc_general.vc_ui-tabs-line > li {
+  float: left;
+  margin: 0;
+  padding: 0;
+}
+.vc_general.vc_ui-tabs-line > .vc_ui-tabs-line-dropdown-toggle {
+  float: right;
+}
+.vc_general.vc_ui-tabs-line .vc_ui-tabs-line-trigger {
+  box-sizing: border-box;
+  display: block;
+  text-transform: none;
+  border: 1px solid transparent;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1;
+  background: transparent;
+  color: inherit;
+  text-decoration: none;
+  font-family: inherit;
+  padding: 16px 12px;
+  margin: 0;
+  outline: none;
+  transition-property: color, background, border;
+  transition-duration: 0.2s;
+  transition-timing-function: ease-in-out;
+  border-radius: 5px 5px 0 0;
+  white-space: nowrap;
+  cursor: pointer;
+  user-select: none;
+  text-align: left;
+}
+.vc_general.vc_ui-tabs-line .vc_ui-tabs-line-trigger:hover,
+.vc_general.vc_ui-tabs-line .vc_ui-tabs-line-trigger:focus {
+  border: 1px solid transparent;
+  background-color: rgba(0, 0, 0, 0.1);
+}
+.vc_general.vc_ui-tabs-line .vc_ui-tabs-line-trigger:active {
+  box-shadow: none;
+}
+.vc_general.vc_ui-tabs-line > .vc_active > .vc_ui-tabs-line-trigger {
+  background-color: #ffffff;
+  color: #5e5e5e;
+  cursor: default;
+}
+.vc_general.vc_ui-tabs-line::after {
+  content: "";
+  display: table;
+  clear: both;
+}
+.vc_ui-tabs-line .vc_ui-tabs-line-dropdown-toggle {
+  position: absolute;
+  float: right;
+  visibility: hidden;
+}
+.vc_ui-tabs-line .vc_ui-tabs-line-dropdown-toggle.vc_visible {
+  visibility: visible;
+  position: relative;
+}
+.vc_ui-tabs-line .vc_ui-tabs-line-dropdown-toggle > .vc_ui-tabs-line-trigger::after {
+  content: '. . .';
+  font-weight: 600;
+  display: inline;
+}
+.vc_ui-tabs-line .vc_ui-tabs-line-dropdown-toggle.vc_active > .vc_ui-tabs-line-trigger {
+  background-color: rgba(0, 0, 0, 0.1);
+  color: inherit;
+  cursor: pointer;
+}
+.vc_ui-tabs-line .vc_ui-tabs-line-dropdown {
+  position: absolute;
+  z-index: 1010;
+  top: 100%;
+  right: 0;
+  display: none;
+  overflow: hidden;
+  transition-property: height, padding;
+  transition-duration: .2s;
+  transition-timing-function: ease-in-out;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  max-width: 300px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  background: #f5f5f5;
+  border: 1px solid #dbdbdb;
+}
+.vc_ui-tabs-line .vc_ui-tabs-line-dropdown li {
+  margin: 0;
+  padding: 0;
+}
+.vc_ui-tabs-line .vc_ui-tabs-line-dropdown.vc_active,
+.vc_ui-tabs-line .vc_ui-tabs-line-dropdown.vc_animating {
+  display: block;
+}
+.vc_ui-tabs-line .vc_ui-tabs-line-dropdown .vc_ui-tabs-line-trigger {
+  padding: 10px 10px;
+  border-radius: 0;
+  font-size: 12px;
+  color: #5e5e5e;
+}
+.vc_ui-tabs-line .vc_ui-tabs-line-dropdown .vc_ui-tabs-line-trigger:hover {
+  background-color: #eaeaea;
+}
+.vc_ui-tabs-line .vc_ui-tabs-line-dropdown .vc_active .vc_ui-tabs-line-trigger {
+  background-color: #eaeaea;
+  cursor: default;
+}
+.vc_ui-tabs-line {
+  opacity: 1;
+  transition: opacity 0.2s ease-in-out;
+}
+.vc_ui-tabs-line.vc_initializing {
+  transition: opacity 0ms;
+  opacity: 0;
+}
+.vc_ui-tabs-line.vc_initializing > li:not(:first-child):not(.vc_ui-tabs-line-dropdown-toggle) {
+  position: absolute;
+  visibility: hidden;
+}

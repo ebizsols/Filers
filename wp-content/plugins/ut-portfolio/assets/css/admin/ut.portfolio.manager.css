@@ -1,0 +1,581 @@
+@import "ut.jqueryui.css";
+
+/*
+
+UNITED THEMES PORTFOLIO MANAGEMENT PLUGIN
+ALL RIGHTS RESERVED BY UNITED THEMES
+WWW.UNITEDTHEMES.COM
+
+*/
+
+/* overwrite WordPress UI */
+#ut-portfolio-manager > .inside {
+    padding: 0;
+    margin: 0;
+}
+#ut-portfolio-manager > .inside > .form-table {
+    margin: 0;
+}
+
+#ut-portfolio-manager > .inside > .form-table > tbody > tr > td {
+    padding: 0;
+}
+
+#ut-portfolio-manager .form-table {
+    table-layout: fixed;
+}
+
+#ut-portfolio-manager .form-table,
+#ut-portfolio-manager .form-table td,
+#ut-portfolio-manager .form-table td p,
+#ut-portfolio-manager .form-table th,
+#ut-portfolio-manager .form-wrap label {
+    font-size:12px !important;
+    font-style: normal;
+}
+
+#ut-portfolio-manager .form-table tr {
+    display: flex;
+}
+
+#ut-portfolio-manager .form-table td {
+    width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 0;
+}
+
+#ut-portfolio-manager .form-table th {
+    font-style:normal;
+    width: 250px;
+}
+
+#ut-portfolio-manager .form-table select {
+    height: auto;
+    max-width: 100%;
+    border-color: #DADADA !important;
+    outline: none;
+    box-shadow: none !important;
+    color: #333;
+    min-height: inherit !important;
+    font-size: 14px !important;
+}
+
+#ut-portfolio-manager .form-table select:focus,
+#ut-portfolio-manager .form-table select:hover {
+    color: #333
+}
+
+
+#ut-portfolio-manager p.description {
+    margin-top:10px;
+}
+#ut-admin-big-box-wrap {
+    position: relative;
+    font-size:13px;
+}
+#ut-admin-big-box-wrap .wp-color-result,
+#ut-admin-big-box-wrap .ut-checkbox {
+    margin:0;
+}
+#ut_showcase_options {
+    display:none;
+}
+#ut-admin-big-box-wrap table {
+    margin:0;
+}
+#ut-admin-big-box-wrap table tr {
+    border-bottom:1px solid #EEEEEE;
+}
+#ut-admin-big-box-wrap table tr:last-child {
+    border-bottom:none;
+}
+#ut-admin-big-box-wrap table td,
+#ut-admin-big-box-wrap table th {
+    padding:20px 0;
+}
+
+#ut-admin-big-box-wrap .form-table-inner td,
+#ut-admin-big-box-wrap .form-table-inner th {
+    padding:0;
+}
+
+#ut-admin-big-box-wrap .form-table-inner th {
+    color: #666;
+    font-weight:400;
+    width: auto;
+    text-align: right;
+    padding-right: 20px;
+    line-height: 22px;
+}
+
+#ut-admin-big-box-wrap input {
+    max-width: 100%;
+    box-shadow: none !important;
+    outline: none !important;
+    min-height: inherit !important;
+    font-size: 14px !important;
+    border: 1px solid #ddd;
+}
+
+h2.ut-section-title {
+    background: #f6f6f6;
+    border-radius: 5px 5px 0 0 !important;
+    border-bottom: 1px solid #DADADA;
+    padding: 18px !important;
+    position: relative;
+    font-size: 20px !important;
+    line-height: 20px !important;
+    color: #222222;
+    font-weight: 600 !important;
+}
+
+h2.ut-section-title::before {
+    display: none;
+}
+
+.wp-picker-open + .wp-picker-input-wrap {
+    display:block;
+    margin:10px 0;
+}
+.wp-picker-input-wrap input {
+    width:inherit !important;
+}
+
+#ut-portfolio-manager .ut-admin-panel-content {
+    padding:0 !important;
+}
+
+/* form styles */
+.ut-checkbox {
+	width: 75px;
+	height: 24px;
+	background: #FFFFFF;
+	position: relative;
+	border: 1px solid #DDDDDD;
+	line-height: 24px;
+	margin-bottom:10px;
+	font-weight: bold;
+    font-style:normal !important;
+}
+.ut-checkbox:after {
+	content: 'off';
+	color:  #23282D;
+	position: absolute;
+	right: 12px;
+	top:0px;
+	z-index: 0;
+}
+.ut-checkbox:before {
+	content: 'on';
+	color: #23282D;
+	position: absolute;
+	left: 12px;
+	top:0px;
+	z-index: 0;
+}
+.ut-checkbox label {
+	display: block;
+	width: 34px;
+	height: 22px;
+	-webkit-transition: all .4s ease;
+	-moz-transition: all .4s ease;
+	-o-transition: all .4s ease;
+	-ms-transition: all .4s ease;
+	transition: all .4s ease;
+	cursor: pointer;
+	position: absolute;
+	top: 1px;
+	left: 1px;
+	z-index: 1;
+	background: #c0392b;
+}
+.ut-checkbox input {
+	visibility:hidden;
+}
+.ut-checkbox input[type=checkbox]:checked + label {
+	left: 40px;
+	background:#27ae60;
+}
+.ut-checkbox-single {
+	width: 20px;
+	height: 20px;
+	display:block;
+	position: relative;
+	margin-bottom:10px;
+}
+.ut-checkbox-single input {
+	display:none;
+}
+.ut-checkbox-single label {
+	cursor: pointer;
+	position: absolute;
+	width: 20px;
+	height: 20px;
+	top: 0;
+	background: #e0e0e0;
+	line-height: 20px;
+    text-indent: 30px;
+	white-space: nowrap;
+}
+.ut-checkbox-single label:after {
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+	filter: alpha(opacity=0);
+	opacity: 0;
+	content: '';
+	position: absolute;
+	width: 9px;
+	height: 5px;
+	background: transparent;
+	top: 4px;
+	left: 4px;
+	border: 3px solid #FFF;
+	border-top: none;
+	border-right: none;
+	-webkit-transform: rotate(-45deg);
+	-moz-transform: rotate(-45deg);
+	-o-transform: rotate(-45deg);
+	-ms-transform: rotate(-45deg);
+	transform: rotate(-45deg);
+    -webkit-transition:all 0.2s ease 0s;
+    -moz-transition:all 0.2s ease 0s;
+    transition:all 0.2s ease 0s;
+}
+.ut-checkbox-single label:hover::after {
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+	filter: alpha(opacity=100);
+	opacity: 1;
+}
+.ut-checkbox-single input[type=checkbox]:checked + label:after {
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+	filter: alpha(opacity=100);
+	opacity: 1;
+}
+.ut-checkbox-single input[type=checkbox]:checked + label {
+	background: #0073AA;
+}
+
+/* range slider */
+
+.ut-range-slider-group {
+	width:400px;
+	position: relative;
+	margin-bottom:20px;
+}
+.ut-border-radius-slider,
+.ut-opacity-slider,
+.ut-letter-spacing-slider {
+	width:226px;
+	position:absolute;
+	top:4px;
+}
+
+.ut-border-radius-value,
+.ut-opacity-value,
+.ut-letter-spacing-value {
+	position: absolute;
+    left: 270px;
+    text-align: center;
+    top: 6px;
+    width: 40px;
+    padding:5px 0;
+    margin:0;
+    -webkit-box-shadow:none;
+    -moz-box-shadow:none;
+    box-shadow:none;
+    border:1px solid #DDDDDD;
+    font-size:14px;
+    color:#333333
+}
+.ut-hidden-slider-input {
+	display: none;
+}
+.ut-jquery-ui .ui-widget-content {
+    background: #eeeeee;
+    margin: 12px 12px 0 12px;
+    position: relative;
+    -webkit-border-radius:50px;
+    -moz-border-radius:50px;
+    border-radius:50px;
+    border:none;
+}
+.ut-range-slider-group .ui-slider-handle {
+  background: #FFFFFF !important;
+  cursor:move !important;
+  display: block !important;
+  height: 24px !important;
+  margin: -12px !important;
+  outline: 0;
+  position: absolute;
+  width: 24px !important;
+  border:4px solid #0073AA !important;
+  -webkit-border-radius:50%;
+  -moz-border-radius:50%;
+  border-radius:50%;
+  top:0 !important;
+}
+.ut-range-slider-group .ui-slider-handle:hover {
+  background: #FFFFFF;
+}
+
+/* sortable taxonomies */
+
+#ut-sortable-tax {
+    margin:0;
+    font-style:normal;
+    color:#333333;
+}
+#ut-sortable-tax li {
+    margin:0;
+}
+.ut-sortable-tax {
+    padding: 20px !important;
+    border-bottom:1px solid #EEEEEE;
+}
+#ut-sortable-tax .ut-handle {
+	display: block;
+    float: left;
+	width: 20px;
+	height: 20px;
+	text-align:center;
+	background:#23282D;
+	color:#FFF;
+	cursor:move;
+	margin-right:2px;
+}
+#ut-sortable-tax .ut-checkbox-single {
+	float:left;
+}
+#ut-sortable-tax .ut-handle-highlight {
+	background:#e0e0e0;
+	width:250px;
+	height:20px;
+}
+.post-type-portfolio-manager  #mymetabox_revslider_0 {
+    display:none;
+}
+.ut-admin-info-box {
+    float:left;
+    width:50%;
+    margin-bottom:40px;
+}
+.ut-admin-info-box select,
+.ut-admin-info-box textarea {
+    margin-bottom:10px !important;
+}
+.ut-admin-info-box span {
+    display:block;
+    margin-bottom:10px;
+    font-weight:bold;
+    color:#222222;
+}
+textarea.ut-shortcode-code,
+textarea:focus.ut-shortcode-code {
+    border: 1px solid #dddddd;
+    color: #333333;
+    margin: 0;
+    padding: 7px;
+    height:34px;
+    width:100%;
+    max-width: 500px;
+    display:block;
+    -webkit-box-shadow: none;
+    -moz-box-shadow:none;
+    box-shadow: none;
+    overflow:hidden;
+    resize: none;
+}
+textarea:hover.ut-shortcode-code,
+textarea:focus.ut-shortcode-code {
+    -webkit-box-shadow:0 1px 2px rgba(0, 0, 0, 0.07) inset;
+    -moz-box-shadow:0 1px 2px rgba(0, 0, 0, 0.07) inset;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.07) inset;
+}
+.ut-cropping-size label {
+    margin-bottom:10px;
+    display:block;
+    font-style:normal;
+    color:#666666;
+}
+.ut-cropping-size input {
+    margin-bottom:10px !important;
+    display:block;
+}
+.ut-cropping-size input:last-child {
+    margin-bottom:0 !important;
+}
+.ut-section-panel {
+    font-style:italic;
+    color:#666666;
+    padding: 20px;
+}
+
+#ut-admin-big-box-wrap .ut-section-panel {
+    padding: 0;
+}
+
+#ut_no_type_options {
+    color:#77be32;
+}
+
+.ut-display-size div {
+    padding-bottom:20px;
+}
+
+.ut-display-size label {
+    display:block;
+    margin-bottom: 5px;
+}
+
+.ut-display-size input {
+    padding: 5px;
+    width: 100px;
+}
+
+/* Gradient Picker Adjustments */
+#ut-portfolio-manager .asColorPicker-trigger {
+	width: 40px;
+}
+
+#ut-portfolio-manager .asColorPicker-wrap .asColorPicker-input {
+	width: calc(100% - 45px) !important;
+	height: 35px;
+}
+
+/* Mini Colors Adjustments */
+.ut_color_picker.minicolors-input {
+	border: 1px solid #ddd;
+	box-shadow: inset 0 1px 2px rgba(0,0,0,.07);
+	background-color: #fff;
+	color: #32373c;
+	outline: 0;
+	transition: 50ms border-color ease-in-out;
+}
+
+.ut_color_picker.minicolors-input + .minicolors-swatch {
+	width: 30px;
+	height: 30px;
+}
+
+/* table style */
+.ut-settings-row .ut-label-cell {
+    color: #23282d;
+    vertical-align: top;
+    text-align: left;
+    padding: 20px !important;
+    line-height: 1.3;
+    font-weight: 600;
+    width: 100%;
+    max-width: 300px;
+}
+
+@media (max-width: 1440px) {
+
+    #ut-portfolio-manager .form-table tr {
+        flex-direction: column;
+    }
+
+    #ut-portfolio-manager .ut-label-cell {
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+        padding: 20px 20px 0 20px !important;
+        margin-bottom: 0;
+    }
+
+    #ut-portfolio-manager .ut-label-cell + td {
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+        padding: 20px;
+    }
+
+    #ut-admin-big-box-wrap table tr {
+        border-bottom: none;
+    }
+
+    #ut-admin-big-box-wrap .ut-label-cell + td {
+        border-bottom: 1px solid #EEEEEE;
+    }
+
+}
+
+.ut-settings-row .ut-option-cell {
+    vertical-align: top;
+}
+
+.ut-settings-row .ut-option-cell .description {
+    font-style: italic;
+    max-width: 80%;
+}
+
+.ut-settings-row .ut-option-cell:last-child {
+    padding-right: 20px !important;
+}
+
+.ut-headline-cell {
+    padding: 10px 20px !important;
+    background: #fbfbfb;
+}
+
+.ut-headline-cell h3 {
+    margin: 0;
+}
+
+.ut-settings-row-odd {
+    background: #fafafa;
+}
+
+.ut-settings-row table td {
+    display: block;
+}
+
+
+@media (min-width: 1025px) and (max-width: 1599px) {
+
+    .ut-admin-info-box {
+        width: 100%;
+    }
+
+    .ut-settings-row .ut-label-cell {
+        width: calc(50% - 40px);
+    }
+
+    .ut-settings-row .ut-option-cell {
+        width: 50%;
+    }
+
+    .ut-settings-row .ut-option-cell:last-child {
+        width: calc(50% - 20px);
+    }
+
+
+}
+
+@media (max-width: 1024px) {
+
+    .ut-admin-info-box {
+        width: 100%;
+    }
+
+    .ut-settings-row .ut-label-cell {
+        width: calc(100% - 40px);
+    }
+
+    .ut-settings-row .ut-option-cell {
+        width: 100%;
+    }
+
+    .ut-settings-row .ut-option-cell:last-child {
+        width: calc(100% - 20px);
+    }
+
+}
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" aria-labelledby="title"
+aria-describedby="desc" role="img" xmlns:xlink="http://www.w3.org/1999/xlink"
+width="64" height="64">
+  <title>Hand Truck</title>
+  <desc>A line styled icon from Orion Icon Library.</desc>
+  <path data-name="layer2"
+  fill="none" stroke="#333333" stroke-miterlimit="10" stroke-width="2" d="M33 49.3l22-7.9 6 2m-38-1L11 10.1H3"
+  stroke-linejoin="round" stroke-linecap="round"></path>
+  <circle data-name="layer2" cx="25" cy="50.1" r="8" fill="none"
+  stroke="#333333" stroke-miterlimit="10" stroke-width="2" stroke-linejoin="round"
+  stroke-linecap="round"></circle>
+  <path data-name="layer1" fill="none" stroke="#333333" stroke-miterlimit="10"
+  stroke-width="2" d="M59 32.4L30.9 42.6l-9.5-26.5L49.5 5.9 59 32.4z" stroke-linejoin="round"
+  stroke-linecap="round"></path>
+  <path data-name="layer1" fill="none" stroke="#333333" stroke-miterlimit="10"
+  stroke-width="2" d="M40.2 9.5l4.5 12.9-9 3.4L31 12.6" stroke-linejoin="round"
+  stroke-linecap="round"></path>
+</svg>

@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" aria-labelledby="title"
+aria-describedby="desc" role="img" xmlns:xlink="http://www.w3.org/1999/xlink"
+width="64" height="64">
+  <title>Smartphone</title>
+  <desc>A line styled icon from Orion Icon Library.</desc>
+  <path data-name="layer2"
+  fill="none" stroke="#333333" stroke-linecap="round" stroke-linejoin="round"
+  stroke-width="2" d="M15 10h34M15 48h34"></path>
+  <rect data-name="layer1" x="15" y="2" width="34" height="60" rx="4"
+  ry="4" fill="none" stroke="#333333" stroke-linecap="round" stroke-linejoin="round"
+  stroke-width="2"></rect>
+  <circle data-name="layer1" cx="32" cy="55" r="2" fill="none" stroke="#333333"
+  stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></circle>
+</svg>

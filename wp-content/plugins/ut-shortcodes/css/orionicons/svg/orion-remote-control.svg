@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" aria-labelledby="title"
+aria-describedby="desc" role="img" xmlns:xlink="http://www.w3.org/1999/xlink"
+width="64" height="64">
+  <title>Remote Control</title>
+  <desc>A line styled icon from Orion Icon Library.</desc>
+  <path data-name="layer2"
+  fill="none" stroke="#333333" stroke-linecap="round" stroke-linejoin="round"
+  stroke-width="2" d="M32 46H2V2h60v44H48"></path>
+  <rect data-name="layer1" x="32" y="34" width="16" height="28" rx="2"
+  ry="2" fill="none" stroke="#333333" stroke-linecap="round" stroke-linejoin="round"
+  stroke-width="2"></rect>
+  <path data-name="layer1" d="M34.7 28a8 8 0 0 1 10.6 0m-15.7-6.1a16 16 0 0 1 20.8-.1"
+  fill="none" stroke="#333333" stroke-linecap="round" stroke-linejoin="round"
+  stroke-width="2"></path>
+  <circle data-name="layer1" cx="40" cy="42" r="1" fill="none" stroke="#333333"
+  stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></circle>
+</svg>

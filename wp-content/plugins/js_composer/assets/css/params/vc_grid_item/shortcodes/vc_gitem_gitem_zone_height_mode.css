@@ -1,0 +1,23 @@
+.vc-gitem-zone-height-mode-auto .vc_gitem-zone-img {
+  display: none !important;
+}
+.vc-gitem-zone-height-mode-auto:before {
+  content: "";
+  display: block;
+  padding-top: 100%;
+}
+.vc-gitem-zone-height-mode-auto.vc-gitem-zone-height-mode-auto-4-3:before {
+  padding-top: 75%;
+}
+.vc-gitem-zone-height-mode-auto.vc-gitem-zone-height-mode-auto-3-4:before {
+  padding-top: 133.33333333%;
+}
+.vc-gitem-zone-height-mode-auto.vc-gitem-zone-height-mode-auto-3-4:before {
+  padding-top: 133.33333333%;
+}
+.vc-gitem-zone-height-mode-auto.vc-gitem-zone-height-mode-auto-16-9:before {
+  padding-top: 56.25%;
+}
+.vc-gitem-zone-height-mode-auto.vc-gitem-zone-height-mode-auto-9-16:before {
+  padding-top: 177.77777778%;
+}

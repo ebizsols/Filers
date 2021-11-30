@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" aria-labelledby="title"
+aria-describedby="desc" role="img" xmlns:xlink="http://www.w3.org/1999/xlink"
+width="64" height="64">
+  <title>Statistics</title>
+  <desc>A line styled icon from Orion Icon Library.</desc>
+  <path data-name="layer1"
+  fill="none" stroke="#333333" stroke-linecap="round" stroke-linejoin="round"
+  stroke-width="2" d="M2 8h60v12H2zm0 12v36h60V20"></path>
+  <path data-name="layer2" fill="none" stroke="#333333" stroke-linecap="round"
+  stroke-linejoin="round" stroke-width="2" d="M54 36h-4l-6-6-6 12-10-14-10 18-4-10h-4"></path>
+  <circle data-name="layer1" cx="8" cy="14" r="1" fill="none" stroke="#333333"
+  stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></circle>
+  <circle data-name="layer1" cx="15" cy="14" r="1" fill="none"
+  stroke="#333333" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></circle>
+  <circle data-name="layer1" cx="22" cy="14" r="1" fill="none"
+  stroke="#333333" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></circle>
+</svg>

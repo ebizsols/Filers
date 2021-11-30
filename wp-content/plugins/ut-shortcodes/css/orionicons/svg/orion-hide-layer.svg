@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" aria-labelledby="title"
+aria-describedby="desc" role="img" xmlns:xlink="http://www.w3.org/1999/xlink"
+width="64" height="64">
+  <title>Hide Layer</title>
+  <desc>A line styled icon from Orion Icon Library.</desc>
+  <g data-name="layer2">
+    <path fill="none" stroke="#333333" stroke-miterlimit="10" stroke-width="2"
+    d="M62 56v6h-6" stroke-linejoin="round" stroke-linecap="round"></path>
+    <path fill="none" stroke="#333333" stroke-miterlimit="10" stroke-width="2"
+    stroke-dasharray="11.33 11.33" d="M44.7 62h-17" stroke-linejoin="round"
+    stroke-linecap="round"></path>
+    <path fill="none" stroke="#333333" stroke-miterlimit="10" stroke-width="2"
+    d="M22 62h-6v-6" stroke-linejoin="round" stroke-linecap="round"></path>
+    <path fill="none" stroke="#333333" stroke-miterlimit="10" stroke-width="2"
+    stroke-dasharray="11.33 11.33" d="M16 44.7v-17" stroke-linejoin="round"
+    stroke-linecap="round"></path>
+    <path fill="none" stroke="#333333" stroke-miterlimit="10" stroke-width="2"
+    d="M16 22v-6h6" stroke-linejoin="round" stroke-linecap="round"></path>
+    <path fill="none" stroke="#333333" stroke-miterlimit="10" stroke-width="2"
+    stroke-dasharray="11.33 11.33" d="M33.3 16h17" stroke-linejoin="round"
+    stroke-linecap="round"></path>
+    <path fill="none" stroke="#333333" stroke-miterlimit="10" stroke-width="2"
+    d="M56 16h6v6" stroke-linejoin="round" stroke-linecap="round"></path>
+    <path fill="none" stroke="#333333" stroke-miterlimit="10" stroke-width="2"
+    stroke-dasharray="11.33 11.33" d="M62 33.3v17" stroke-linejoin="round"
+    stroke-linecap="round"></path>
+  </g>
+  <path data-name="layer1" fill="none" stroke="#333333" stroke-miterlimit="10"
+  stroke-width="2" d="M16 48H2V2h46v14" stroke-linejoin="round" stroke-linecap="round"></path>
+</svg>

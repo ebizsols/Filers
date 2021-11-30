@@ -1,0 +1,17 @@
+/* Raw HTML/JS
+---------------------------------------------------------- */
+.wpb_element_wrapper .textarea_raw_html,
+.vc_edit_form_elements .textarea_raw_html {
+  font-family: "Courier New";
+  color: #AAAAAA;
+  font-size: 11px;
+  word-break: break-all;
+}
+.wpb_element_wrapper .vc_row-fluid .quicktags-toolbar input,
+.vc_edit_form_elements .vc_row-fluid .quicktags-toolbar input {
+  width: auto;
+}
+.wpb_element_wrapper .vc_dependent-hidden,
+.vc_edit_form_elements .vc_dependent-hidden {
+  display: none !important;
+}

@@ -1,0 +1,16 @@
+.vc_custom_heading a,
+.vc_custom_heading a:hover,
+.vc_custom_heading a:focus,
+.vc_custom_heading a:visited {
+  border: none;
+  text-decoration: inherit;
+  color: inherit;
+}
+.vc_custom_heading a {
+  -webkit-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
+  opacity: 1;
+}
+.vc_custom_heading a:hover {
+  opacity: .85;
+}

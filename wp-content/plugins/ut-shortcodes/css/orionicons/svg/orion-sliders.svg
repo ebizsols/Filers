@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" aria-labelledby="title"
+aria-describedby="desc" role="img" xmlns:xlink="http://www.w3.org/1999/xlink"
+width="64" height="64">
+  <title>Sliders</title>
+  <desc>A line styled icon from Orion Icon Library.</desc>
+  <path data-name="layer2"
+  fill="none" stroke="#333333" stroke-miterlimit="10" stroke-width="2" d="M59 8H15m11.999 24H7m52 0H38.999M51 56H7"
+  stroke-linejoin="round" stroke-linecap="round"></path>
+  <circle data-name="layer1" cx="9" cy="8" r="6" fill="none" stroke="#333333"
+  stroke-miterlimit="10" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"></circle>
+  <circle data-name="layer1" cx="57" cy="56" r="6" fill="none"
+  stroke="#333333" stroke-miterlimit="10" stroke-width="2" stroke-linejoin="round"
+  stroke-linecap="round"></circle>
+  <circle data-name="layer1" cx="33" cy="32" r="6" fill="none"
+  stroke="#333333" stroke-miterlimit="10" stroke-width="2" stroke-linejoin="round"
+  stroke-linecap="round"></circle>
+</svg>

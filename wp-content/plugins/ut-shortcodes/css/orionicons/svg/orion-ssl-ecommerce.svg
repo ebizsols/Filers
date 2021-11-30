@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" aria-labelledby="title"
+aria-describedby="desc" role="img" xmlns:xlink="http://www.w3.org/1999/xlink"
+width="64" height="64">
+  <title>SSL E-commerce</title>
+  <desc>A line styled icon from Orion Icon Library.</desc>
+  <path data-name="layer2"
+  fill="none" stroke="#333333" stroke-miterlimit="10" stroke-width="2" d="M38 25H12M2 9h6l10 40h32l4.8-14"
+  stroke-linejoin="round" stroke-linecap="round"></path>
+  <circle data-name="layer2" cx="20" cy="57" r="4" fill="none" stroke="#333333"
+  stroke-miterlimit="10" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"></circle>
+  <circle data-name="layer2" cx="46" cy="57" r="4" fill="none"
+  stroke="#333333" stroke-miterlimit="10" stroke-width="2" stroke-linejoin="round"
+  stroke-linecap="round"></circle>
+  <path data-name="layer1" fill="none" stroke="#333333" stroke-miterlimit="10"
+  stroke-width="2" d="M38 19h24v16H38zm6 0V9a6 6 0 0 1 6-6 6 6 0 0 1 6 6v10m-6 6v4"
+  stroke-linejoin="round" stroke-linecap="round"></path>
+</svg>

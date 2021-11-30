@@ -1,0 +1,31 @@
+/* Text Block
+---------------------------------------------------------- */
+.wpb_vc_column_text > .wpb_element_wrapper,
+.wpb_vc_message > .wpb_element_wrapper,
+.wpb_vc_toggle > .wpb_element_wrapper {
+  height: auto;
+  min-height: 1px;
+  background-image: none;
+  padding-left: 10px;
+}
+.wpb_vc_column_text > .wpb_element_wrapper p:first-child,
+.wpb_vc_message > .wpb_element_wrapper p:first-child,
+.wpb_vc_toggle > .wpb_element_wrapper p:first-child {
+  margin-top: 0;
+}
+.wpb_vc_column_text > .wpb_element_wrapper p:last-child,
+.wpb_vc_message > .wpb_element_wrapper p:last-child,
+.wpb_vc_toggle > .wpb_element_wrapper p:last-child {
+  margin-bottom: 0;
+}
+.wpb_vc_column_text > .wpb_element_wrapper > .wpb_vc_param_value.textarea_html,
+.wpb_vc_message > .wpb_element_wrapper > .wpb_vc_param_value.textarea_html,
+.wpb_vc_toggle > .wpb_element_wrapper > .wpb_vc_param_value.textarea_html {
+  overflow: hidden;
+}
+.wpb_vc_column_text > .wpb_element_wrapper > .wpb_vc_param_value.textarea_html img,
+.wpb_vc_message > .wpb_element_wrapper > .wpb_vc_param_value.textarea_html img,
+.wpb_vc_toggle > .wpb_element_wrapper > .wpb_vc_param_value.textarea_html img {
+  max-width: 100%;
+  height: auto;
+}

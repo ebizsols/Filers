@@ -1,0 +1,41 @@
+/* Image Gallery
+---------------------------------------------------------- */
+.wpb_vc_gallery .column_edit_trigger,
+.wpb_vc_images_carousel .column_edit_trigger,
+.wpb_vc_media_grid .column_edit_trigger,
+.wpb_vc_masonry_media_grid .column_edit_trigger {
+  margin-top: 2px;
+}
+.wpb_vc_gallery .attachment-thumbnails,
+.wpb_vc_images_carousel .attachment-thumbnails,
+.wpb_vc_media_grid .attachment-thumbnails,
+.wpb_vc_masonry_media_grid .attachment-thumbnails {
+  overflow: hidden;
+  height: 20px;
+  padding: 0px;
+  margin: 0;
+}
+.wpb_vc_gallery .attachment-thumbnails li,
+.wpb_vc_images_carousel .attachment-thumbnails li,
+.wpb_vc_media_grid .attachment-thumbnails li,
+.wpb_vc_masonry_media_grid .attachment-thumbnails li {
+  height: 20px;
+  width: 20px;
+  overflow: hidden;
+  margin-right: 1px;
+  margin-bottom: 0;
+  display: inline-block;
+}
+.wpb_vc_gallery .attachment-thumbnails li .vc_icon-remove,
+.wpb_vc_images_carousel .attachment-thumbnails li .vc_icon-remove,
+.wpb_vc_media_grid .attachment-thumbnails li .vc_icon-remove,
+.wpb_vc_masonry_media_grid .attachment-thumbnails li .vc_icon-remove {
+  display: none;
+}
+.wpb_vc_gallery .attachment-thumbnails img,
+.wpb_vc_images_carousel .attachment-thumbnails img,
+.wpb_vc_media_grid .attachment-thumbnails img,
+.wpb_vc_masonry_media_grid .attachment-thumbnails img {
+  height: 20px;
+  width: auto;
+}

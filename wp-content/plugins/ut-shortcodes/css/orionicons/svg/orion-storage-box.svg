@@ -1,0 +1,12 @@
+<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" aria-labelledby="title"
+aria-describedby="desc" role="img" xmlns:xlink="http://www.w3.org/1999/xlink"
+width="64" height="64">
+  <title>Storage Box</title>
+  <desc>A line styled icon from Orion Icon Library.</desc>
+  <path d="M62 49.999L31.999 60 2 49.999v-36L31.999 4 62 13.999v36z"
+  stroke-width="2" stroke-miterlimit="10" stroke="#333333" fill="none" data-name="layer2"
+  stroke-linejoin="round" stroke-linecap="round"></path>
+  <path d="M62 13.999L31.999 24 2 13.999M31.999 24v36" stroke-width="2"
+  stroke-miterlimit="10" stroke="#333333" fill="none" data-name="layer1"
+  stroke-linejoin="round" stroke-linecap="round"></path>
+</svg>

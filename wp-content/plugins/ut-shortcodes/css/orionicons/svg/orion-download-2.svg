@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" aria-labelledby="title"
+aria-describedby="desc" role="img" xmlns:xlink="http://www.w3.org/1999/xlink"
+width="64" height="64">
+  <title>Download</title>
+  <desc>A line styled icon from Orion Icon Library.</desc>
+  <path data-name="layer2"
+  fill="none" stroke="#333333" stroke-linecap="round" stroke-linejoin="round"
+  stroke-width="2" d="M42 51.5l-10 10-10-10"></path>
+  <path data-name="layer1" fill="none" stroke="#333333" stroke-linecap="round"
+  stroke-linejoin="round" stroke-width="2" d="M6 2.5h52v12H6zm0 12v28h18m16 0h18v-28"></path>
+  <path data-name="layer2" fill="none" stroke="#333333" stroke-linecap="round"
+  stroke-linejoin="round" stroke-width="2" d="M32 30.6v30.9"></path>
+  <circle data-name="layer1" cx="12" cy="8.5" r="1" fill="none" stroke="#333333"
+  stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></circle>
+  <circle data-name="layer1" cx="19" cy="8.5" r="1" fill="none"
+  stroke="#333333" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></circle>
+  <circle data-name="layer1" cx="26" cy="8.5" r="1" fill="none"
+  stroke="#333333" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></circle>
+</svg>

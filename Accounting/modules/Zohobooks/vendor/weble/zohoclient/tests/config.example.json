@@ -1,0 +1,8 @@
+{
+  "client_id" : "",
+  "client_secret": "",
+  "grant_code": "",
+  "refresh_token" : "",
+  "region": "us",
+  "redirect_uri": "https://zohoclient.weble.it"
+}
