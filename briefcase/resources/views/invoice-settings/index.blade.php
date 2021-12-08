@@ -30,7 +30,7 @@
                         </div>
 
                     </div>
-                </x-slot>                
+                </x-slot>
             @endif
 
             <div class="col-lg-12 col-md-12 ntfcn-tab-content-left w-100 p-4 ">
@@ -127,11 +127,7 @@
                         </x-forms.input-group>
                     </div>
 
-                    <div class="col-lg-4">
-                        <x-forms.text class="mr-0 mr-lg-2 mr-md-2" :fieldLabel="__('app.gstNumber')"
-                            :fieldPlaceholder="__('placeholders.invoices.gstNumber')" fieldName="gst_number"
-                            fieldId="gst_number" :fieldValue="$invoiceSetting->gst_number" />
-                    </div>
+
                     <div class="col-lg-4">
                         <x-forms.select fieldId="locale" :fieldLabel="__('modules.accountSettings.changeLanguage')"
                             fieldName="locale" search="true">
@@ -156,6 +152,11 @@
                         <x-forms.checkbox :checked="$invoiceSetting->hsn_sac_code_show==1"
                             :fieldLabel="__('app.hsnSacCodeShow')" fieldName="hsn_sac_code_show"
                             fieldId="hsn_sac_code_show" />
+                    </div>
+
+                    <div class="col-lg-4 mt-5">
+                        <x-forms.checkbox :checked="$invoiceSetting->tax_calculation_msg==1" :fieldLabel="__('app.showTaxCalculationMessage')"
+                            fieldName="show_tax_calculation_msg" fieldId="show_tax_calculation_msg" />
                     </div>
 
                     <div class="col-lg-12 mt-4">

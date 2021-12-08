@@ -49,13 +49,13 @@
                         <x-forms.select fieldId="time_format" :fieldLabel="__('modules.accountSettings.timeFormat')"
                             fieldName="time_format" search="true">
                             <option value="h:i A" @if ($global->time_format == 'h:i A') selected @endif>
-                                12 Hour (6:20 PM)
+                                12 Hour ({{ now(global_setting()->timezone)->format('h:i A') }})
                             </option>
                             <option value="h:i a" @if ($global->time_format == 'h:i a') selected @endif>
-                                12 Hour (6:20 pm)
+                                12 Hour ({{ now(global_setting()->timezone)->format('h:i a') }})
                             </option>
                             <option value="H:i" @if ($global->time_format == 'H:i') selected @endif>
-                                24 Hour (18:20)
+                                24 Hour ({{ now(global_setting()->timezone)->format('H:i') }})
                             </option>
                         </x-forms.select>
                     </div>
@@ -133,7 +133,7 @@
                             @php
                                 $cleanCache =
                                     '<a id="clear-cache" href="javascript:;"><i class="fa fa-trash"></i>
-                                                                                                                                                                                                                                ' .
+                                                                                                                                                                                                                                                                ' .
                                     __('modules.accountSettings.clearCache') .
                                     '</a>';
                             @endphp
@@ -143,9 +143,16 @@
                             fieldId="cache" :fieldHelp="$cleanCache" />
                     </div>
 
+                    <div class="col-sm-12 mt-lg-3">
+                        <x-forms.textarea fieldName="allowed_file_types" fieldId="allowed_file_types"
+                            :fieldLabel="__('modules.accountSettings.allowedFileType')" fieldRequired="true"
+                            :fieldValue="$global->allowed_file_types"
+                            :popover="__('modules.accountSettings.commaSeparatedValues')" />
+                    </div>
+
                     <div class="col-sm-12 mt-5 mb-4">
                         <h4 class="f-16 font-weight-500 text-capitalize">
-                            @lang('app.client') @lang('app.signUp') @lang('app.settings')</h4>    
+                            @lang('app.client') @lang('app.signUp') @lang('app.settings')</h4>
                     </div>
 
                     <div class="col-lg-3">
@@ -193,7 +200,6 @@
 
 @push('scripts')
     <script>
-
         $('#allow_client_signup').change(function() {
             $('#admin-approval').toggleClass('d-none');
         });

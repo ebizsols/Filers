@@ -81,7 +81,7 @@ $addContractPermission = user()->permission('renew_contract');
 
         const dp1 = datepicker('#start_date', {
             position: 'bl',
-            dateSelected: new Date("{{ $contract->start_date }}"),
+            dateSelected: new Date("{{ str_replace('-', '/', $contract->start_date) }}"),
             onSelect: (instance, date) => {
                 if (typeof dp2.dateSelected !== 'undefined' && dp2.dateSelected.getTime() < date
                     .getTime()) {
@@ -97,7 +97,7 @@ $addContractPermission = user()->permission('renew_contract');
 
         const dp2 = datepicker('#end_date', {
             position: 'bl',
-            dateSelected: new Date("{{ $contract->end_date ? $contract->end_date : now() }}"),
+            dateSelected: new Date("{{ $contract->end_date ? str_replace('-', '/', $contract->end_date) : str_replace('-', '/', now()) }}"),
             onSelect: (instance, date) => {
                 dp1.setMax(date);
             },

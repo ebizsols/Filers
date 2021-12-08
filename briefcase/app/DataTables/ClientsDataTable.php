@@ -238,12 +238,12 @@ class ClientsDataTable extends BaseDataTable
                 'searchable' => false
             ],
             '#' => ['data' => 'DT_RowIndex', 'orderable' => false, 'searchable' => false, 'visible' => false],
-            __('app.id') => ['data' => 'id', 'name' => 'id'],
-            __('app.name') => ['data' => 'name', 'name' => 'name', 'exportable' => false],
-            __('app.customers')  => ['data' => 'client_name', 'name' => 'users.name', 'visible' => false],
-            __('app.email') => ['data' => 'email', 'name' => 'email'],
-            __('app.status') => ['data' => 'status', 'name' => 'status'],
-            __('app.createdAt') => ['data' => 'created_at', 'name' => 'created_at'],
+            __('app.id') => ['data' => 'id', 'name' => 'id', 'title' => __('app.id')],
+            __('app.name') => ['data' => 'name', 'name' => 'name', 'exportable' => false, 'title' => __('app.name')],
+            __('app.customers')  => ['data' => 'client_name', 'name' => 'users.name', 'visible' => false, 'title' => __('app.customers')],
+            __('app.email') => ['data' => 'email', 'name' => 'email', 'title' => __('app.email')],
+            __('app.status') => ['data' => 'status', 'name' => 'status', 'title' => __('app.status')],
+            __('app.createdAt') => ['data' => 'created_at', 'name' => 'created_at', 'title' => __('app.createdAt')],
             Column::computed('action', __('app.action'))
                 ->exportable(false)
                 ->printable(false)

@@ -302,7 +302,7 @@ class ProductController extends AccountBaseController
         $this->lastOrder = Order::lastOrderNumber() + 1;
         $this->invoiceSetting = invoice_setting();
         $this->taxes = Tax::all();
-        $productData = [];
+        $this->products = [];
 
         if ($request->hasCookie('productDetails')) {
             $productDetails = json_decode($request->cookie('productDetails'), true);

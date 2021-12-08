@@ -223,10 +223,10 @@
                     <p class="line-height mt-1 mb-0 f-14 text-black">
                         {{ ucwords($global->company_name) }}<br>
                         @if (!is_null($settings))
-                            {!! nl2br($global->address) !!}<br>
+                            {!! nl2br($invoice->address->address) !!}<br>
                         @endif
-                        @if ($invoiceSetting->show_gst == 'yes' && !is_null($invoiceSetting->gst_number))
-                            <br>@lang('app.gstIn'): {{ $invoiceSetting->gst_number }}
+                        @if ($invoiceSetting->show_gst == 'yes')
+                            <br>{{ $invoice->address->tax_name }}: {{ $invoice->address->tax_number }}
                         @endif
                     </p>
                 </td>
@@ -429,6 +429,17 @@
                 <td width="50%" class="f-14 line-height">{!! nl2br($invoice->note) !!}</td>
                 <td width="50%" style="text-align: right" class="f-14 line-height">{!! nl2br($invoiceSetting->invoice_terms) !!}</td>
             </tr>
+            <tr class="text-grey">
+                <td width="100%" class="f-14 line-height">
+                    @if (isset($taxes) && invoice_setting()->tax_calculation_msg == 1 && $invoice->discount > 0)
+                        @if (invoice_setting()->calculate_tax == 'after_discount')
+                            @lang('messages.calculateTaxAfterDiscount')
+                        @else
+                            @lang('messages.calculateTaxBeforeDiscount')
+                        @endif
+                    @endif
+                </td>
+            </tr>
             <!-- Table Row End -->
         </tbody>
     </table>
@@ -472,6 +483,7 @@
             @endforelse
         </table>
     @endif
+
 </body>
 
 </html>

@@ -101,31 +101,8 @@
                 return selected + " {{ __('app.membersSelected') }} ";
             }
         });
+        quillImageLoad('#details');
 
-        var quill2 = new Quill('#details', {
-            modules: {
-                toolbar: [
-                    [{
-                        header: [1, 2, 3, 4, 5, false]
-                    }],
-                    [{
-                        'list': 'ordered'
-                    }, {
-                        'list': 'bullet'
-                    }],
-                    ['bold', 'italic', 'underline', 'strike'],
-                    ['image', 'code-block', 'link'],
-                    [{
-                        'direction': 'rtl'
-                    }],
-                    ['clean']
-                ],
-                "emoji-toolbar": true,
-                "emoji-textarea": true,
-                "emoji-shortname": true,
-            },
-            theme: 'snow'
-        });
 
         $('#save-project-note-form').click(function() {
             var comment = document.getElementById('details').children[0].innerHTML;

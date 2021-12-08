@@ -13,8 +13,8 @@
             <div class="d-lg-flex d-md-flex d-block py-4">
                 <!-- WELOCOME NAME START -->
                 <div class="">
-                <h4 class=" mb-0 f-21 text-capitalize font-weight-bold">@lang('app.welcome')
-                    {{ $user->name }}</h4>
+                    <h4 class=" mb-0 f-21 text-capitalize font-weight-bold">@lang('app.welcome')
+                        {{ $user->name }}</h4>
                 </div>
                 <!-- WELOCOME NAME END -->
 
@@ -22,7 +22,8 @@
                     <!-- CLOCK IN CLOCK OUT START -->
                     <div
                         class="ml-auto d-flex clock-in-out mb-3 mb-lg-0 mb-md-0 m mt-4 mt-lg-0 mt-md-0 justify-content-between">
-                        <p class="mb-0 text-lg-right text-md-right mr-4 f-18 font-weight-bold text-dark-grey d-grid align-items-center">
+                        <p
+                            class="mb-0 text-lg-right text-md-right f-18 font-weight-bold text-dark-grey d-grid align-items-center">
                             <input type="hidden" id="current-latitude">
                             <input type="hidden" id="current-longitude">
                             {{ now()->timezone($global->timezone)->format($global->time_format) }}
@@ -34,12 +35,12 @@
                             @endif
                         </p>
 
-                        @if (is_null($currentClockIn))
-                            <button type="button" class="btn-primary rounded f-15" id="clock-in"><i
+                        @if (is_null($currentClockIn) && is_null($checkTodayLeave))
+                            <button type="button" class="btn-primary rounded f-15 ml-4" id="clock-in"><i
                                     class="icons icon-login mr-2"></i>@lang('modules.attendance.clock_in')</button>
                         @endif
                         @if (!is_null($currentClockIn) && is_null($currentClockIn->clock_out_time))
-                            <button type="button" class="btn-danger rounded f-15" id="clock-out"><i
+                            <button type="button" class="btn-danger rounded f-15 ml-4" id="clock-out"><i
                                     class="icons icon-login mr-2"></i>@lang('modules.attendance.clock_out')</button>
                         @endif
 
@@ -76,23 +77,40 @@
                                             <label class="f-12 text-dark-grey mb-12 text-capitalize" for="usr">
                                                 @lang('app.menu.tasks') </label>
                                             <p class="mb-0 f-18 f-w-500">
-                                                {{ $counts->totalPendingTasks + $counts->totalCompletedTasks }} </p>
+                                                <a href="{{ route('tasks.index') . '?assignee=me&status=all' }}"
+                                                    class="text-dark">
+                                                    {{ $counts->totalPendingTasks + $counts->totalCompletedTasks }}
+                                                </a>
+                                            </p>
                                         </span>
                                         <span>
                                             <label class="f-12 text-dark-grey mb-12 text-capitalize" for="usr">
-                                                @lang('app.project') </label>
-                                            <p class="mb-0 f-18 f-w-500">{{ $totalProjects }}</p>
+                                                @lang('app.menu.projects') </label>
+                                            <p class="mb-0 f-18 f-w-500">
+                                                <a href="{{ route('projects.index') . '?assignee=me&status=all' }}"
+                                                    class="text-dark">{{ $totalProjects }}</a>
+                                            </p>
                                         </span>
                                         <span>
                                             <label class="f-12 text-dark-grey mb-12 text-capitalize" for="usr">
                                                 @lang('modules.dashboard.totalHoursLogged') </label>
-                                            <p class="mb-0 f-18 f-w-500">{{ $todayTotalClockin }}</p>
+                                            <p class="mb-0 f-18 f-w-500">
+                                                <a href="{{ route('timelogs.index') . '?assignee=me&start=' . now()->format($global->date_format) . '&end=' . now()->format($global->date_format) }}"
+                                                    class="text-dark">{{ intdiv($todayTotalHours, 60) }}
+                                                </a>
+                                            </p>
                                         </span>
-                                        <span>
-                                            <label class="f-12 text-dark-grey mb-12 text-capitalize" for="usr">
-                                                @lang('app.menu.tickets') </label>
-                                            <p class="mb-0 f-18 f-w-500">{{ $totalTickets }}</p>
-                                        </span>
+
+                                        @if (isset($totalOpenTickets))
+                                            <span>
+                                                <label class="f-12 text-dark-grey mb-12 text-capitalize" for="usr">
+                                                    @lang('modules.dashboard.totalOpenTickets') </label>
+                                                <p class="mb-0 f-18 f-w-500">
+                                                    <a href="{{ route('tickets.index') . '?agent=me&status=open' }}"
+                                                        class="text-dark">{{ $totalOpenTickets }}</a>
+                                                </p>
+                                            </span>
+                                        @endif
                                     </div>
                                 </div>
                             </div>
@@ -342,27 +360,28 @@
 
             @if (!is_null($currentClockIn))
                 $('#clock-out').click(function () {
-
-                var token = "{{ csrf_token() }}";
-                var currentLatitude = document.getElementById("current-latitude").value;
-                var currentLongitude = document.getElementById("current-longitude").value;
-
-                $.easyAjax({
-                url: "{{ route('attendances.update_clock_in') }}",
-                type: "GET",
-                data: {
-                currentLatitude: currentLatitude,
-                currentLongitude: currentLongitude,
-                _token: token,
-                id: '{{ $currentClockIn->id }}'
-                },
-                success: function (response) {
-                if(response.status == 'success'){
-                window.location.reload();
-                }
-                }
-                });
+            
+                    var token = "{{ csrf_token() }}";
+                    var currentLatitude = document.getElementById("current-latitude").value;
+                    var currentLongitude = document.getElementById("current-longitude").value;
+                
+                    $.easyAjax({
+                        url: "{{ route('attendances.update_clock_in') }}",
+                        type: "GET",
+                        data: {
+                        currentLatitude: currentLatitude,
+                        currentLongitude: currentLongitude,
+                        _token: token,
+                        id: '{{ $currentClockIn->id }}'
+                        },
+                        success: function (response) {
+                            if(response.status == 'success') {
+                                window.location.reload();
+                            }
+                        }
+                    });
                 });
             @endif
+
         </script>
     @endpush

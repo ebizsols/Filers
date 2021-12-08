@@ -245,14 +245,14 @@ class TaskReportDataTable extends BaseDataTable
     {
         return [
             '#' => ['data' => 'id', 'name' => 'id', 'visible' => false],
-            __('app.task') => ['data' => 'heading', 'name' => 'heading', 'exportable' => false],
-            __('app.menu.tasks') => ['data' => 'task', 'name' => 'heading', 'visible' => false],
-            __('app.project')  => ['data' => 'project_name', 'name' => 'projects.project_name'],
-            __('modules.tasks.assigned') => ['data' => 'name', 'name' => 'name', 'visible' => false],
-            __('app.dueDate') => ['data' => 'due_date', 'name' => 'due_date'],
-            __('modules.tasks.assignTo') => ['data' => 'users', 'name' => 'member.name', 'exportable' => false],
-            __('app.task').' '.__('app.status') => ['data' => 'status', 'name' => 'board_column', 'visible' => false],
-            __('app.columnStatus') => ['data' => 'board_column', 'name' => 'board_column', 'exportable' => false, 'searchable' => false]
+            __('app.task') => ['data' => 'heading', 'name' => 'heading', 'exportable' => false, 'title' => __('app.task')],
+            __('app.menu.tasks') => ['data' => 'task', 'name' => 'heading', 'visible' => false, 'title' => __('app.menu.tasks')],
+            __('app.project')  => ['data' => 'project_name', 'name' => 'projects.project_name', 'title' => __('app.project')],
+            __('modules.tasks.assigned') => ['data' => 'name', 'name' => 'name', 'visible' => false, 'title' => __('modules.tasks.assigned')],
+            __('app.dueDate') => ['data' => 'due_date', 'name' => 'due_date', 'title' => __('app.dueDate')],
+            __('modules.tasks.assignTo') => ['data' => 'users', 'name' => 'member.name', 'exportable' => false, 'title' => __('modules.tasks.assignTo')],
+            __('app.task').' '.__('app.status') => ['data' => 'status', 'name' => 'board_column', 'visible' => false, 'title' => __('app.task')],
+            __('app.columnStatus') => ['data' => 'board_column', 'name' => 'board_column', 'exportable' => false, 'searchable' => false, 'title' => __('app.columnStatus')]
         ];
     }
 

@@ -1,6 +1,7 @@
 <?php
 namespace Database\Seeders;
 
+use App\Models\CompanyAddress;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Carbon\Carbon;

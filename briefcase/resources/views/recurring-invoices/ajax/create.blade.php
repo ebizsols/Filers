@@ -120,6 +120,21 @@ $addProductPermission = user()->permission('add_product');
             </div>
             <!-- PROJECT END -->
 
+
+             <div class="col-lg-4">
+                <div class="form-group mb-lg-0 mb-4">
+                    <x-forms.label fieldId="calculate_tax" :fieldLabel="__('modules.invoices.calculateTax')">
+                    </x-forms.label>
+                    <div class="select-others height-35 rounded">
+                        <select class="form-control select-picker" data-live-search="true" data-size="8"
+                            name="calculate_tax" id="calculate_tax">
+                            <option value="after_discount">@lang('modules.invoices.afterDiscount')</option>
+                            <option value="before_discount">@lang('modules.invoices.beforeDiscount')</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
         </div>
 
         <hr class="m-0 border-top-grey">

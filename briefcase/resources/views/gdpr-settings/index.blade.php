@@ -1,5 +1,10 @@
 @extends('layouts.app')
 
+@push('datatable-styles')
+    @include('sections.datatable_css')
+@endpush
+
+
 @section('content')
 
     <!-- SETTINGS START -->
@@ -13,54 +18,72 @@
                     <nav class="gdpr-tabs tabs border-bottom-grey ">
                         <ul class="nav -primary" id="nav-tab" role="tablist">
                             <li>
-                                <a class="nav-item nav-link f-15 ajax-tab active general" href="{{ route('gdpr-settings.index') }}" role="tab" aria-controls="nav-general" aria-selected="true">@lang('app.menu.general')
+                                <a class="nav-item nav-link f-15 gdpr-ajax-tab active general"
+                                    href="{{ route('gdpr-settings.index') }}" role="tab" aria-controls="nav-general"
+                                    aria-selected="true">@lang('app.menu.general')
                                 </a>
                             </li>
 
                             <li>
-                                <a class="nav-item nav-link f-15 ajax-tab right-to-data-portability" href="{{route('gdpr-settings.index')}}?tab=right-to-data-portability" role="tab" aria-controls="nav-rightToDataPortability" aria-selected="true">@lang('app.menu.rightToDataPortability')
+                                <a class="nav-item nav-link f-15 gdpr-ajax-tab right-to-data-portability"
+                                    href="{{ route('gdpr-settings.index') }}?tab=right-to-data-portability" role="tab"
+                                    aria-controls="nav-rightToDataPortability"
+                                    aria-selected="true">@lang('app.menu.rightToDataPortability')
                                 </a>
                             </li>
 
                             <li>
-                                <a class="nav-item nav-link f-15 ajax-tab right-to-informed" href="{{ route('gdpr-settings.index') }}?tab=right-to-informed" role="tab"
-                                aria-controls="nav-rightToBeInformed" aria-selected="true">@lang('app.menu.rightToBeInformed')
+                                <a class="nav-item nav-link f-15 gdpr-ajax-tab right-to-informed"
+                                    href="{{ route('gdpr-settings.index') }}?tab=right-to-informed" role="tab"
+                                    aria-controls="nav-rightToBeInformed"
+                                    aria-selected="true">@lang('app.menu.rightToBeInformed')
                                 </a>
                             </li>
 
                             <li>
-                                <a class="nav-item nav-link f-15 ajax-tab right-to-erasure" href="{{ route('gdpr-settings.index') }}?tab=right-to-erasure" role="tab"
+                                <a class="nav-item nav-link f-15 gdpr-ajax-tab right-to-erasure"
+                                    href="{{ route('gdpr-settings.index') }}?tab=right-to-erasure" role="tab"
                                     aria-controls="nav-rightToErasure" aria-selected="true">@lang('app.menu.rightToErasure')
                                 </a>
                             </li>
 
                             <li>
-                                <a class="nav-item nav-link f-15 ajax-tab right-to-access" href="{{ route('gdpr-settings.index') }}?tab=right-to-access" role="tab"
-                                    aria-controls="nav-rightOfRectification" aria-selected="true">@lang('app.menu.rightOfRectification')
+                                <a class="nav-item nav-link f-15 gdpr-ajax-tab right-to-access"
+                                    href="{{ route('gdpr-settings.index') }}?tab=right-to-access" role="tab"
+                                    aria-controls="nav-rightOfRectification"
+                                    aria-selected="true">@lang('app.menu.rightOfRectification')
                                 </a>
                             </li>
 
                             <li>
-                                <a class="nav-item nav-link f-15 removal-requests " href="{{ route('gdpr-settings.index') }}?tab=removal-requests" role="tab"
-                                    aria-controls="nav-removalRequests" aria-selected="true">@lang('app.menu.removalRequest')
+                                <a class="nav-item nav-link f-15 removal-requests "
+                                    href="{{ route('gdpr-settings.index') }}?tab=removal-requests" role="tab"
+                                    aria-controls="nav-removalRequests"
+                                    aria-selected="true">@lang('app.menu.removalRequest')
                                 </a>
                             </li>
 
                             <li>
-                                <a class="nav-item nav-link f-15 removal-requests-lead" href="{{ route('gdpr-settings.index') }}?tab=removal-requests-lead" role="tab"
-                                    aria-controls="nav-removalRequests" aria-selected="true">@lang('app.menu.removalRequestLead')
+                                <a class="nav-item nav-link f-15 removal-requests-lead"
+                                    href="{{ route('gdpr-settings.index') }}?tab=removal-requests-lead" role="tab"
+                                    aria-controls="nav-removalRequests"
+                                    aria-selected="true">@lang('app.menu.removalRequestLead')
                                 </a>
                             </li>
 
                             <li>
-                                <a class="nav-item nav-link f-15 consent-settings" href="{{ route('gdpr-settings.index') }}?tab=consent-settings" role="tab"
-                                    aria-controls="nav-consent" aria-selected="true">@lang('app.menu.consent') @lang('app.settings')
+                                <a class="nav-item nav-link f-15 consent-settings"
+                                    href="{{ route('gdpr-settings.index') }}?tab=consent-settings" role="tab"
+                                    aria-controls="nav-consent" aria-selected="true">@lang('app.menu.consent')
+                                    @lang('app.settings')
                                 </a>
                             </li>
 
                             <li>
-                                <a class="nav-item nav-link f-15 consent-lists" href="{{ route('gdpr-settings.index') }}?tab=consent-lists" role="tab"
-                                    aria-controls="nav-consent" aria-selected="true">@lang('app.menu.consent') @lang('app.lists')
+                                <a class="nav-item nav-link f-15 consent-lists"
+                                    href="{{ route('gdpr-settings.index') }}?tab=consent-lists" role="tab"
+                                    aria-controls="nav-consent" aria-selected="true">@lang('app.menu.consent')
+                                    @lang('app.lists')
                                 </a>
                             </li>
 
@@ -83,49 +106,47 @@
 @endsection
 
 @push('scripts')
-<script>
-
-    /* manage menu active class */
-    $('.nav-item').removeClass('active');
-    const activeTab = "{{ $activeTab }}";
-    $('.' + activeTab).addClass('active');
-
-    showBtn(activeTab);
-
-    function showBtn(activeTab) {
-        $('.actionBtn').addClass('d-none');
-        $('.'+activeTab+'-btn').removeClass('d-none');
-    }
-
-    $("body").on("click", ".ajax-tab", function(event) {
-        event.preventDefault();
-
+    <script>
+        /* manage menu active class */
         $('.nav-item').removeClass('active');
-        $(this).addClass('active');
+        const activeTab = "{{ $activeTab }}";
+        $('.' + activeTab).addClass('active');
+
+        showBtn(activeTab);
+
+        function showBtn(activeTab) {
+            $('.actionBtn').addClass('d-none');
+            $('.' + activeTab + '-btn').removeClass('d-none');
+        }
+
+        $("body").on("click", ".gdpr-ajax-tab", function(event) {
+            event.preventDefault();
+
+            $('.nav-item').removeClass('active');
+            $(this).addClass('active');
 
 
-        const requestUrl = this.href;
+            const requestUrl = this.href;
 
-        $.easyAjax({
-            url: requestUrl,
-            blockUI: true,
-            container: ".content-wrapper",
-            historyPush: true,
-            success: function(response) {
-                if (response.status == "success") {
-                    $('#nav-tabContent').html(response.html);
-                    init('#nav-tabContent');
+            $.easyAjax({
+                url: requestUrl,
+                blockUI: true,
+                container: ".content-wrapper",
+                historyPush: true,
+                success: function(response) {
+                    if (response.status == "success") {
+                        $('#nav-tabContent').html(response.html);
+                        init('#nav-tabContent');
+                    }
                 }
-            }
+            });
         });
-    });
+    </script>
 
-</script>
-
-<script>
+    <script>
         /*******************************************************
-                 More btn in projects menu Start
-        *******************************************************/
+                         More btn in projects menu Start
+                *******************************************************/
 
         const container = document.querySelector('.tabs');
         const primary = container.querySelector('.-primary');
@@ -207,4 +228,89 @@
                  More btn in projects menu End
         *******************************************************/
     </script>
+
+    <script>
+        $(body).on('click', '#save-general-data', function() {
+            $.easyAjax({
+                url: "{{ route('gdpr_settings.update_general') }}",
+                container: '#editSettings',
+                type: "POST",
+                disableButton: true,
+                buttonSelector: "#save-general-data",
+                data: $('#editSettings').serialize(),
+            })
+        })
+    </script>
+
+
+    <script>
+        $(body).on('click', '#save-right-to-data-portability', function() {
+            $.easyAjax({
+                url: "{{ route('gdpr_settings.update_general') }}",
+                container: '#editSettings',
+                type: "POST",
+                disableButton: true,
+                buttonSelector: "#save-right-to-data-portability",
+                data: $('#editSettings').serialize(),
+            })
+        })
+    </script>
+
+
+
+    <script>
+        $(body).on('click', '#save-right-to-informed-data', function() {
+            $.easyAjax({
+                url: "{{ route('gdpr_settings.update_general') }}",
+                container: '#editSettings',
+                type: "POST",
+                disableButton: true,
+                buttonSelector: "#save-right-to-informed-data",
+                data: $('#editSettings').serialize(),
+            })
+        })
+    </script>
+
+
+    <script>
+        $(body).on('click', '#save-right-to-erasure-data', function() {
+            $.easyAjax({
+                url: "{{ route('gdpr_settings.update_general') }}",
+                container: '#editSettings',
+                type: "POST",
+                disableButton: true,
+                buttonSelector: "#save-right-to-erasure-data",
+                data: $('#editSettings').serialize(),
+            })
+        })
+    </script>
+
+
+    <script>
+        $(body).on('click', '#save-right-to-access-data', function() {
+            $.easyAjax({
+                url: "{{ route('gdpr_settings.update_general') }}",
+                container: '#editSettings',
+                type: "POST",
+                disableButton: true,
+                buttonSelector: "#save-right-to-access-data",
+                data: $('#editSettings').serialize(),
+            })
+        })
+    </script>
+
+
+<script>
+    $(body).on('click', '#save-consent-data', function() {
+        $.easyAjax({
+            url: "{{route('gdpr_settings.update_general')}}",
+            container: '#editSettings',
+            type: "POST",
+            disableButton: true,
+            buttonSelector: "#save-consent-data",
+            data: $('#editSettings').serialize(),
+        })
+    })
+</script>
+
 @endpush

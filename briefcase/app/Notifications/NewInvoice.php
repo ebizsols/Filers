@@ -54,7 +54,7 @@ class NewInvoice extends Notification implements ShouldQueue
      */
     public function toMail($notifiable)
     {
-        $url = route('invoices.index');
+        $url = route('front.invoice', $this->invoice->hash);
 
         if (($this->invoice->project && !is_null($this->invoice->project->client)) || !is_null($this->invoice->client_id)) {
             // For Sending pdf to email
@@ -68,7 +68,7 @@ class NewInvoice extends Notification implements ShouldQueue
                     ->subject(__('email.invoice.subject') . ' - ' . config('app.name') . '.')
                     ->greeting(__('email.hello') . ' ' . $notifiable->name . '!')
                     ->line(__('email.invoice.text'))
-                    ->action(__('email.loginDashboard'), $url)
+                    ->action(__('email.viewInvoice'), $url)
                     ->line(__('email.thankyouNote'))
                     ->attachData($pdf->output(), $filename . '.pdf');
             }

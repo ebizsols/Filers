@@ -4,6 +4,7 @@ namespace App\Observers;
 
 use App\Models\Estimate;
 use App\Events\NewInvoiceEvent;
+use App\Models\CompanyAddress;
 use App\Models\Invoice;
 use App\Models\InvoiceItems;
 use App\Models\Notification;
@@ -17,10 +18,15 @@ class InvoiceObserver
     {
         if (user()) {
             $invoice->last_updated_by = user()->id;
-            
+
             if (request()->has('calculate_tax')) {
                 $invoice->calculate_tax = request()->calculate_tax;
             }
+        }
+
+        if (is_null($invoice->company_address_id)) {
+            $defaultCompanyAddress = CompanyAddress::where('is_default', 1)->first();
+            $invoice->company_address_id = $defaultCompanyAddress->id;
         }
     }
 
@@ -62,7 +68,7 @@ class InvoiceObserver
     public function created(Invoice $invoice)
     {
         if (!isRunningInConsoleOrSeeding()) {
-            if (!empty(request()->item_name)) {
+            if (!empty(request()->item_name) && is_array(request()->item_name)) {
 
                 $itemsSummary = request()->item_summary;
                 $cost_per_item = request()->cost_per_item;

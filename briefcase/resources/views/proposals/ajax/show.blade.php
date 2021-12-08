@@ -89,6 +89,11 @@
                     <td height="30" colspan="2"></td>
                 </tr>
             </table>
+            <div class="row">
+                <div class="col-sm-12">
+                    {!! $invoice->description !!}
+                </div>
+            </div>
             <table width="100%" class="inv-desc d-none d-lg-table d-md-table">
                 <tr>
                     <td colspan="2">
@@ -265,6 +270,19 @@
                         </table>
                     </td>
                 </tr>
+                <tr>
+                    <td>
+                        @if (isset($taxes) && invoice_setting()->tax_calculation_msg == 1 && $invoice->discount > 0)
+                            <p class="text-dark-grey">
+                                @if (invoice_setting()->calculate_tax == 'after_discount')
+                                    @lang('messages.calculateTaxAfterDiscount')
+                                @else
+                                    @lang('messages.calculateTaxBeforeDiscount')
+                                @endif
+                            </p>
+                        @endif
+                    </td>
+                </tr>
             </table>
         </div>
 
@@ -280,11 +298,7 @@
     </div>
     <!-- CARD BODY END -->
     <!-- CARD FOOTER START -->
-    <div class="card-footer bg-white border-0 d-flex justify-content-end py-0 py-lg-4 py-md-4 mb-4 mb-lg-3 mb-md-3 ">
-
-        <x-forms.button-cancel :link="route('leads.show', $invoice->lead_id).'?tab=proposals'" class="border-0 mr-3">
-            @lang('app.cancel')
-        </x-forms.button-cancel>
+    <div class="card-footer bg-white border-0 d-flex justify-content-start py-0 py-lg-4 py-md-4 mb-4 mb-lg-3 mb-md-3 ">
 
         <div class="d-flex">
             <div class="inv-action mr-3 mr-lg-3 mr-md-3 dropup">
@@ -293,7 +307,7 @@
                     <span><i class="fa fa-chevron-down f-15 text-dark-grey"></i></span>
                 </button>
                 <!-- DROPDOWN - INFORMATION -->
-                <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton" tabindex="0">
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton" tabindex="0">
                     <li>
                         <a class="dropdown-item f-14 text-dark"
                             href="{{ route('front.proposal', $invoice->hash) }}" target="_blank">
@@ -308,6 +322,11 @@
             </div>
 
         </div>
+        
+        <x-forms.button-cancel :link="route('leads.show', $invoice->lead_id).'?tab=proposals'" class="border-0">
+            @lang('app.cancel')
+        </x-forms.button-cancel>
+
     </div>
     <!-- CARD FOOTER END -->
 </div>

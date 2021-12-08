@@ -248,8 +248,7 @@ class Attendance extends BaseModel
     // Get User Clock-ins by date
     public static function getTotalUserClockIn($date, $userId)
     {
-        return Attendance::where(DB::raw('DATE(attendances.clock_in_time)'), '>=', $date)
-            ->where(DB::raw('DATE(attendances.clock_in_time)'), '<=', $date)
+        return Attendance::where(DB::raw('DATE(attendances.clock_in_time)'), $date)
             ->where('user_id', $userId)
             ->count();
     }

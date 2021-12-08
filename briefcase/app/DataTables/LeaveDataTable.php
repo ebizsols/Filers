@@ -101,17 +101,19 @@ class LeaveDataTable extends BaseDataTable
                         </a>';
                 }
 
-                if ($this->editLeavePermission == 'all'
-                || ($this->editLeavePermission == 'added' && user()->id == $row->added_by)
-                || ($this->editLeavePermission == 'owned' && user()->id == $row->user_id)
-                || ($this->editLeavePermission == 'both' && (user()->id == $row->user_id || user()->id == $row->added_by))
-                ) {
-                    $actions .= '<a class="dropdown-item openRightModal" href="' . route('leaves.edit', [$row->id]) . '">
+                if ($row->status == 'pending') {
+                    if ($this->editLeavePermission == 'all'
+                    || ($this->editLeavePermission == 'added' && user()->id == $row->added_by)
+                    || ($this->editLeavePermission == 'owned' && user()->id == $row->user_id)
+                    || ($this->editLeavePermission == 'both' && (user()->id == $row->user_id || user()->id == $row->added_by))
+                    ) {
+                        $actions .= '<a class="dropdown-item openRightModal" href="' . route('leaves.edit', [$row->id]) . '">
                                 <i class="fa fa-edit mr-2"></i>
                                 ' . __('app.edit') . '
                         </a>';
+                    }
                 }
-
+                
                 if ($this->deleteLeavePermission == 'all'
                 || ($this->deleteLeavePermission == 'added' && user()->id == $row->added_by)
                 || ($this->deleteLeavePermission == 'owned' && user()->id == $row->user_id)
@@ -128,10 +130,10 @@ class LeaveDataTable extends BaseDataTable
 
                 return $actions;
             })
-            ->smart(false)
-            ->setRowId(function ($row) {
-                return 'row-' . $row->id;
-            })
+                ->smart(false)
+                ->setRowId(function ($row) {
+                    return 'row-' . $row->id;
+                })
             ->rawColumns(['status', 'leave_type', 'action', 'check', 'employee']);
     }
 
@@ -219,7 +221,7 @@ class LeaveDataTable extends BaseDataTable
             ->setTableId('leaves-table')
             ->columns($this->getColumns())
             ->minifiedAjax()
-            ->orderBy(3)
+            ->orderBy(2)
             ->destroy(true)
             ->responsive(true)
             ->serverSide(true)
@@ -256,11 +258,12 @@ class LeaveDataTable extends BaseDataTable
                 'searchable' => false
             ],
             '#' => ['data' => 'DT_RowIndex', 'orderable' => false, 'searchable' => false, 'visible' => false],
-            __('app.employee') => ['data' => 'employee', 'name' => 'user.name', 'exportable' => false],
-            __('app.employee'. ' ') => ['data' => 'employee_name', 'name' => 'user.name', 'visible' => false],
-            __('app.leaveDate') => ['data' => 'leave_date', 'name' => 'leaves.leave_date'],
-            __('app.leaveStatus') => ['data' => 'status', 'name' => 'leaves.status'],
-            __('app.leaveType') => ['data' => 'leave_type', 'name' => 'leave_types.type_name'],
+            __('app.id') => ['data' => 'id', 'name' => 'id', 'title' => __('app.id')],
+            __('app.employee') => ['data' => 'employee', 'name' => 'user.name', 'exportable' => false, 'title' => __('app.employee')],
+            __('app.employee'. ' ') => ['data' => 'employee_name', 'name' => 'user.name', 'visible' => false, 'title' => __('app.employee')],
+            __('app.leaveDate') => ['data' => 'leave_date', 'name' => 'leaves.leave_date', 'title' => __('app.leaveDate')],
+            __('app.leaveStatus') => ['data' => 'status', 'name' => 'leaves.status', 'title' => __('app.leaveStatus')],
+            __('app.leaveType') => ['data' => 'leave_type', 'name' => 'leave_types.type_name', 'title' => __('app.leaveType')],
             Column::computed('action', __('app.action'))
                 ->exportable(false)
                 ->printable(false)

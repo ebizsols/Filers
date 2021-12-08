@@ -56,13 +56,13 @@ class CreateExpensesRecurringTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('expenses_recurring');
-
         Schema::table('expenses', function (Blueprint $table) {
             $table->dropForeign(['expenses_recurring_id']);
             $table->dropForeign(['created_by']);
             $table->dropColumn('expenses_recurring_id', 'created_by');
         });
+
+        Schema::dropIfExists('expenses_recurring');
     }
 
 }

@@ -22,8 +22,10 @@
 <script>
     $('#recurring-invoices-table').on('preXhr.dt', function(e, settings, data) {
 
-        var projectID = "{{ $invoice->id }}";
+        var projectID = "{{ $invoice->project_id }}";
+        var recurringID = "{{ $recurringID }}";
         data['projectID'] = projectID;
+        data['recurringID'] = recurringID;
     });
     const showTable = () => {
         window.LaravelDataTables["recurring-invoices-table"].draw();
@@ -156,7 +158,7 @@
     });
 
     function toggleShippingAddress(invoiceId) {
-        let url = "{{ route('invoices.invoice_shipping_address', ':id') }}";
+        let url = "{{ route('invoices.toggle_shipping_address', ':id') }}";
         url = url.replace(':id', invoiceId);
 
         $.easyAjax({

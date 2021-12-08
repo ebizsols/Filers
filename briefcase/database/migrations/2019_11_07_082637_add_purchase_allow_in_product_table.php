@@ -37,7 +37,7 @@ class AddPurchaseAllowInProductTable extends Migration
     public function down()
     {
         Schema::table('products', function (Blueprint $table) {
-            $table->dropForeign(['allow_purchase']);
+            $table->dropColumn(['allow_purchase']);
         });
     }
 

@@ -19,7 +19,7 @@ class Radio extends Component
      *
      * @return void
      */
-    public function __construct($fieldLabel, $fieldRequired = false, $fieldValue = null, $fieldName, $fieldId, $checked = false)
+    public function __construct($fieldLabel, $fieldName, $fieldId, $fieldRequired = false, $fieldValue = null, $checked = false)
     {
         $this->fieldLabel = $fieldLabel;
         $this->fieldRequired = $fieldRequired;

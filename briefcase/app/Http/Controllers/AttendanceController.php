@@ -65,6 +65,11 @@ class AttendanceController extends AccountBaseController
                 } elseif ($this->viewAttendancePermission == 'owned') {
                     $query = $query->where('attendances.user_id', user()->id);
                 }
+            },
+            'leaves' => function ($query) use ($request) {
+                $query->whereRaw('MONTH(leaves.leave_date) = ?', [$request->month])
+                    ->whereRaw('YEAR(leaves.leave_date) = ?', [$request->year])
+                    ->where('status', 'approved');
             }]
         )->join('role_user', 'role_user.user_id', '=', 'users.id')
             ->join('roles', 'roles.id', '=', 'role_user.role_id')
@@ -108,8 +113,6 @@ class AttendanceController extends AccountBaseController
 
             $final[$employee->id . '#' . $employee->name] = array_replace($dataTillToday, $dataFromTomorrow);
 
-
-
             foreach ($employee->attendance as $attendance) {
                 $final[$employee->id . '#' . $employee->name][Carbon::parse($attendance->clock_in_time)->timezone($this->global->timezone)->day] = '<a href="javascript:;" class="view-attendance" data-attendance-id="' . $attendance->id . '"><i class="fa fa-check text-primary"></i></a>';
             }
@@ -144,6 +147,10 @@ class AttendanceController extends AccountBaseController
                 $final[$employee->id . '#' . $employee->name] = array_replace($final[$employee->id . '#' . $employee->name], $dataBeforeJoin);
             }
 
+            foreach ($employee->leaves as $leave) {
+                $final[$employee->id . '#' . $employee->name][$leave->leave_date->day] = 'Leave';
+            }
+
             foreach ($this->holidays as $holiday) {
                 if ($final[$employee->id . '#' . $employee->name][$holiday->date->day] == 'Absent' || $final[$employee->id . '#' . $employee->name][$holiday->date->day] == '-') {
                     $final[$employee->id . '#' . $employee->name][$holiday->date->day] = 'Holiday';
@@ -168,10 +175,16 @@ class AttendanceController extends AccountBaseController
     {
         $managePermission = user()->permission('manage_attendance');
         $viewPermission = user()->permission('view_attendance');
+        $attendance = Attendance::with('user', 'user.employeeDetail')->findOrFail($id);
 
-        abort_403(!($viewPermission == 'all' || $viewPermission == 'added' || $managePermission == 'all'));
+        abort_403(!(
+            $viewPermission == 'all'
+            || ($viewPermission == 'added' && $attendance->added_by == user()->id)
+            || ($viewPermission == 'owned' && $attendance->user->id == user()->id)
+            || ($viewPermission == 'both' && ($attendance->added_by == user()->id || $attendance->user->id == user()->id))
+            || $managePermission == 'all')
+        );
 
-        $attendance = Attendance::with('user')->findOrFail($id);
         $this->attendanceActivity = Attendance::userAttendanceByDate($attendance->clock_in_time->format('Y-m-d'), $attendance->clock_in_time->format('Y-m-d'), $attendance->user_id);
 
         $attendanceActivity = clone $this->attendanceActivity;

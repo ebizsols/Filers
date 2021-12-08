@@ -81,12 +81,6 @@ class LeadController extends AccountBaseController
 
         $this->categories = LeadCategory::all();
 
-        $this->category_name = '';
-
-        foreach ($this->categories as $category) {
-            $this->category_name = $this->lead->category_id == $category->id ? ucwords($category->category_name) : '--';
-        }
-
         $this->leadId = $id;
 
         if (!empty($this->lead->getCustomFieldGroupsWithFields())) {
@@ -304,6 +298,12 @@ class LeadController extends AccountBaseController
         $lead->category_id = $request->category_id;
         $lead->value = $request->value;
         $lead->currency_id = $this->global->currency->id;
+        $lead->cell = $request->cell;
+        $lead->office = $request->office;
+        $lead->city = $request->city;
+        $lead->state = $request->state;
+        $lead->country = $request->country;
+        $lead->postal_code = $request->postal_code;
         $lead->save();
 
         // To add custom fields data

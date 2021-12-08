@@ -261,8 +261,8 @@
 
 
             {{-- PAYMENT GATEWAY --}}
-            @if (in_array('client', user_roles()) && $order->total > 0 && $order->status != 'paid' 
-            && ($credentials->paypal_status == 'active' || $credentials->stripe_status == 'active' || $credentials->razorpay_status == 'active'))
+            @if (in_array('client', user_roles()) && $order->total > 0 && $order->status != 'paid'
+            && ($credentials->paypal_status == 'active' || $credentials->stripe_status == 'active' || $credentials->paystack_status == 'active' || $credentials->mollie_status == 'active' || $credentials->razorpay_status == 'active' || $credentials->authorize_status == 'active' || $credentials->payfast_status == 'active'|| $credentials->square_status == 'active'))
                 <div class="inv-action mr-3 mr-lg-3 mr-md-3 dropup">
                     <button class="dropdown-toggle btn-primary rounded mr-3 mr-lg-0 mr-md-0 f-15" type="button"
                         id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
@@ -280,6 +280,47 @@
                                 </a>
                             </li>
                         @endif
+
+                        @if ($credentials->paystack_status == 'active')
+                            <li>
+                                <a class="dropdown-item f-14 text-dark" href="javascript:void(0);" data-order-id="{{ $order->id }}"  id="paystackModal">
+                                    <img style="height: 15px;" src="https://s3-eu-west-1.amazonaws.com/pstk-integration-logos/paystack.jpg"> @lang('modules.invoices.payPaystack')</a>
+                            </li>
+                        @endif
+                        @if ($credentials->payfast_status == 'active')
+                            <li>
+                                <a class="dropdown-item f-14 text-dark" href="javascript:void(0);"
+                                    id="payfastModal">
+                                    <img style="height: 15px;" src="{{ asset('img/payfast.png') }}">
+                                    @lang('modules.invoices.payPayfast')</a>
+                            </li>
+                        @endif
+
+                        @if ($credentials->square_status == 'active')
+                            <li>
+                                <a class="dropdown-item f-14 text-dark" href="javascript:void(0);"
+                                    id="squareModal">
+                                    <img style="height: 15px;" src="{{ asset('img/square.svg') }}">
+                                    @lang('modules.invoices.paySquare')</a>
+                            </li>
+                        @endif
+
+                        @if ($credentials->authorize_status == 'active')
+                        <li>
+                            <a class="dropdown-item f-14 text-dark" href="javascript:void(0);"
+                                data-order-id="{{ $order->id }}" id="authorizeModal">
+                                <img style="height: 15px;" src="{{ asset('img/authorize.png') }}">
+                                @lang('modules.invoices.payAuthorize')</a>
+                        </li>
+                        @endif
+
+                        @if ($credentials->mollie_status == 'active')
+                            <li>
+                                <a class="dropdown-item f-14 text-dark" href="javascript:void(0);" data-order-id="{{ $order->id }}"  id="mollieModal">
+                                    <img style="height: 10px;" src="{{ asset('img/mollie.svg') }}"> @lang('modules.invoices.payMollie')</a>
+                            </li>
+                        @endif
+
                         @if ($credentials->razorpay_status == 'active')
                             <li>
                                 <a class="dropdown-item f-14 text-dark" href="javascript:;" id="razorpayPaymentButton">
@@ -298,7 +339,7 @@
                         @if ($methods->count() > 0)
                             <li>
                                 <a class="dropdown-item f-14 text-dark" href="javascript:;" id="offlinePaymentModal"
-                                    data-invoice-id="{{ $order->id }}">
+                                    data-order-id="{{ $order->id }}">
                                     <i class="fa fa-money-bill f-w-500 mr-2 f-11"></i>
                                     @lang('modules.invoices.payOffline')
                                 </a>
@@ -362,6 +403,81 @@
         $.ajaxModal(MODAL_LG, url);
     });
 
+
+    $('body').on('click', '#paystackModal', function() {
+
+        let id = $(this).data('order-id');
+        let queryString = "?id="+id+"&type=order";
+
+        let url = "{{ route('front.paystack_modal') }}"+queryString;
+
+        $(MODAL_LG + ' ' + MODAL_HEADING).html('...');
+        $.ajaxModal(MODAL_LG, url);
+
+    });
+
+
+    $('body').on('click', '#authorizeModal', function() {
+
+        let id = $(this).data('order-id');
+        let queryString = "?id="+id+"&type=order";
+
+        let url = "{{ route('front.authorize_modal') }}"+queryString;
+
+        $(MODAL_LG + ' ' + MODAL_HEADING).html('...');
+        $.ajaxModal(MODAL_LG, url);
+
+    })
+
+    $('body').on('click', '#mollieModal', function() {
+
+        let id = $(this).data('order-id');
+        let queryString = "?id="+id+"&type=order";
+
+        let url = "{{ route('front.mollie_modal') }}"+queryString;
+
+        $(MODAL_LG + ' ' + MODAL_HEADING).html('...');
+        $.ajaxModal(MODAL_LG, url);
+
+    });
+
+    $('body').on('click', '#payfastModal', function() {
+
+        let url = "{{route('payfast_public')}}";
+        $.easyAjax({
+            url: url,
+            type: "POST",
+            blockUI: true,
+            data: {
+                id:'{{$order->id}}',
+                type:'order',
+                _token: '{{ csrf_token() }}'
+            },
+            success: function(response) {
+                if(response.status == 'success'){
+                    $('body').append(response.form);
+                    console.log(response.form);
+                    $('#payfast-pay-form').submit();
+                }
+            }
+        });
+
+    });
+
+    $('body').on('click', '#squareModal', function() {
+
+        $.easyAjax({
+            url: "{{route('square_public')}}",
+            type: "POST",
+            blockUI: true,
+            data: {
+                id:'{{$order->id}}',
+                type:'order',
+                _token: '{{ csrf_token() }}'
+            }
+        });
+    });
+
     $('body').on('click', '#offlinePaymentModal', function() {
 
         let orderId = $(this).data('order-id');
@@ -376,7 +492,7 @@
     @if ($credentials->razorpay_status == 'active')
         $('body').on('click', '#razorpayPaymentButton', function() {
         var amount = "{{ number_format((float) $order->total, 2, '.', '') * 100 }}";
-        var orderId = {{ $order->id }};
+        var orderId = "{{ $order->id }}";
         var clientEmail = "{{ $user->email }}";
 
         var options = {
@@ -421,7 +537,7 @@
 
         rzp1.open();
 
-        })
+        });
 
         // Confirmation after transaction
         function confirmRazorpayPayment(id, orderId) {

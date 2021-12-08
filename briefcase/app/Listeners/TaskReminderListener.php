@@ -18,7 +18,7 @@ class TaskReminderListener
 
     public function handle(TaskReminderEvent $event)
     {
-        Notification::send($event->task->users, new TaskReminder($event->task));
+        Notification::send($event->task->activeUsers, new TaskReminder($event->task));
     }
 
 }

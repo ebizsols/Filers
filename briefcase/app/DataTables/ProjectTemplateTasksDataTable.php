@@ -139,7 +139,7 @@ class ProjectTemplateTasksDataTable extends BaseDataTable
     {
         return [
             '#' => ['data' => 'id', 'name' => 'id', 'visible' => false],
-            __('app.task') => ['data' => 'heading', 'name' => 'heading'],
+            __('app.task') => ['data' => 'heading', 'name' => 'heading', 'title' => __('app.task')],
             Column::computed('action', __('app.action'))
                 ->exportable(false)
                 ->printable(false)

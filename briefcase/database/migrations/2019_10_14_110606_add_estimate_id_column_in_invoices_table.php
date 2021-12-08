@@ -28,7 +28,8 @@ class AddEstimateIdColumnInInvoicesTable extends Migration
     public function down()
     {
         Schema::table('invoices', function (Blueprint $table) {
-            //
+            $table->dropForeign(['estimate_id']);
+            $table->dropColumn(['estimate_id']);
         });
     }
 

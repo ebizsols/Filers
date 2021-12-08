@@ -346,7 +346,7 @@ $addProductPermission = user()->permission('add_product');
         $(document).ready(function() {
             const dp1 = datepicker('#invoice_date', {
                 position: 'bl',
-                dateSelected: new Date("{{ $creditNote->issue_date }}"),
+                dateSelected: new Date("{{ str_replace('-', '/', $creditNote->issue_date) }}"),
                 ...datepickerConfig
             });
 

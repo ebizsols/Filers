@@ -589,7 +589,20 @@
 
         </section>
 
-
+        @if (isset($taxes) && invoice_setting()->tax_calculation_msg == 1 && $proposal->discount > 0)
+        <div class="clearfix"></div>
+        <br>
+        <section id="terms1">
+            <p class="text-dark-grey">
+                @if (invoice_setting()->calculate_tax == 'after_discount')
+                    @lang('messages.calculateTaxAfterDiscount')
+                @else
+                    @lang('messages.calculateTaxBeforeDiscount')
+                @endif
+            </p>
+        </section>
+        @endif
+        
     </div>
     </div>
 </body>

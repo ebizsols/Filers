@@ -117,12 +117,12 @@ class CustomerDataRemovalDataTable extends BaseDataTable
     protected function getColumns()
     {
         return [
-            __('app.id') => ['data' => 'id', 'name' => 'id', 'visible' => false, 'exportable' => false],
+            __('app.id') => ['data' => 'id', 'name' => 'id', 'visible' => false, 'exportable' => false, 'title' => __('app.id')],
             '#' => ['data' => 'DT_RowIndex', 'orderable' => false, 'searchable' => false, 'visible' => false],
-            __('app.name') => ['data' => 'name', 'name' => 'name'],
-            __('app.description') => ['data' => 'description', 'name' => 'description'],
-            __('app.createdOn') => ['data' => 'created_at', 'name' => 'created_at'],
-            __('app.status') => ['data' => 'status', 'name' => 'status', 'exportable' => false],
+            __('app.name') => ['data' => 'name', 'name' => 'name', 'title' => __('app.name')],
+            __('app.description') => ['data' => 'description', 'name' => 'description', 'title' => __('app.description')],
+            __('app.createdOn') => ['data' => 'created_at', 'name' => 'created_at', 'title' => __('app.createdOn')],
+            __('app.status') => ['data' => 'status', 'name' => 'status', 'exportable' => false, 'title' => __('app.status')],
             Column::computed('action', __('app.action'))
                 ->exportable(false)
                 ->printable(false)

@@ -58,7 +58,7 @@ class NewClientTask extends Notification implements ShouldQueue
         $dueDate = (!is_null($this->task->due_date)) ? $this->task->due_date->format('d M, Y') : null;
 
         $content = ucfirst($this->task->heading) . ' #'.$this->task->id.'<p>
-            <b style="color: green">Due On: ' . $dueDate . '</b>
+            <b style="color: green">'. __('email.dueOn') . ': ' . $dueDate . '</b>
         </p>';
 
         return (new MailMessage)

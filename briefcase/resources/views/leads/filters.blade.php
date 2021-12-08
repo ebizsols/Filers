@@ -117,12 +117,12 @@
 
 @push('scripts')
     <script>
-        $('#search-text-field, #client, #followUp, #filter_agent_id, #category_id, #filter_source_id')
+        $('#search-text-field, #type, #followUp, #filter_agent_id, #category_id, #filter_source_id')
             .on('change keyup', function() {
                 if ($('#search-text-field').val() != "") {
                     $('#reset-filters').removeClass('d-none');
                     showTable();
-                } else if ($('#client').val() != "all") {
+                } else if ($('#type').val() != "all") {
                     $('#reset-filters').removeClass('d-none');
                     showTable();
                 } else if ($('#followUp').val() != "all") {

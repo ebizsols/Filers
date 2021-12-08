@@ -21,11 +21,11 @@ var KTMenu = function(elementId, options) {
             rememberPosition: false
         },
 
-        
-        
+
+
     };
 
-    ////////////////////////////
+    /////////        //        /////////////////
     // ** Private Methods  ** //
     ////////////////////////////
 
@@ -53,7 +53,7 @@ var KTMenu = function(elementId, options) {
             return the;
         },
 
-       
+
         init: function(options) {
             the.events = [];
 
@@ -96,7 +96,7 @@ var KTMenu = function(elementId, options) {
          * @returns {KTMenu}
          */
         build: function() {
-          
+
 
             // Init scrollable menu
             if (the.options.scroll && the.options.scroll.height) {
@@ -165,7 +165,7 @@ var KTMenu = function(elementId, options) {
                     }
                 }
             }
-        },   
+        },
 
         /**
          * Reset menu's current active item
@@ -173,7 +173,7 @@ var KTMenu = function(elementId, options) {
          */
         resetActiveItem: function(item) {
             var list;
-            var parents;
+               var parents;
 
             list = element.querySelectorAll('.menu-item-active');
 
@@ -1935,26 +1935,26 @@ KTUtil.ready(function() {
     // Init sideMenuScroll
     sideMenuScroll.init('sideMenuScroll');
 
-    // Init msgLeft 
+    // Init msgLeft
     msgLeft.init('msgLeft');
 
-    // Init chatBox 
-    chatBox.init('chatBox'); 
+    // Init chatBox
+    chatBox.init('chatBox');
 
-    // Init settingsMenu 
-    settingsMenu.init('settingsMenu'); 
+    // Init settingsMenu
+    settingsMenu.init('settingsMenu');
 
     // Init recentTickets Menu
-    recentTickets.init('recentTickets'); 
+    recentTickets.init('recentTickets');
 
     // Init ticketMsg Menu
-    ticketMsg.init('ticketMsg'); 
+    ticketMsg.init('ticketMsg');
 
     // Init projectActivityDetail Menu
-    projectActivityDetail.init('projectActivityDetail'); 
+    projectActivityDetail.init('projectActivityDetail');
 
     // Init empDashNotice Menu
-    empDashNotice.init('empDashNotice'); 
+    empDashNotice.init('empDashNotice');
 
 });
 
@@ -2024,16 +2024,16 @@ var msgLeft = function() {
 
         var scroll;
 
-		if (KTUtil.attr(_element, 'data-menu-scroll') === '1') {
+		if (KTUtil.attr(_element, ' data-menu-scroll') === '1') {
 			scroll = {
-				rememberPosition: true, // remember position on page reload
-				height: function() { // calculate available scrollable area height
-					var height = parseInt(KTUtil.getViewPort().height);
+				rememberPosition: true, // remember  position on page reload
+			 	height: function() { // calculate avail able scrollable area height
+					var height = parseInt(KTUtil.getViewPort(). height);
 
 					if (KTUtil.isBreakpointUp('lg')) {
-                        height = parseInt(KTUtil.getViewPort().height) - 127;
+                         height = parseInt(KTUtil.getViewPort().height) - 127;
                     }
-                    else
+                     else
 
                     height = parseInt(KTUtil.getViewPort().height) - 194;
 
@@ -2354,7 +2354,7 @@ var empDashNotice = function () {
                     if (KTUtil.isBreakpointUp('xl')) {
                         height = parseInt(KTUtil.getViewPort().height) - 300;
                     }
-                  
+
                     else
                         height = parseInt(KTUtil.getViewPort().height) - 300;
 

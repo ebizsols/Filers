@@ -4,13 +4,11 @@ namespace App\Notifications;
 
 use App\Models\EmailNotificationSetting;
 use App\Models\Invoice;
-use App\Models\InvoiceSetting;
-
+use App\Models\Payment;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
-use NotificationChannels\OneSignal\OneSignalChannel;
 
 class InvoicePaymentReceived extends Notification implements ShouldQueue
 {
@@ -21,16 +19,15 @@ class InvoicePaymentReceived extends Notification implements ShouldQueue
      *
      * @return void
      */
-    private $invoice;
+    private $payment;
     private $invoiceSetting;
     private $emailSetting;
 
-    public function __construct(Invoice $invoice)
+    public function __construct(Payment $payment)
     {
-        $this->invoice = $invoice;
+        $this->payment = $payment;
         $this->invoiceSetting = invoice_setting();
         $this->emailSetting = EmailNotificationSetting::where('slug', 'invoice-createupdate-notification')->first();
-
     }
 
     /**
@@ -62,13 +59,28 @@ class InvoicePaymentReceived extends Notification implements ShouldQueue
      */
     public function toMail($notifiable)
     {
-        $url = route('admin.all-invoices.index');
+        $number = '';
+        $message = '';
+        $url = '';
+
+        $invoice = Invoice::find($this->payment->invoice_id);
+
+        if ($invoice->order_id != null) {
+            $number = __('app.order').'#'.$invoice->order_id;
+            $message = __('email.invoices.paymentReceivedForOrder');
+            $url = route('orders.index');
+        }
+        else {
+            $number = $invoice->invoice_number;
+            $message = __('email.invoices.paymentReceivedForInvoice');
+            $url = route('invoices.index');
+        }
 
         return (new MailMessage)
             ->subject(__('email.invoices.paymentReceived').' - '.config('app.name'))
-            ->greeting(__('email.hello').' '.ucwords($notifiable->name).'!')
-            ->line(__('email.invoices.paymentReceived').':- ')
-            ->line($this->invoice->invoice_number)
+            ->greeting(__('email.hello').' '.ucwords($notifiable->name).__('!'))
+            ->line($message.':- ')
+            ->line($number)
             ->action(__('email.loginDashboard'), $url)
             ->line(__('email.thankyouNote'));
     }
@@ -79,13 +91,20 @@ class InvoicePaymentReceived extends Notification implements ShouldQueue
      * @param  mixed  $notifiable
      * @return array
      */
-//phpcs:ignore
+    //phpcs:ignore
     public function toArray($notifiable)
     {
-        return [
-            'id' => $this->invoice->id,
-            'invoice_number' => $this->invoice->invoice_number
-        ];
+
+        $invoice = Invoice::find($this->payment->invoice_id);
+
+        if($invoice){
+            return [
+                'id' => $invoice->id,
+                'invoice_number' => $invoice->invoice_number
+            ];
+        }
+
+        return '';
     }
 
 }

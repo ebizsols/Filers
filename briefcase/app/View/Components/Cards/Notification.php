@@ -19,7 +19,7 @@ class Notification extends Component
      *
      * @return void
      */
-    public function __construct($link, $image, $title, $text = null, $time, $notification)
+    public function __construct($link, $image, $title, $time, $notification, $text = null)
     {
         $this->link = $link;
         $this->image = $image;

@@ -49,9 +49,12 @@ class TestEmail extends Notification implements ShouldQueue
     // phpcs:ignore
     public function toMail($notifiable)
     {
+
         return (new MailMessage)
             ->subject(__('email.test.subject'))
             ->line(__('email.test.text'))
+
+            ->action(__('email.notificationAction'), url('/'))
             ->line(__('email.test.thankyouNote'));
     }
 

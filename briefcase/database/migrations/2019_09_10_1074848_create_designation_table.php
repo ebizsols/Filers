@@ -51,11 +51,12 @@ class CreateDesignationTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('designations');
-
         Schema::table('employee_details', function (Blueprint $table) {
+            $table->dropForeign(['designation_id']);
             $table->dropColumn(['designation_id']);
         });
+    
+        Schema::dropIfExists('designations');
     }
 
 }

@@ -2,11 +2,13 @@
 
 namespace App\Observers;
 
+use App\Events\InvoicePaymentReceivedEvent;
 use App\Events\NewPaymentEvent;
 use App\Models\Invoice;
 use App\Models\Notification;
 use App\Models\Payment;
 use App\Models\User;
+use Illuminate\Support\Facades\Log;
 
 class PaymentObserver
 {
@@ -21,7 +23,6 @@ class PaymentObserver
     public function creating(Payment $payment)
     {
         if (!isRunningInConsoleOrSeeding()) {
-
             $payment->added_by = user() ? user()->id : null;
         }
     }
@@ -29,10 +30,10 @@ class PaymentObserver
     public function saved(Payment $payment)
     {
         if (!isRunningInConsoleOrSeeding()) {
-            if (($payment->project_id && $payment->project->client_id != null) || ($payment->invoice_id && $payment->invoice->client_id != null)) {
+            if (($payment->project_id && $payment->project->client_id != null) || ($payment->invoice_id && $payment->invoice->client_id != null) && $payment->gateway != 'Offline') {
+                // Notify client
                 $clientId = ($payment->project_id && $payment->project->client_id != null) ? $payment->project->client_id : $payment->invoice->client_id;
 
-                // Notify client
                 $notifyUser = User::findOrFail($clientId);
                 event(new NewPaymentEvent($payment, $notifyUser));
             }
@@ -41,7 +42,8 @@ class PaymentObserver
 
     public function created(Payment $payment)
     {
-        if (($payment->invoice_id || $payment->order_id) && $payment->status == 'complete') {
+        if (($payment->invoice_id || $payment->order_id) && $payment->status == 'complete')
+        {
 
             if($payment->invoice_id) {
                 $invoice = Invoice::latest()->find($payment->invoice_id);
@@ -65,6 +67,18 @@ class PaymentObserver
                 $invoice->due_amount = $dueAmount;
                 $invoice->save();
             }
+
+            // Notify all admins
+            try{
+                if (!isRunningInConsoleOrSeeding() ) {
+                    if($payment->gateway != 'Offline'){
+                        event(new InvoicePaymentReceivedEvent($payment));
+                    }
+                }
+            }catch (\Exception $e){
+                Log::info($e);
+            }
+
         }
     }
 

@@ -82,3 +82,9 @@
       width: 280px;
   }
 }
+
+.invite-member span{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}

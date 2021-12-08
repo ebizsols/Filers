@@ -566,7 +566,7 @@ class ClientController extends AccountBaseController
         $dataTable = new EstimatesDataTable();
         $viewPermission = user()->permission('view_estimates');
 
-        abort_403 (!($viewPermission == 'all' || $viewPermission == 'added'));
+        abort_403 ($viewPermission == 'none');
         $tab = request('tab');
         ($tab == '') ? $this->activeTab = 'profile' : $this->activeTab = $tab;
         $this->view = 'clients.ajax.estimates';
@@ -578,7 +578,7 @@ class ClientController extends AccountBaseController
         $dataTable = new CreditNotesDataTable();
         $viewPermission = user()->permission('view_invoices');
 
-        abort_403 (!($viewPermission == 'all' || $viewPermission == 'added'));
+        abort_403 ($viewPermission == 'none');
         $tab = request('tab');
         ($tab == '') ? $this->activeTab = 'profile' : $this->activeTab = $tab;
         $this->view = 'clients.ajax.credit_notes';

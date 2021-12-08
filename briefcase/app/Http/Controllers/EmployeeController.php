@@ -59,7 +59,7 @@ class EmployeeController extends AccountBaseController
     public function index(EmployeesDataTable $dataTable)
     {
         $viewPermission = user()->permission('view_employees');
-        abort_403(!in_array($viewPermission, ['all', 'added']));
+        abort_403(!in_array($viewPermission, ['all', 'added', 'owned']));
 
         if (!request()->ajax()) {
             $this->employees = User::allEmployees();
@@ -422,7 +422,12 @@ class EmployeeController extends AccountBaseController
 
         $this->viewPermission = user()->permission('view_employees');
 
-        abort_403(!($this->viewPermission == 'all' || ($this->viewPermission == 'added' && $this->employee->employeeDetail->added_by == user()->id)));
+        abort_403(!(
+            $this->viewPermission == 'all'
+            || ($this->viewPermission == 'added' && $this->employee->employeeDetail->added_by == user()->id)
+            || ($this->viewPermission == 'owned' && $this->employee->employeeDetail->user_id == user()->id)
+            || ($this->viewPermission == 'both' && ($this->employee->employeeDetail->user_id == user()->id || $this->employee->employeeDetail->added_by == user()->id))
+        ));
 
         $this->pageTitle = ucfirst($this->employee->name);
 

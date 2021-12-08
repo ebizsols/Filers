@@ -99,8 +99,8 @@ class LabelDataTable extends BaseDataTable
     {
         return [
             '#' => ['data' => 'id', 'name' => 'id', 'visible' => true],
-            __('app.labelName') => ['data' => 'label_name', 'name' => 'label_name'],
-            __('app.description') => ['data' => 'description', 'name' => 'description'],
+            __('app.labelName') => ['data' => 'label_name', 'name' => 'label_name', 'title' => __('app.labelName')],
+            __('app.description') => ['data' => 'description', 'name' => 'description', 'title' => __('app.description')],
             Column::computed('action', __('app.action'))
                 ->exportable(false)
                 ->printable(false)

@@ -59,7 +59,7 @@
                 <tr class="d-none d-md-table-row d-lg-table-row">
                     <td colspan="{{ $invoiceSetting->hsn_sac_code_show ? '5' : '4' }}" class="dash-border-top bblr">
                         <textarea class="form-control f-14 border-0 w-100 desktop-description" name="item_summary[]"
-                            placeholder="@lang('placeholders.invoices.description')">{{ strip_tags($items->description) }}</textarea>
+                            placeholder="@lang('placeholders.invoices.description')">{{ str_replace(['<p>', '</p>'], ['', "\n"], strip_tags($items->description, ['p'])) }}</textarea>
                     </td>
                 </tr>
             </tbody>

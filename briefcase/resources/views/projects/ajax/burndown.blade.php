@@ -40,7 +40,7 @@
 
         datepicker('#start_date', {
             position: 'bl',
-            dateSelected: new Date("{{ $fromDate }}"),
+            dateSelected: new Date("{{ str_replace('-', '/', $fromDate) }}"),
             onSelect: (instance, date) => {
                 loadChart();
             },
@@ -49,7 +49,7 @@
 
         datepicker('#end_date', {
             position: 'bl',
-            dateSelected: new Date("{{ $toDate }}"),
+            dateSelected: new Date("{{ str_replace('-', '/', $toDate) }}"),
             onSelect: (instance, date) => {
                 loadChart();
             },

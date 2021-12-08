@@ -32,7 +32,9 @@ class ProjectObserver
 
     public function created(Project $project)
     {
-        $project->membersMany()->attach(request()->user_id);
+        if (!$project->public) {
+            $project->membersMany()->attach(request()->user_id);
+        }
 
         if (!isRunningInConsoleOrSeeding()) {
 

@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use App\Models\AttendanceSetting;
 use App\Models\LogTimeFor;
 use App\Models\ProjectTimeLog;
+use App\Models\Setting;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
@@ -34,6 +35,7 @@ class AutoStopTimer extends Command
     public function handle()
     {
         $logTimeFor = LogTimeFor::first();
+        $setting = Setting::first();
         $admin = User::allAdmins()->first();
 
         $attendanceSetting = AttendanceSetting::first();
@@ -48,19 +50,22 @@ class AutoStopTimer extends Command
                 ->get();
 
             foreach ($activeTimers as $activeTimer) {
-                if (Carbon::createFromFormat('Y-m-d H:i:s', $activeTimer->start_time->format('Y-m-d').' '.$attendanceSetting->office_end_time)->timestamp < Carbon::now()->timestamp) {
+                $endDateTime = Carbon::createFromFormat('Y-m-d H:i:s', $activeTimer->start_time->format('Y-m-d').' '.$attendanceSetting->office_end_time);
+                $endDateTime = Carbon::parse($endDateTime)->shiftTimezone($setting->timezone)->timestamp;
 
-                    $activeTimer->end_time = Carbon::now();
+                if ($endDateTime < Carbon::now($setting->timezone)->timestamp) {
+
+                    $activeTimer->end_time = Carbon::createFromTimestamp($endDateTime);
                     $activeTimer->edited_by_user = $admin->id;
                     $activeTimer->save();
 
                     $activeTimer->total_hours = ($activeTimer->end_time->diff($activeTimer->start_time)->format('%d') * 24) + ($activeTimer->end_time->diff($activeTimer->start_time)->format('%H'));/* @phpstan-ignore-line */
 
                     if ($activeTimer->total_hours == 0) {
-                        $activeTimer->total_hours = round(($activeTimer->end_time->diff($activeTimer->start_time)->format('%i') / 60), 2);
+                        $activeTimer->total_hours = (int)$activeTimer->end_time->diff($activeTimer->start_time)->format('%d') * 24 + (int)$activeTimer->end_time->diff($activeTimer->start_time)->format('%H');
                     }
 
-                    $activeTimer->total_minutes = ($activeTimer->total_hours * 60) + ($activeTimer->end_time->diff($activeTimer->start_time)->format('%i')); /* @phpstan-ignore-line */
+                    $activeTimer->total_minutes = ((int)$activeTimer->total_hours * 60) + (int)($activeTimer->end_time->diff($activeTimer->start_time)->format('%i')); /* @phpstan-ignore-line */
 
                     $activeTimer->save();
                 }

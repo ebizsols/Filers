@@ -27,8 +27,7 @@ class UpdateLeave extends CoreRequest
         return [
             'user_id' => 'required',
             'leave_type_id' => 'required',
-            'reason' => 'required',
-            'status' => 'required'
+            'reason' => 'required'
         ];
     }
 

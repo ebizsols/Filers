@@ -18,10 +18,10 @@ class Label extends Component
      * @return void
      */
     public function __construct(
+        $fieldId,
         $fieldRequired = false,
         $fieldLabel = null,
-        $popover = null,
-        $fieldId
+        $popover = null
     )
     {
         $this->fieldLabel   = $fieldLabel;

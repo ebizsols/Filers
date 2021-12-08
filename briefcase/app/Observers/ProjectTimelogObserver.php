@@ -20,12 +20,6 @@ class ProjectTimelogObserver
             $userId = (request()->has('user_id') ? request('user_id') : $projectTimeLog->user_id);
             $projectId = request('project_id');
 
-            $timeLogSetting = LogTimeFor::first();
-
-            if ($timeLogSetting->approval_required) {
-                $projectTimeLog->approved = 0;
-            }
-
             if ($projectId != '') {
                 $member = ProjectMember::where('user_id', $userId)->where('project_id', $projectId)->first();
                 $projectTimeLog->hourly_rate = ($member && !is_null($member->hourly_rate) ? $member->hourly_rate : 0);
@@ -42,7 +36,7 @@ class ProjectTimelogObserver
             }
 
             $minuteRate = $projectTimeLog->hourly_rate / 60;
-            $earning = round($projectTimeLog->total_minutes * $minuteRate); /* @phpstan-ignore-line */
+            $earning = round($projectTimeLog->total_minutes * $minuteRate, 2); /* @phpstan-ignore-line */
             $projectTimeLog->earnings = $earning;
 
             if($projectId != '') {

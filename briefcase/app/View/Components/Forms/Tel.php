@@ -12,13 +12,13 @@ class Tel extends Component
     public $fieldValue;
     public $fieldName;
     public $fieldId;
-    
+
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct($fieldLabel, $fieldRequired = false, $fieldPlaceholder, $fieldValue = null, $fieldName, $fieldId)
+    public function __construct($fieldLabel, $fieldPlaceholder, $fieldName, $fieldId, $fieldRequired = false, $fieldValue = null)
     {
         $this->fieldLabel = $fieldLabel;
         $this->fieldRequired = $fieldRequired;

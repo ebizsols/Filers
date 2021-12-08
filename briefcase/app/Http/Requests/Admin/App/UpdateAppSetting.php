@@ -17,6 +17,7 @@ class UpdateAppSetting extends CoreRequest
     public function rules()
     {
         $rules = [];
+        $rules['allowed_file_types'] = 'required';
 
         if(!is_null($this->latitude)){
             $rules['latitude'] = 'required|numeric|between:-90,90|regex:/^\d+(\.\d{1,8})?$/';

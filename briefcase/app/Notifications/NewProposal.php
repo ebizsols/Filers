@@ -45,7 +45,7 @@ class NewProposal extends Notification implements ShouldQueue
     // phpcs:ignore
     public function toMail($notifiable)
     {
-        $url = '';
+        $url = route('front.proposal', $this->proposal->hash);
         $proposalController = new ProposalController();
         
         if ($pdfOption = $proposalController->domPdfObjectForDownload($this->proposal->id)) {

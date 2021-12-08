@@ -10,11 +10,8 @@ $viewProjectMilestonePermission = user()->permission('view_project_milestones');
 $viewTasksPermission = user()->permission('view_project_tasks');
 $viewGanttPermission = user()->permission('view_project_gantt_chart');
 $viewInvoicePermission = user()->permission('view_project_invoices');
-$viewExpensePermission = user()->permission('view_project_expenses');
-$viewPaymentPermission = user()->permission('view_project_payments');
 $viewDiscussionPermission = user()->permission('view_project_discussions');
 $viewNotePermission = user()->permission('view_project_note');
-$viewProjectTimelogPermission = user()->permission('view_project_timelogs');
 $viewFilesPermission = user()->permission('view_project_files');
 $viewRatingPermission = user()->permission('view_project_rating');
 @endphp
@@ -38,7 +35,13 @@ $viewRatingPermission = user()->permission('view_project_rating');
                         <x-tab :href="route('projects.show', $project->id)" :text="__('modules.projects.overview')" class="overview" />
                     </li>
 
-                    @if ($viewProjectMemberPermission == 'all' || ($viewProjectMemberPermission == 'added' && user()->id == $project->added_by) || ($viewProjectMemberPermission == 'owned' && user()->id == $project->client_id))
+                    @if (
+                        !$project->public && (
+                            $viewProjectMemberPermission == 'all' 
+                            || ($viewProjectMemberPermission == 'added' && user()->id == $project->added_by) 
+                            || ($viewProjectMemberPermission == 'owned' && user()->id == $project->client_id)
+                        )
+                    )
                         <li>
                             <x-tab :href="route('projects.show', $project->id).'?tab=members'" :text="__('modules.projects.members')"
                             class="members" />
@@ -112,14 +115,18 @@ $viewRatingPermission = user()->permission('view_project_rating');
                         </li>
                     @endif
 
-                    <li>
-                        <x-tab :href="route('projects.show', $project->id).'?tab=rating'" :text="__('modules.projects.rating')" class="rating" ajax="false" />
-                    </li>
+                    @if ($viewRatingPermission != 'none')
+                        <li>
+                            <x-tab :href="route('projects.show', $project->id).'?tab=rating'" :text="__('modules.projects.rating')" class="rating" ajax="false" />
+                        </li>                        
+                    @endif
 
-                    <li>
-                        <x-tab :href="route('projects.show', $project->id).'?tab=burndown-chart'"
-                            :text="__('modules.projects.burndownChart')" class="burndown-chart" ajax="false" />
-                    </li>
+                    @if($viewBurndownChartPermission != 'none')
+                        <li>
+                            <x-tab :href="route('projects.show', $project->id).'?tab=burndown-chart'"
+                                :text="__('modules.projects.burndownChart')" class="burndown-chart" ajax="false" />
+                        </li>
+                    @endif
                 </ul>
             </nav>
         </div>

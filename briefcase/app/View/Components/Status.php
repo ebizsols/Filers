@@ -16,7 +16,7 @@ class Status extends Component
      *
      * @return void
      */
-    public function __construct($style = '', $color = 'red', $value)
+    public function __construct($value, $style = '', $color = 'red')
     {
         $this->style = $style;
         $this->color = $color;

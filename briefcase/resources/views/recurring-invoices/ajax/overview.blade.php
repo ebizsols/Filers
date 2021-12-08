@@ -38,8 +38,8 @@
                                             {!! nl2br($global->address) !!}<br>
                                             {{ $global->company_phone }}
                                         @endif
-                                        @if ($invoiceSetting->show_gst == 'yes' && !is_null($invoiceSetting->gst_number))
-                                            <br>@lang('app.gstIn'): {{ $invoiceSetting->gst_number }}
+                                        @if ($invoiceSetting->show_gst == 'yes' && $invoice->address)
+                                            <br>{{ $invoice->address->tax_name }}: {{ $invoice->address->tax_number }}
                                         @endif
                                     </p><br>
                                 </td>
@@ -68,6 +68,20 @@
                                 <td class="f-14 text-dark">
                                     <p class="mb-0 text-left"><span
                                             class="text-dark-grey text-capitalize">@lang("modules.invoices.billedTo")</span><br>
+
+                                        @php
+                                            if ($invoice->project && $invoice->project->client) {
+                                                $client = $invoice->project->client;
+                                            }
+                                            else if ($invoice->client_id != '') {
+                                                $client = $invoice->client;
+                                            }
+                                            else if ($invoice->estimate && $invoice->estimate->client) {
+                                                $client = $invoice->estimate->client;
+                                            }
+                                        @endphp
+
+                                        {{ ucwords($client->name) }}<br>
                                         {{ ucwords($client->clientDetails->company_name) }}<br>
                                         {!! nl2br($client->clientDetails->address) !!}</p>
                                 </td>
@@ -116,7 +130,7 @@
                                                 </tr>
                                                 @if ($item->item_summary != '')
                                                     <tr class="text-dark">
-                                                        <td colspan="4" class="border-bottom-0">{{ $item->item_summary }}
+                                                        <td colspan="{{ $invoiceSetting->hsn_sac_code_show ? '5' : '4' }}" class="border-bottom-0">{{ $item->item_summary }}
                                                         </td>
                                                     </tr>
                                                 @endif

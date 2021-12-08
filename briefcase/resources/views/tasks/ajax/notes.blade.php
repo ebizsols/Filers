@@ -104,30 +104,7 @@ $deleteTaskNotePermission = user()->permission('delete_task_notes');
 
     $(document).ready(function() {
         if (add_task_notes == "all" || add_task_notes == "added") {
-            var quill = new Quill('#task-note', {
-                modules: {
-                    toolbar: [
-                        [{
-                            header: [1, 2, 3, 4, 5, false]
-                        }],
-                        [{
-                            'list': 'ordered'
-                        }, {
-                            'list': 'bullet'
-                        }],
-                        ['bold', 'italic', 'underline', 'strike'],
-                        ['image', 'code-block', 'link'],
-                        [{
-                            'direction': 'rtl'
-                        }],
-                        ['clean']
-                    ],
-                    "emoji-toolbar": true,
-                    "emoji-textarea": true,
-                    "emoji-shortname": true,
-                },
-                theme: 'snow'
-            });
+            quillImageLoad('#task-note');
         }
 
         $('#submit-note').click(function() {

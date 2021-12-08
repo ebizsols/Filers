@@ -83,11 +83,11 @@
                             <div class="d-flex">
                                 <x-forms.radio fieldId="login-yes" :fieldLabel="__('app.enable')"
                                     fieldName="email_notifications" fieldValue="1" checked="true"
-                                    :checked="($user->email_notifications === 1) ? 'checked' : ''">
+                                    :checked="($user->email_notifications == 1) ? 'checked' : ''">
                                 </x-forms.radio>
                                 <x-forms.radio fieldId="login-no" :fieldLabel="__('app.disable')" fieldValue="0"
                                     fieldName="email_notifications"
-                                    :checked="($user->email_notifications === 0) ? 'checked' : ''">
+                                    :checked="($user->email_notifications == 0) ? 'checked' : ''">
                                 </x-forms.radio>
                             </div>
                         </div>
@@ -98,10 +98,10 @@
                             <label class="f-14 text-dark-grey mb-12 w-100" for="usr">@lang('app.rtlTheme')</label>
                             <div class="d-flex">
                                 <x-forms.radio fieldId="rtl-yes" :fieldLabel="__('app.yes')" fieldName="rtl" fieldValue="1"
-                                    :checked="($user->rtl === 1) ? 'checked' : ''">
+                                    :checked="($user->rtl == 1) ? 'checked' : ''">
                                 </x-forms.radio>
                                 <x-forms.radio fieldId="rtl-no" :fieldLabel="__('app.no')" fieldValue="0" fieldName="rtl"
-                                    :checked="($user->rtl === 0) ? 'checked' : ''">
+                                    :checked="($user->rtl == 0) ? 'checked' : ''">
                                 </x-forms.radio>
                             </div>
                         </div>

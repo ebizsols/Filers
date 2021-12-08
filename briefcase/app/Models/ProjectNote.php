@@ -21,6 +21,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\ProjectUserNote[] $members
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\ProjectUserNote[] $project
  * @property-read int|null $members_count
  * @method static \Illuminate\Database\Eloquent\Builder|ProjectNote newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|ProjectNote newQuery()
@@ -46,12 +47,16 @@ class ProjectNote extends Model
     {
         parent::boot();
         static::observe(ProjectNoteObserver::class);
-        // static::addGlobalScope(new CompanyScope);
     }
 
     public function members()
     {
         return $this->hasMany(ProjectUserNote::class, 'project_note_id');
+    }
+
+    public function project()
+    {
+        return $this->belongsTo(Project::class, 'project_id');
     }
 
 }

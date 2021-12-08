@@ -121,14 +121,14 @@ $editTaskPermission = user()->permission('edit_tasks');
                                 </x-forms.input-group>
                             </div>
                         @elseif (($editTaskPermission == 'added' || $editTaskPermission == 'both') && $task->added_by == user()->id)
-                            <div class="col-lg-6 col-md-6">
+                            <div class="form-group my-3">
                                 <input type="hidden" name="user_id[]" value="{{ user()->id }}">
                                 <x-forms.text :fieldLabel="__('modules.tasks.assignTo')" fieldName="user_name"
                                     fieldRequired="true" fieldId="selectAssignee" fieldReadOnly="true"
                                     :fieldPlaceholder="__('placeholders.name')" :fieldValue="user()->name" />
                             </div>
                         @elseif ($editTaskPermission == 'owned')
-                            <div class="col-lg-6 col-md-6">
+                            <div class="form-group my-3">
                                 <input type="hidden" name="user_id[]" value="{{ user()->id }}">
                                 <x-forms.text :fieldLabel="__('modules.tasks.assignTo')" fieldName="user_name"
                                     fieldRequired="true" fieldId="selectAssignee" fieldReadOnly="true"
@@ -498,34 +498,11 @@ $editTaskPermission = user()->permission('edit_tasks');
             }
         });
 
-        var quill = new Quill('#description', {
-            modules: {
-                toolbar: [
-                    [{
-                        header: [1, 2, 3, 4, 5, false]
-                    }],
-                    [{
-                        'list': 'ordered'
-                    }, {
-                        'list': 'bullet'
-                    }],
-                    ['bold', 'italic', 'underline', 'strike'],
-                    ['image', 'code-block', 'link'],
-                    [{
-                        'direction': 'rtl'
-                    }],
-                    ['clean']
-                ],
-                "emoji-toolbar": true,
-                "emoji-textarea": true,
-                "emoji-shortname": true,
-            },
-            theme: 'snow'
-        });
+        quillImageLoad('#description');
 
         const dp1 = datepicker('#task_start_date', {
             position: 'bl',
-            dateSelected: new Date("{{ $task->start_date }}"),
+            dateSelected: new Date("{{ str_replace('-', '/', $task->start_date) }}"),
             onSelect: (instance, date) => {
                 if (typeof dp2.dateSelected !== 'undefined' && dp2.dateSelected.getTime() < date
                     .getTime()) {
@@ -541,7 +518,7 @@ $editTaskPermission = user()->permission('edit_tasks');
 
         const dp2 = datepicker('#due_date', {
             position: 'bl',
-          //  dateSelected: new Date("{{ $task->due_date }}"),
+            dateSelected: new Date("{{ $task->due_date ? str_replace('-', '/', $task->due_date) : str_replace('-', '/', now()) }}"),
             onSelect: (instance, date) => {
                 dp1.setMax(date);
             },

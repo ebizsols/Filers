@@ -21,7 +21,7 @@ class File extends Component
      *
      * @return void
      */
-    public function __construct($fieldId, $fieldValue = null, $fieldName, $fieldLabel, $fieldHelp = null, $fieldRequired = false, $fieldHeight = 100, $popover = null, $allowedFileExtensions = null)
+    public function __construct($fieldId, $fieldName, $fieldLabel,  $fieldValue = null,$fieldHelp = null, $fieldRequired = false, $fieldHeight = 100, $popover = null, $allowedFileExtensions = null)
     {
         $this->fieldLabel = $fieldLabel;
         $this->fieldValue = $fieldValue;

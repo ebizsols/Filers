@@ -24,6 +24,19 @@ return [
         'token' => env('POSTMARK_TOKEN'),
     ],
 
+    'authorize' => [
+        'login' => env('AUTHORIZE_PAYMENT_API_LOGIN_ID'),
+        'transaction' => env('AUTHORIZE_PAYMENT_TRANSACTION_KEY'),
+        'sandbox' => env('AUTHORIZE_SANDBOX', true),
+    ],
+
+    'square' => [
+        'application_id' => env('SQUARE_APPLICATION_ID'),
+        'access_token' => env('SQUARE_ACCESS_TOKEN'),
+        'location_id' => env('SQUARE_ACCESS_TOKEN'),
+        'environment' => env('SQUARE_ENVIRONMENT', 'sandbox'),
+    ],
+
     'ses' => [
         'key' => env('AWS_ACCESS_KEY_ID'),
         'secret' => env('AWS_SECRET_ACCESS_KEY'),

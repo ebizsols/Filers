@@ -146,6 +146,9 @@ $deleteFilePermission = user()->permission('delete_project_files');
             $.easyUnblockUI();
             $('#task-file-list').html(taskView);
         });
+        taskDropzone.on('error', function(file) {
+            console.log(file)
+        });
     }
 
     $('#add-task-file').click(function() {

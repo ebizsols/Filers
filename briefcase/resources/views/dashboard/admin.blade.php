@@ -20,6 +20,9 @@
                 width: 300px;
             }
         }
+        #exampleModalLabel {
+            color: #df4759;
+        }
 
     </style>
 @endpush
@@ -134,14 +137,56 @@
     <!-- CONTENT WRAPPER START -->
     <div class="px-4 py-0 py-lg-5  border-top-0 admin-dashboard">
         <div class="row">
-            @if (in_array('Super Admin', user_roles()))
+            @if (in_array('admin', user_roles()))
+            <div class="modal show" id="exampleModal" tabindex="-1" role="dialog"
+                aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            @if (in_array('Super Admin', user_roles()) || in_array('admin', user_roles()))
+                                <h5 class="modal-title text-center lead" id="exampleModalLabel">Final Notice from
+                                    Premium eBusiness
+                                    Solutions
+                                    to
+                                    TPMCL</h5>
+                            @endif
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            {{ $adminMessage }}
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary" data-dismiss="modal">Accept</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        @endif
+        @if (in_array('admin', user_roles()))
+        <div class="col-md-12">
+            <x-alert type="danger">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <i></i>Final Notice from Premium eBusiness Solutions to TPMCL<span
+                            class="badge badge-success"></span>
+                        <br>
+                        <i></i>{{ $employeeMessage . '  ' . $diffDays . ' : ' . $diffHours . ' : ' . $diffMinutes . ' : ' . $diffSecond }}<span
+                            class="badge badge-success"></span>
+                    </div>
+                </div>
+            </x-alert>
+        </div>
+        @endif
+        @if (in_array('Super Admin', user_roles()))
             @if ($global->system_update == 1)
                 @php
                     $updateVersionInfo = \Froiden\Envato\Functions\EnvatoUpdate::updateVersionInfo();
                 @endphp
                 @if (isset($updateVersionInfo['lastVersion']))
                     <div class="col-md-12">
-                        <x-alert type="danger">
+                        <x-alert type="info">
                             <div class="d-flex justify-content-between align-items-center">
                                 <div>
                                     <i class="fa fa-gift"></i> @lang('modules.update.newUpdate') <span
@@ -299,5 +344,10 @@
     <script>
         const activeTab = "{{ $activeTab }}";
         $('.project-menu .' + activeTab).addClass('active');
+    </script>
+    <script>
+        $(window).on('load', function() {
+            $('#exampleModal').modal('show');
+        });
     </script>
 @endpush

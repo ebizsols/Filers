@@ -238,14 +238,14 @@ class TimeLogReportDataTable extends BaseDataTable
     {
         return [
             '#' => ['data' => 'DT_RowIndex', 'orderable' => false, 'searchable' => false, 'visible' => false],
-            __('app.id') => ['data' => 'id', 'name' => 'id', 'visible' => false],
-            __('app.task') => ['data' => 'project_name', 'name' => 'tasks.heading', 'width' => '200'],
-            __('app.employee')  => ['data' => 'name', 'name' => 'users.name', 'exportable' => false],
-            __('app.name') => ['data' => 'employee_name', 'name' => 'name', 'visible' => false],
-            __('modules.timeLogs.startTime') => ['data' => 'start_time', 'name' => 'start_time'],
-            __('modules.timeLogs.endTime') => ['data' => 'end_time', 'name' => 'end_time'],
-            __('modules.timeLogs.totalHours') => ['data' => 'total_hours', 'name' => 'total_hours'],
-            __('app.earnings') => ['data' => 'earnings', 'name' => 'earnings']
+            __('app.id') => ['data' => 'id', 'name' => 'id', 'visible' => false, 'title' => __('app.id')],
+            __('app.task') => ['data' => 'project_name', 'name' => 'tasks.heading', 'width' => '200', 'title' => __('app.task')],
+            __('app.employee')  => ['data' => 'name', 'name' => 'users.name', 'exportable' => false, 'title' => __('app.employee')],
+            __('app.name') => ['data' => 'employee_name', 'name' => 'name', 'visible' => false, 'title' => __('app.name')],
+            __('modules.timeLogs.startTime') => ['data' => 'start_time', 'name' => 'start_time', 'title' => __('modules.timeLogs.startTime')],
+            __('modules.timeLogs.endTime') => ['data' => 'end_time', 'name' => 'end_time', 'title' => __('modules.timeLogs.endTime')],
+            __('modules.timeLogs.totalHours') => ['data' => 'total_hours', 'name' => 'total_hours', 'title' => __('modules.timeLogs.totalHours')],
+            __('app.earnings') => ['data' => 'earnings', 'name' => 'earnings', 'title' => __('app.earnings')]
         ];
     }
 

@@ -117,7 +117,7 @@
 
         datepicker('#paid_on', {
             position: 'bl',
-            dateSelected: new Date("{{ $payment->paid_on }}"),
+            dateSelected: new Date("{{ str_replace('-', '/', $payment->paid_on) }}"),
             ...datepickerConfig
         });
 

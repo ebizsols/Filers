@@ -87,6 +87,11 @@ return array (
   'paypal' => 'Paypal',
   'stripe' => 'Stripe',
   'razorpay' => 'Razorpay',
+  'paystack' => 'Paystack',
+  'mollie' => 'Mollie',
+  'payfast' => 'Payfast',
+  'authorize' => 'Authorize.net',
+  'square' => 'Square',
   'offline' => 'Offline',
   'menu' => array (
     'home' => 'Home',
@@ -142,6 +147,7 @@ return array (
     'timeSettings' => 'Time Setting',
     'accountSettings' => 'Company Settings',
     'moduleSettings' => 'Module Settings',
+    'moduleSettingsInstall' => 'Module Installation Or Module Updating',
     'contacts' => 'Contacts',
     'paymentGatewayCredential' => 'Payment Credentials',
     'projectTemplateMember' => 'Project Template Member',
@@ -217,6 +223,7 @@ return array (
     'gdprSettings' => 'GDPR Settings',
     'removalRequest' => 'Removal Request (Customer)',
     'removalRequestLead' => 'Removal Request (Lead)',
+    'businessAddresses' => 'Business Address',
   ),
   'language' => 'Language',
   'delete' => 'Delete',
@@ -343,8 +350,9 @@ return array (
   'latitude' => 'Latitude',
   'longitude' => 'Longitude',
   'generateKey' => 'Generate Key',
-  'gstNumber' => 'GST Number',
-  'showGst' => 'Show GST number on invoice?',
+  'gstNumber' => 'GST/VAT Number',
+  'showGst' => 'Show Tax number on invoice',
+  'showTaxCalculationMessage' => 'Show tax calculation message',
   'create' => 'Create',
   'leaveStatus' => 'Leave Status',
   'leaveType' => 'Leave Type',
@@ -353,6 +361,7 @@ return array (
   'enableCache' => 'Enable Cache',
   'copied' => 'Copied',
   'webhook' => 'Webhook URL',
+  'url' => 'URL',
   'hour' => 'Hour(s)',
   'minute' => 'Minute(s)',
   'venue' => 'Venue',
@@ -400,6 +409,39 @@ return array (
     'amountToCredit' => 'Amount To Credit',
     'remainingAmount' => 'Remaining Amount',
     'amountCredited' => 'Amount Credited',
+  ),
+  'onesignal' => array (
+    'actionMessage' => 'We\'d like to show you notifications for the latest news and updates.',
+    'acceptButtonText' => 'ALLOW',
+    'cancelButtonText' => 'NO THANKS',
+    'tip' => array (
+        'state' => array(
+            'unsubscribed' => 'Subscribe to notifications',
+            'subscribed' => 'You\'re subscribed to notifications',
+            'blocked' => 'You\'ve blocked notifications',
+        )
+    ),
+    'message' => array (
+        'prenotify' => 'Click to subscribe to notifications',
+        'action' => array (
+            'subscribed' => 'Thanks for subscribing!',
+            'resubscribed' => 'You\'re subscribed to notifications',
+            'unsubscribed' => 'You won\'t receive notifications again',
+        ),
+    ),
+    'dialog' => array (
+        'main' => array (
+            'title' => 'Manage Site Notifications',
+            'button' => array (
+                'subscribe' => 'SUBSCRIBE',
+                'unsubscribe' => 'UNSUBSCRIBE',
+            ),
+        ),
+        'blocked' => array (
+            'title' => 'Unblock Notifications',
+            'message' => 'Follow these instructions to allow notifications:',
+        ),
+    ),
   ),
   'creditedInvoices' => 'Invoices Credited',
   'appliedCredits' => 'Applied Credits',
@@ -622,6 +664,7 @@ return array (
   'saveLogin' => 'Save and Login',
   'sandbox' => 'Sandbox',
   'live' => 'Live',
+  'production' => 'Production',
   'test' => 'Test',
   'testAws' => 'Test AWS S3 Upload',
   'selectEnvironment' => 'Select Environment',
@@ -672,4 +715,5 @@ return array (
    'verifyUsingEmail' => 'Verify using Email',
    'statistics' => 'Statistics',
    'signUpAsClient' => 'Sign Up as Customer',
+   'dateFilterOn' => 'Date Filter On',
 );

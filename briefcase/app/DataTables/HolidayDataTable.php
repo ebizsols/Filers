@@ -162,9 +162,9 @@ class HolidayDataTable extends BaseDataTable
                 'searchable' => false
             ],
             '#' => ['data' => 'DT_RowIndex', 'orderable' => false, 'searchable' => false, 'visible' => false],
-            __('modules.holiday.date') => ['data' => 'holiday_date', 'name' => 'date'],
-            __('modules.holiday.occasion') => ['data' => 'occasion', 'name' => 'occasion'],
-            __('modules.holiday.day') => ['data' => 'day', 'name' => 'day'],
+            __('modules.holiday.date') => ['data' => 'holiday_date', 'name' => 'date', 'title' => __('modules.holiday.date')],
+            __('modules.holiday.occasion') => ['data' => 'occasion', 'name' => 'occasion', 'title' => __('modules.holiday.occasion')],
+            __('modules.holiday.day') => ['data' => 'day', 'name' => 'day', 'title' => __('modules.holiday.day')],
             Column::computed('action', __('app.action'))
                 ->exportable(false)
                 ->printable(false)

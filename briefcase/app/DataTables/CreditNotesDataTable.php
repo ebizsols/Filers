@@ -64,11 +64,13 @@ class CreditNotesDataTable extends BaseDataTable
                                         ' . trans('app.edit') . '
                                     </a>';
                     }
+
+                    
+                    if (!in_array('client', user_roles())) {
+                        $action .= '<a href="javascript:" data-credit-notes-id="' . $row->id . '" class="credit-notes-upload dropdown-item"><i class="fa fa-upload mr-2"></i> ' . __('app.upload') . ' </a>';
+                    }
                 }
 
-                if (!in_array('client', user_roles())) {
-                    $action .= '<a href="javascript:" data-credit-notes-id="' . $row->id . '" class="credit-notes-upload dropdown-item"><i class="fa fa-upload mr-2"></i> ' . __('app.upload') . ' </a>';
-                }
 
                 if ($firstCreditNotes->id == $row->id) {
                     if ($this->deleteInvoicePermission == 'all' || ($this->deleteInvoicePermission == 'added' && user()->id == $row->added_by)) {
@@ -238,16 +240,16 @@ class CreditNotesDataTable extends BaseDataTable
     protected function getColumns()
     {
         return [
-            __('app.id') => ['data' => 'id', 'name' => 'id', 'visible' => false],
-            __('app.credit-note') => ['data' => 'cn_number', 'name' => 'cn_number', 'exportable' => false],
-            __('app.creditnoteNumber') => ['data' => 'credit_note', 'name' => 'cn_number', 'visible' => false],
-            __('app.invoice')  => ['data' => 'invoice_number', 'name' => 'invoice.invoice_number', 'exportable' => false],
-            __('app.invoiceNumber')  => ['data' => 'invoice', 'name' => 'invoice.invoice_number', 'visible' => false],
-            __('app.name') => ['data' => 'name', 'name' => 'users.name', 'exportable' => false],
-            __('app.customers')  => ['data' => 'client_name', 'users.name' => 'users.name', 'visible' => false],
-            __('modules.credit-notes.total') => ['data' => 'total', 'name' => 'total', 'class' => 'text-right'],
-            __('modules.credit-notes.creditNoteDate') => ['data' => 'issue_date', 'name' => 'issue_date'],
-            __('app.status') => ['data' => 'status', 'name' => 'status'],
+            __('app.id') => ['data' => 'id', 'name' => 'id', 'visible' => false, 'title' => __('app.id')],
+            __('app.credit-note') => ['data' => 'cn_number', 'name' => 'cn_number', 'exportable' => false, 'title' => __('app.credit-note')],
+            __('app.creditnoteNumber') => ['data' => 'credit_note', 'name' => 'cn_number', 'visible' => false, 'title' => __('app.creditnoteNumber')],
+            __('app.invoice')  => ['data' => 'invoice_number', 'name' => 'invoice.invoice_number', 'exportable' => false, 'title' => __('app.invoice')],
+            __('app.invoiceNumber')  => ['data' => 'invoice', 'name' => 'invoice.invoice_number', 'visible' => false, 'title' => __('app.invoiceNumber')],
+            __('app.name') => ['data' => 'name', 'name' => 'users.name', 'exportable' => false, 'title' => __('app.name')],
+            __('app.customers')  => ['data' => 'client_name', 'users.name' => 'users.name', 'visible' => false, 'title' => __('app.customers')],
+            __('modules.credit-notes.total') => ['data' => 'total', 'name' => 'total', 'class' => 'text-right', 'title' => __('modules.credit-notes.total')],
+            __('modules.credit-notes.creditNoteDate') => ['data' => 'issue_date', 'name' => 'issue_date', 'title' => __('modules.credit-notes.creditNoteDate')],
+            __('app.status') => ['data' => 'status', 'name' => 'status', 'title' => __('app.status')],
             Column::computed('action', __('app.action'))
                 ->exportable(false)
                 ->printable(false)

@@ -1,5 +1,5 @@
 @php
-$editAttendancePermission = user()->permission('add_attendance');
+$editAttendancePermission = user()->permission('edit_attendance');
 $deleteAttendancePermission = user()->permission('delete_attendance');
 $manageAttendancePermission = user()->permission('manage_attendance');
 @endphp
@@ -24,7 +24,7 @@ $manageAttendancePermission = user()->permission('manage_attendance');
                             @endisset
                         </h4>
                         <p class="mb-0 f-13 text-dark-grey">
-                            {{ !is_null($user->employeeDetail) && !is_null($user->employeeDetail->designation) ? ucwords($user->employeeDetail->designation->name) : ' ' }}
+                            {{ (!is_null($attendance->user->employeeDetail) && !is_null($attendance->user->employeeDetail->designation)) ? ucwords($attendance->user->employeeDetail->designation->name) : ' ' }}
                         </p>
                     </div>
                 </div>
@@ -107,13 +107,23 @@ $manageAttendancePermission = user()->permission('manage_attendance');
 
                                     <div class="dropdown-menu dropdown-menu-right border-grey rounded b-shadow-4 p-0"
                                         aria-labelledby="dropdownMenuLink" tabindex="0">
-                                        @if ($editAttendancePermission == 'all' || $manageAttendancePermission == 'all' || ($editAttendancePermission == 'added' && $item->added_by == user()->id))
+                                        @if ($editAttendancePermission == 'all' 
+                                        || $manageAttendancePermission == 'all' 
+                                        || ($editAttendancePermission == 'added' && $item->added_by == user()->id)
+                                        || ($editAttendancePermission == 'owned' && $attendance->user->id == user()->id)
+                                        || ($editAttendancePermission == 'both' && ($item->added_by == user()->id || $attendance->user->id == user()->id))
+                                        )
                                             <a class="dropdown-item d-block text-dark-grey f-13 py-3 px-3"
                                                 href="javascript:;" onclick="editAttendance({{ $item->aId }})"
                                                 data-attendance-id="{{ $item->aId }}">@lang('app.edit')</a>
                                         @endif
 
-                                        @if ($deleteAttendancePermission == 'all' || $manageAttendancePermission == 'all' || ($deleteAttendancePermission == 'added' && $item->added_by == user()->id))
+                                        @if ($deleteAttendancePermission == 'all' 
+                                        || $manageAttendancePermission == 'all' 
+                                        || ($deleteAttendancePermission == 'added' && $item->added_by == user()->id)
+                                        || ($deleteAttendancePermission == 'owned' && $attendance->user->id == user()->id)
+                                        || ($deleteAttendancePermission == 'both' && ($item->added_by == user()->id || $attendance->user->id == user()->id))
+                                        )
                                             <a class="cursor-pointer dropdown-item d-block text-dark-grey f-13 pb-3 px-3"
                                                 onclick="deleteAttendance({{ $item->aId }})"
                                                 data-attendance-id="{{ $item->aId }}"

@@ -37,11 +37,14 @@ class UpdateAttendanceSetting extends CoreRequest
             $data['alert_after'] = 'required';
         }
 
-
         $data['office_start_time'] = 'required';
         $data['office_end_time'] = 'required';
         $data['late_mark_duration'] = 'required | integer | min:0';
         $data['clockin_in_day'] = 'required | integer | min:0';
+
+        if($this->has('halfday_mark_time')) {
+            $data['halfday_mark_time'] = 'after:office_start_time';
+        }
 
         return $data;
     }

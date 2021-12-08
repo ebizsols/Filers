@@ -60,6 +60,7 @@ class CustomModuleController extends AccountBaseController
      */
     public function create()
     {
+        $this->pageTitle = 'app.menu.moduleSettingsInstall';
         $this->type = 'custom';
         $this->updateFilePath = config('froiden_envato.tmp_path');
         return view('custom-modules.install', $this->data);
@@ -97,6 +98,9 @@ class CustomModuleController extends AccountBaseController
         if ($validateModule ['status'] == true) {
             // Move files to Modules if modules belongs to this product
             File::moveDirectory(storage_path('app') . '/Modules/' . $moduleName, base_path() . '/Modules/' . $moduleName, true);
+
+            // Delete Modules Directory after moving files
+            File::deleteDirectory(storage_path('app') . '/Modules/');
 
             $this->flushData();
 

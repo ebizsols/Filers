@@ -81,7 +81,8 @@
                 <label class="f-14 text-dark-grey mb-12 text-capitalize" for="usr">@lang('app.status')</label>
                 <div class="select-filter mb-4">
                     <div class="select-others">
-                        <select class="form-control select-picker" name="status" id="status" data-live-search="true" data-container="body" data-size="8">
+                        <select class="form-control select-picker" name="status" id="status" data-live-search="true"
+                            data-container="body" data-size="8">
                             <option value="all">@lang('app.all')</option>
                             <option value="1">@lang('app.approved')</option>
                             <option value="0">@lang('app.pending')</option>
@@ -95,8 +96,8 @@
                 <label class="f-14 text-dark-grey mb-12 text-capitalize" for="usr">@lang('app.invoiceGenerate')</label>
                 <div class="select-filter mb-4">
                     <div class="select-others">
-                        <select class="form-control select-picker" name="invoice_generate" id="invoice_generate" data-container="body"
-                            data-live-search="true" data-size="8">
+                        <select class="form-control select-picker" name="invoice_generate" id="invoice_generate"
+                            data-container="body" data-live-search="true" data-size="8">
                             <option value="all">@lang('app.all')</option>
                             <option value="1">@lang('app.yes')</option>
                             <option value="0">@lang('app.no')</option>
@@ -130,6 +131,10 @@ $addTimelogPermission = user()->permission('add_timelogs');
                     </x-forms.link-primary>
                 @endif
 
+                <x-forms.button-secondary class="mr-3 export-excel float-left" icon="file-export">
+                    @lang('app.exportExcel')
+                </x-forms.button-secondary>
+
             </div>
 
             <div class="btn-group" role="group">
@@ -140,7 +145,8 @@ $addTimelogPermission = user()->permission('add_timelogs');
                     data-original-title="@lang('app.menu.calendar')"><i class="side-icon bi bi-calendar"></i></a>
 
                 <a href="{{ route('timelogs.by_employee') }}" class="btn btn-secondary f-14 btn-active"
-                    data-toggle="tooltip" data-original-title="@lang('app.employee') @lang('app.menu.timeLogs')"><i class="side-icon bi bi-person"></i></i></a>
+                    data-toggle="tooltip" data-original-title="@lang('app.employee') @lang('app.menu.timeLogs')"><i
+                        class="side-icon bi bi-person"></i></i></a>
 
             </div>
         </div>
@@ -160,7 +166,7 @@ $addTimelogPermission = user()->permission('add_timelogs');
     <script>
         const dp1 = datepicker('.date-range-field', {
             position: 'bl',
-            dateSelected: new Date("{{ $startDate }}"),
+            dateSelected: new Date("{{ str_replace('-', '/', $startDate) }}"),
             onSelect: (instance, date) => {
                 $('#reset-filters').removeClass('d-none');
                 dp2.setMin(date);
@@ -171,7 +177,7 @@ $addTimelogPermission = user()->permission('add_timelogs');
 
         const dp2 = datepicker('.date-range-field1', {
             position: 'bl',
-            dateSelected: new Date("{{ $endDate }}"),
+            dateSelected: new Date("{{ str_replace('-', '/', $endDate) }}"),
             onSelect: (instance, date) => {
                 $('#reset-filters').removeClass('d-none');
                 dp1.setMax(date);
@@ -214,8 +220,6 @@ $addTimelogPermission = user()->permission('add_timelogs');
                 }
             });
         }
-
-
 
         $('#project_id, #employee, #search-text-field, #status, #invoice_generate').on('change keyup',
             function() {
@@ -375,8 +379,28 @@ $addTimelogPermission = user()->permission('add_timelogs');
 
         });
 
+        $('.export-excel').click(function() {
+            var startDate = $('#start-date').val();
+
+            if (startDate == '') {
+                startDate = null;
+            }
+
+            var endDate = $('#end-date').val();
+
+            if (endDate == '') {
+                endDate = null;
+            }
+
+            var projectID = $('#project_id').val();
+            var employee = $('#employee').val();
+
+            var token = "{{ csrf_token() }}";
+            var url = "{{ route('timelogs.export') }}";
+
+            window.location = url + '?startDate=' + encodeURIComponent(startDate) + '&endDate=' + encodeURIComponent(endDate) + '&projectID=' + projectID + '&employee=' + employee;
+        });
 
         showTable();
-
     </script>
 @endpush

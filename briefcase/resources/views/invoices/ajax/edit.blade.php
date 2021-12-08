@@ -185,6 +185,23 @@ $addProductPermission = user()->permission('add_product');
                 </div>
             </div>
             <!-- SHIPPING ADDRESS END -->
+
+            <div class="col-md-4">
+                <div class="form-group c-inv-select mb-4">
+                    <x-forms.label fieldId="company_address_id" :fieldLabel="__('modules.invoices.generatedBy')">
+                    </x-forms.label>
+                    <div class="select-others height-35 rounded">
+                        <select class="form-control select-picker" data-live-search="true" data-size="8"
+                            name="company_address_id" id="company_address_id">
+                            @foreach ($companyAddresses as $item)
+                                <option {{ ($item->id == $invoice->company_address_id) ? 'selected' : '' }} value="{{ $item->id }}">
+                                    {{ $item->address }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+            </div>
+
         </div>
         <!-- CLIENT, PROJECT, GST, BILLING, SHIPPING ADDRESS END -->
 
@@ -564,12 +581,12 @@ $addProductPermission = user()->permission('add_product');
 
         const dp1 = datepicker('#invoice_date', {
             position: 'bl',
-            dateSelected: new Date("{{ $invoice->issue_date }}"),
+            dateSelected: new Date("{{ str_replace('-', '/', $invoice->issue_date) }}"),
             ...datepickerConfig
         });
         const dp2 = datepicker('#due_date', {
             position: 'bl',
-            dateSelected: new Date("{{ $invoice->due_date }}"),
+            dateSelected: new Date("{{ str_replace('-', '/', $invoice->due_date) }}"),
             ...datepickerConfig
         });
 

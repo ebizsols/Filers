@@ -18,7 +18,7 @@ class Range extends Component
      *
      * @return void
      */
-    public function __construct($fieldLabel, $fieldValue = null, $fieldName, $fieldId, $fieldHelp = null, $disabled = false)
+    public function __construct($fieldLabel, $fieldName, $fieldId, $fieldValue = null, $fieldHelp = null, $disabled = false)
     {
         $this->fieldLabel = $fieldLabel;
         $this->fieldValue = $fieldValue;

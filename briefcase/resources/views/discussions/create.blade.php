@@ -1,3 +1,6 @@
+<link rel="stylesheet" href="{{ asset('vendor/css/dropzone.min.css') }}">
+
+
 <div class="modal-header">
     <h5 class="modal-title">@lang('app.new') @lang('modules.projects.discussion')</h5>
     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
@@ -34,6 +37,13 @@
                         <textarea name="description"  id="description-text" class="d-none"></textarea>
                     </div>
                 </div>
+                <div class="col-md-12">
+                    <x-forms.file-multiple class="mr-0 mr-lg-2 mr-md-2"
+                        :fieldLabel="__('app.add') . ' ' .__('app.file')" fieldName="file"
+                        fieldId="discussion-file-upload-dropzone" />
+                    <input type="hidden" name="discussion_id" id="discussion_id">
+                    <input type="hidden" name="type" id="discussion">
+                </div>
             </div>
         </x-form>
     </div>
@@ -43,34 +53,45 @@
     <x-forms.button-primary id="save-discussion" icon="check">@lang('app.save')</x-forms.button-primary>
 </div>
 
+<script src="{{ asset('vendor/jquery/dropzone.min.js') }}"></script>
 <script>
-    var quill = new Quill('#description', {
-        modules: {
-            toolbar: [
-                [{
-                    header: [1, 2, 3, 4, 5, false]
-                }],
-                [{
-                    'list': 'ordered'
-                }, {
-                    'list': 'bullet'
-                }],
-                ['bold', 'italic', 'underline', 'strike'],
-                ['image', 'code-block', 'link'],
-                [{
-                    'direction': 'rtl'
-                }],
-                ['clean']
-            ],
-            "emoji-toolbar": true,
-            "emoji-textarea": true,
-            "emoji-shortname": true,
+    quillImageLoad('#description');
+
+    /* Upload images */
+    Dropzone.autoDiscover = false;
+    //Dropzone class
+    taskDropzone = new Dropzone("#discussion-file-upload-dropzone", {
+        dictDefaultMessage: "{{ __('app.dragDrop') }}",
+        url: "{{ route('discussion-files.store') }}",
+        headers: {
+            'X-CSRF-TOKEN': '{{ csrf_token() }}'
         },
-        theme: 'snow'
+        paramName: "file",
+        maxFilesize: 10,
+        maxFiles: 10,
+        autoProcessQueue: false,
+        uploadMultiple: true,
+        addRemoveLinks: true,
+        parallelUploads: 10,
+        acceptedFiles: dropzoneFileAllow,
+        init: function () {
+            taskDropzone = this;
+        }
+    });
+    taskDropzone.on('sending', function (file, xhr, formData) {
+        var ids = $('#discussion_id').val();
+        formData.append('discussion_id', ids);
+        formData.append('type', 'discussion');
+        $.easyBlockUI();
+    });
+    taskDropzone.on('uploadprogress', function () {
+        $.easyBlockUI();
+    });
+    taskDropzone.on('completemultiple', function () {
+        window.location.href = "{{ route('projects.show', $projectId) }}?tab=discussion";
     });
 
-
-    // save discussion
+    // Save discussion
     $('#save-discussion').click(function() {
         var note = document.getElementById('description').children[0].innerHTML;
         document.getElementById('description-text').value = note;
@@ -82,8 +103,14 @@
             blockUI: true,
             data: $('#createMethods').serialize(),
             success: function(response) {
-                if (response.status == "success") {
-                    window.location.reload();
+                if (response.status === 'success') {
+                    if (taskDropzone.getQueuedFiles().length > 0) {
+                        discussion_id = response.discussion_id;
+                        $('#discussion_id').val(response.discussion_id);
+                        taskDropzone.processQueue();
+                    } else {
+                        window.location.href = response.redirectUrl;
+                    }
                 }
             }
         })

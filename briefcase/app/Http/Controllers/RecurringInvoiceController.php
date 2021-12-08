@@ -223,10 +223,10 @@ class RecurringInvoiceController extends AccountBaseController
 
         switch ($tab) {
         case 'invoices':
-                return $this->invoices();
+                return $this->invoices($id);
         default:
             $this->view = 'recurring-invoices.ajax.overview';
-                break;
+            break;
         }
 
 
@@ -438,17 +438,18 @@ class RecurringInvoiceController extends AccountBaseController
         }
     }
 
-    public function invoices()
+    public function invoices($recurringID)
     {
         $dataTable = new RecurringInvoicesDataTable;
         $viewPermission = user()->permission('view_invoices');
         abort_403(!in_array($viewPermission, ['all', 'added']));
 
+        $this->recurringID = $recurringID;
         $tab = request('tab');
         ($tab == '') ? $this->activeTab = 'overview' : $this->activeTab = $tab;
         $this->view = 'recurring-invoices.ajax.invoices';
-        return $dataTable->render('recurring-invoices.show', $this->data);
 
+        return $dataTable->render('recurring-invoices.show', $this->data);
     }
 
 }

@@ -1,5 +1,4 @@
 @php
-dd($notification->data);
 $notificationUser = \App\Models\User::findOrFail($notification->data['user_id']);
 @endphp
 

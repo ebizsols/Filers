@@ -1,10 +1,7 @@
 <?php
 namespace App\Http\Requests\EmployeeDocs;
 
-use App\Holiday;
-use Carbon\Carbon;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Support\Facades\Validator;
 
 /**
  * Class CreateRequest

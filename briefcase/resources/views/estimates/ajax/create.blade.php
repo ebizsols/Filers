@@ -557,7 +557,7 @@ $addProductPermission = user()->permission('add_product');
 
         const dp1 = datepicker('#valid_till', {
             position: 'bl',
-            dateSelected: new Date("{{ \Carbon\Carbon::today()->addDays(30) }}"),
+            dateSelected: new Date("{{ str_replace('-', '/', today()->addDays(30)) }}"),
             ...datepickerConfig
         });
 

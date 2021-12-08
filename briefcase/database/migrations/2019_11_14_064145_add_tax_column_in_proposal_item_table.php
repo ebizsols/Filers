@@ -28,8 +28,8 @@ class AddTaxColumnInProposalItemTable extends Migration
     public function down()
     {
         Schema::table('proposal_items', function (Blueprint $table) {
-            $table->dropForeign(['taxes']);
-            $table->dropForeign(['item_summary']);
+            $table->dropColumn(['taxes']);
+            $table->dropColumn(['item_summary']);
         });
     }
 

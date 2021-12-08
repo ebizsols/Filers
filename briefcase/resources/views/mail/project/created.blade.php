@@ -1,5 +1,5 @@
 @component('mail::message')
-# Project
+# @lang('app.project')
 
 @lang('email.newProject.subject')
 

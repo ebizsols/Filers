@@ -12,6 +12,15 @@
             <x-cards.data-row :label="__('modules.lead.website')" :value="$lead->website ?? '--'" />
 
             <x-cards.data-row :label="__('modules.lead.mobile')" :value="$lead->mobile ?? '--'" />
+            
+            <x-cards.data-row :label="__('modules.client.officePhoneNumber')" :value="$lead->office ?? '--'" />
+            <x-cards.data-row :label="__('app.country')" :value="$lead->country ?? '--'" />
+            
+            <x-cards.data-row :label="__('modules.stripeCustomerAddress.state')" :value="$lead->state ?? '--'" />
+
+            <x-cards.data-row :label="__('modules.stripeCustomerAddress.city')" :value="$lead->city ?? '--'" />
+
+            <x-cards.data-row :label="__('modules.stripeCustomerAddress.postalCode')" :value="$lead->postal_code ?? '--'" />
 
             <x-cards.data-row :label="__('modules.lead.address')" :value="$lead->address ?? '--'" />
 
@@ -40,8 +49,10 @@
                 </div>
             @endif
 
-            <x-cards.data-row :label="__('modules.lead.leadCategory')" :value="$category_name" />
+            <x-cards.data-row :label="__('modules.lead.leadCategory')" :value="$lead->category->category_name ?? '--'" />
 
+            <x-cards.data-row :label="__('app.lead') . ' ' .__('app.value')" :value="$lead->value ?? '--'" />
+           
             <x-cards.data-row :label="__('app.note')" :value="$lead->note" html="true" />
 
             {{-- Custom fields data --}}

@@ -179,9 +179,9 @@ class ProjectTemplatesDataTable extends BaseDataTable
                 'visible' => !in_array('client', user_roles())
             ],
             '#' => ['data' => 'DT_RowIndex', 'orderable' => false, 'searchable' => false, 'visible' => false],
-            __('modules.projects.projectName') => ['data' => 'project_name', 'name' => 'project_name'],
-            __('modules.projects.members')  => ['data' => 'members', 'name' => 'members', 'exportable' => false, 'width' => '25%'],
-            __('modules.projects.projectCategory') => ['data' => 'category_id', 'name' => 'category_id'],
+            __('modules.projects.projectName') => ['data' => 'project_name', 'name' => 'project_name', 'title' => __('modules.projects.projectName')],
+            __('modules.projects.members')  => ['data' => 'members', 'name' => 'members', 'exportable' => false, 'width' => '25%', 'title' => __('modules.projects.members')],
+            __('modules.projects.projectCategory') => ['data' => 'category_id', 'name' => 'category_id', 'title' => __('modules.projects.projectCategory')],
             Column::computed('action', __('app.action'))
                 ->exportable(false)
                 ->printable(false)

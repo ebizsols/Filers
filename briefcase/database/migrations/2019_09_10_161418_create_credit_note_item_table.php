@@ -36,7 +36,7 @@ class CreateCreditNoteItemTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('credit_notes_items');
+        Schema::dropIfExists('credit_note_items');
     }
 
 }

@@ -12,15 +12,25 @@ $approveRejectPermission = user()->permission('approve_or_reject_leaves');
                 <div class="row p-20">
 
                     <div class="col-lg-3 col-md-6">
-                        <x-forms.select fieldId="user_id" :fieldLabel="__('modules.messages.chooseMember')"
-                            fieldName="user_id" search="true">
-                            <option value="">--</option>
-                            @foreach ($employees as $employee)
-                                <option @if ($leave->user_id == $employee->id) selected @endif
-                                    data-content="<div class='d-inline-block mr-1'><img class='taskEmployeeImg rounded-circle' src='{{ $employee->image_url }}' ></div> {{ ucfirst($employee->name) }}"
-                                    value="{{ $employee->id }}">{{ ucfirst($employee->name) }}</option>
-                            @endforeach
-                        </x-forms.select>
+                        @if (isset($defaultAssign))
+                            <x-forms.label class="my-3" fieldId="" :fieldLabel="__('app.name')"
+                                fieldRequired="true">
+                            </x-forms.label>
+                            <input type="hidden" name="user_id" id="user_id" value="{{ $defaultAssign->id }}">
+                            <input type="text" value="{{ $defaultAssign->name }}"
+                                class="form-control height-35 f-15 readonly-background" readonly>
+                        @else
+                            <x-forms.select fieldId="user_id" :fieldLabel="__('modules.messages.chooseMember')"
+                                fieldName="user_id" search="true" fieldRequired="true">
+                                <option value="">--</option>
+                                @foreach ($employees as $employee)
+                                    <option @if (request()->has('default_assign') && request('default_assign') == $employee->id) selected @endif
+                                        @if ($leave->user_id == $employee->id) selected @endif
+                                        data-content="<div class='d-inline-block mr-1'><img class='taskEmployeeImg rounded-circle' src='{{ $employee->image_url }}' ></div> {{ ucfirst($employee->name) }}"
+                                        value="{{ $employee->id }}">{{ ucfirst($employee->name) }}</option>
+                                @endforeach
+                            </x-forms.select>
+                        @endif
                     </div>
 
                     <div class="col-lg-3 col-md-6">
@@ -104,7 +114,7 @@ $approveRejectPermission = user()->permission('approve_or_reject_leaves');
 
         const dp1 = datepicker('#single_date', {
             position: 'bl',
-            dateSelected: new Date("{{ $leave->leave_date }}"),
+            dateSelected: new Date("{{ str_replace('-', '/', $leave->leave_date) }}"),
             ...datepickerConfig
         });
 

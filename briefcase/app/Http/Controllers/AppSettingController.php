@@ -72,6 +72,7 @@ class AppSettingController extends AccountBaseController
 
         $setting->moment_format = $this->momentFormat($setting->date_format);
         $setting->session_driver = $request->session_driver;
+        $setting->allowed_file_types = $request->allowed_file_types;
 
         $setting->allow_client_signup = $request->allow_client_signup == 'on' ? 1 : 0;
         $setting->admin_client_signup_approval = $request->admin_client_signup_approval == 'on' ? 1 : 0;

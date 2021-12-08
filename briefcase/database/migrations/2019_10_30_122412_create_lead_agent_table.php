@@ -49,10 +49,11 @@ class CreateLeadAgentTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('lead_agents');
         Schema::table('leads', function (Blueprint $table) {
+            $table->dropForeign(['agent_id']);
             $table->dropColumn('agent_id');
         });
+        Schema::dropIfExists('lead_agents');
     }
 
 }

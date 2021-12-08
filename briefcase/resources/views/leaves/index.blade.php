@@ -165,8 +165,11 @@ $approveRejectPermission = user()->permission('approve_or_reject_leaves');
                 <a href="{{ route('leaves.index') }}" class="btn btn-secondary f-14 btn-active" data-toggle="tooltip"
                     data-original-title="@lang('modules.leaves.tableView')"><i class="side-icon bi bi-list-ul"></i></a>
 
-                <a href="{{ route('leave.calendar') }}" class="btn btn-secondary f-14" data-toggle="tooltip"
+                <a href="{{ route('leaves.calendar') }}" class="btn btn-secondary f-14" data-toggle="tooltip"
                     data-original-title="@lang('app.menu.calendar')"><i class="side-icon bi bi-calendar"></i></a>
+
+                <a href="{{ route('leaves.personal') }}" class="btn btn-secondary f-14" data-toggle="tooltip"
+                    data-original-title="@lang('modules.leaves.myLeaves')"><i class="side-icon bi bi-person"></i></a>
             </div>
         </div>
 

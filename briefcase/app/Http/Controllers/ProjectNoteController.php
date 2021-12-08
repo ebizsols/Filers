@@ -81,18 +81,21 @@ class ProjectNoteController extends AccountBaseController
     public function show($id)
     {
 
-        $this->note = ProjectNote::find($id);
+        $this->note = ProjectNote::with('project')->find($id);
 
-        $this->noteMembers = $this->note->members->pluck('user_id')->toArray();
-        $this->employees = User::whereIn('id', $this->noteMembers)->get();
+        $memberIds = $this->note->project->members->pluck('user_id')->toArray(); /** @phpstan-ignore-line */
 
         $this->viewPermission = user()->permission('view_projects');
         $viewProjectNotePermission = user()->permission('view_project_note');
+
         abort_403(!(
-            $this->viewPermission == 'all'
-            || ($this->viewPermission == 'added' && $this->payment->added_by == user()->id)
-            || ($viewProjectNotePermission == 'owned' && !is_null($this->payment->project_id) && $this->payment->project->client_id == user()->id)
-            || ($viewProjectNotePermission == 'owned' && !is_null($this->payment->invoice_id) && $this->payment->invoice->client_id == user()->id)
+            $viewProjectNotePermission == 'all'
+            || ($viewProjectNotePermission == 'added' && $this->note->added_by == user()->id)
+            
+            || ($viewProjectNotePermission == 'owned' && $this->note->client_id == user()->id) /* @phpstan-ignore-line */
+            || ($viewProjectNotePermission == 'owned' && in_array(user()->id, $memberIds) && in_array('employee', user_roles()))
+
+            || ($viewProjectNotePermission == 'both' && (user()->id == $this->note->client_id || $this->note->added_by == user()->id || (in_array(user()->id, $memberIds) && in_array('employee', user_roles()))))
         ));
 
         $this->pageTitle = __('app.project') . ' ' . __('app.note');
@@ -102,7 +105,7 @@ class ProjectNoteController extends AccountBaseController
             return Reply::dataOnly(['status' => 'success', 'html' => $html, 'title' => $this->pageTitle]);
         }
 
-        $this->view = 'payments.notes.show';
+        $this->view = 'projects.notes.show';
         return view('payments.create', $this->data);
 
     }
@@ -114,7 +117,7 @@ class ProjectNoteController extends AccountBaseController
         $this->employees = User::allEmployees();
         $this->noteMembers = $this->note->members->pluck('user_id')->toArray();
         $this->projectId = $this->note->project_id;
-        abort_403(!in_array($this->editPermission, ['all', 'added']));
+        abort_403(in_array($this->editPermission, ['none']));
 
         $this->pageTitle = __('app.edit') . ' ' . __('app.project') . ' ' . __('app.note');
         $this->projectId = $id;

@@ -7,7 +7,7 @@
     <x-form id="startTimerForm">
         <div class="row justify-content-between">
             <div class="col" id="task_div">
-                <h4 class="mb-4"><i class="fa fa-clock"></i> {{ now()->timezone($global->timezone)->format($global->time_format) }}</h4>
+                <h4 class="mb-4"><i class="fa fa-clock"></i> {{ now()->timezone($global->timezone)->format($global->date_format . ' ' . $global->time_format) }}</h4>
                 <x-forms.text fieldId="working_from" :fieldLabel="__('modules.attendance.working_from')"
                     fieldName="working_from" :fieldPlaceholder="__('placeholders.attendance.workFrom')"
                     fieldRequired="true">
@@ -56,6 +56,10 @@
         $.easyAjax({
             url: "{{ route('attendances.store_clock_in') }}",
             type: "POST",
+            buttonSelector: "#save-clock-in",
+            disableButton: true,
+            blockUI: true,
+            container: '#startTimerForm',
             data: {
                 working_from: workingFrom,
                 currentLatitude: currentLatitude,

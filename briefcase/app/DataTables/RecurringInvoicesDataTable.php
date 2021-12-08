@@ -79,7 +79,7 @@ class RecurringInvoicesDataTable extends BaseDataTable
 
                 /* Starts here */
 
-                if($row->status != 'canceled' && $row->client->clientDetails && !is_null($row->client->clientDetails->shipping_address))
+                if($row->status != 'canceled' && isset($row->client) && isset($row->client->clientDetails) && !is_null($row->client->clientDetails->shipping_address))
                 {
                     if ($row->show_shipping_address === 'yes') {
                                 $action .= '<a class="dropdown-item" href="javascript:toggleShippingAddress(' . $row->id . ');"><i class="fa fa-eye-slash"></i> ' . __('app.hideShippingAddress') . '</a>';
@@ -89,12 +89,12 @@ class RecurringInvoicesDataTable extends BaseDataTable
                     }
                 }
 
-                if($row->status != 'canceled' && $row->client->clientDetails && is_null($row->client->clientDetails->shipping_address))
+                if($row->status != 'canceled' && isset($row->client) && isset($row->client->clientDetails) && is_null($row->client->clientDetails->shipping_address))
                 {
                     $action .= '<a class="dropdown-item" href="javascript:addShippingAddress(' . $row->id . ');"><i class="fa fa-plus"></i> ' . __('app.addShippingAddress') . '</a>';
                 }
 
-                if($row->status != 'canceled' && !$row->client->clientDetails && $row->project->clientDetails && !is_null($row->project->clientDetails->shipping_address))
+                if($row->status != 'canceled' && isset($row->client) && !$row->client->clientDetails && isset($row->project) && isset($row->project->clientDetails) && !is_null($row->project->clientDetails->shipping_address))
                 {
                     if ($row->show_shipping_address === 'yes') {
                         $action .= '<a class="dropdown-item" href="javascript:toggleShippingAddress(' . $row->id . ');"><i class="fa fa-eye-slash"></i> ' . __('app.hideShippingAddress') . '</a>';
@@ -104,7 +104,7 @@ class RecurringInvoicesDataTable extends BaseDataTable
                     }
                 }
 
-                if($row->status != 'canceled' && !$row->client->clientDetails && $row->project->clientDetails && is_null($row->project->clientDetails->shipping_address))
+                if($row->status != 'canceled' && isset($row->client) && !$row->client->clientDetails && isset($row->project) && isset($row->project->clientDetails) && is_null($row->project->clientDetails->shipping_address))
                 {
                     $action .= '<a class="dropdown-item" href="javascript:addShippingAddress(' . $row->id . ');"><i class="fa fa-plus"></i> ' . __('app.addShippingAddress') . '</a>';
                 }
@@ -286,6 +286,7 @@ class RecurringInvoicesDataTable extends BaseDataTable
         $model = $model->whereHas('project', function ($q) {
             $q->whereNull('deleted_at');
         }, '>=', 0);
+
         return $model;
     }
 
@@ -300,7 +301,6 @@ class RecurringInvoicesDataTable extends BaseDataTable
             ->setTableId('recurring-invoices-table')
             ->columns($this->getColumns())
             ->minifiedAjax()
-            ->dom("<'row'<'col-md-6'l><'col-md-6'Bf>><'row'<'col-sm-12'tr>><'row'<'col-sm-5'i><'col-sm-7'p>>")
             ->orderBy(0)
             ->destroy(true)
             ->responsive(true)
@@ -333,13 +333,13 @@ class RecurringInvoicesDataTable extends BaseDataTable
         $modules = $this->user->modules;
 
         $dsData = [
-            __('app.id') => ['data' => 'id', 'name' => 'id', 'visible' => false],
+            __('app.id') => ['data' => 'id', 'name' => 'id', 'visible' => false, 'title' => __('app.id')],
             '#' => ['data' => 'DT_RowIndex', 'orderable' => false, 'searchable' => false],
-            __('app.invoice') . '#' => ['data' => 'invoice_number', 'name' => 'invoice_number'],
-            __('app.client') => ['data' => 'name', 'name' => 'project.client.name'],
-            __('modules.invoices.total') => ['data' => 'total', 'name' => 'total'],
-            __('modules.invoices.invoiceDate') => ['data' => 'issue_date', 'name' => 'issue_date'],
-            __('app.status') => ['data' => 'status', 'name' => 'status'],
+            __('app.invoice') . '#' => ['data' => 'invoice_number', 'name' => 'invoice_number', 'title' => __('app.invoice')],
+            __('app.client') => ['data' => 'name', 'name' => 'project.client.name', 'title' => __('app.client')],
+            __('modules.invoices.total') => ['data' => 'total', 'name' => 'total', 'title' => __('modules.invoices.total')],
+            __('modules.invoices.invoiceDate') => ['data' => 'issue_date', 'name' => 'issue_date', 'title' => __('modules.invoices.invoiceDate')],
+            __('app.status') => ['data' => 'status', 'name' => 'status', 'title' => __('app.status')],
             Column::computed('action', __('app.action'))
                 ->exportable(false)
                 ->printable(false)

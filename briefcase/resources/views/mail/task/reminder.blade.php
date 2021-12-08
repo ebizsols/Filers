@@ -1,5 +1,5 @@
 @component('mail::message')
-# Task Reminder
+# @lang('email.taskReminder.subject')
 
 @lang('email.reminder.subject')
 

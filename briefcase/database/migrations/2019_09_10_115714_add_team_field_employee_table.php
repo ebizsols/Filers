@@ -41,6 +41,7 @@ class AddTeamFieldEmployeeTable extends Migration
     public function down()
     {
         Schema::table('employee_details', function (Blueprint $table) {
+            $table->dropForeign(['department_id']);
             $table->dropColumn(['department_id']);
         });
     }

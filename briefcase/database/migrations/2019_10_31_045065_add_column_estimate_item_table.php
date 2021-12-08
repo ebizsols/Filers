@@ -35,6 +35,8 @@ class AddColumnEstimateItemTable extends Migration
     {
         Schema::table('estimate_items', function (Blueprint $table) {
             $table->dropColumn('taxes');
+            $table->integer('tax_id')->unsigned()->nullable()->after('amount');
+            $table->foreign('tax_id')->references('id')->on('taxes')->onDelete('cascade')->onUpdate('cascade');
         });
     }
 

@@ -266,13 +266,13 @@ class EstimatesDataTable extends BaseDataTable
     {
         return [
             '#' => ['data' => 'DT_RowIndex', 'orderable' => false, 'searchable' => false, 'visible' => false],
-            __('app.id') => ['data' => 'id', 'name' => 'id'],
-            __('app.estimate') . '#' => ['data' => 'original_estimate_number', 'name' => 'original_estimate_number'],
-            __('app.client')  => ['data' => 'name', 'name' => 'users.name', 'exportable' => false],
-            __('app.customers')  => ['data' => 'client_name', 'name' => 'users.name', 'visible' => false],
-            __('modules.invoices.total') => ['data' => 'total', 'name' => 'total'],
-            __('modules.estimates.validTill') => ['data' => 'valid_till', 'name' => 'valid_till'],
-            __('app.status') => ['data' => 'status', 'name' => 'status'],
+            __('app.id') => ['data' => 'id', 'name' => 'id', 'title' => __('app.id')],
+            __('app.estimate') . '#' => ['data' => 'original_estimate_number', 'name' => 'original_estimate_number', 'title' => __('app.estimate')],
+            __('app.client')  => ['data' => 'name', 'name' => 'users.name', 'exportable' => false, 'title' => __('app.client')],
+            __('app.customers')  => ['data' => 'client_name', 'name' => 'users.name', 'visible' => false, 'title' => __('app.customers')],
+            __('modules.invoices.total') => ['data' => 'total', 'name' => 'total', 'title' => __('modules.invoices.total')],
+            __('modules.estimates.validTill') => ['data' => 'valid_till', 'name' => 'valid_till', 'title' => __('modules.estimates.validTill')],
+            __('app.status') => ['data' => 'status', 'name' => 'status', 'title' => __('app.status')],
             Column::computed('action', __('app.action'))
                 ->exportable(false)
                 ->printable(false)

@@ -1,3 +1,8 @@
+<style>
+    .notification{
+        font-size: 12.5px !important;
+    }
+</style>
 <!-- HEADER START -->
 <header class="main-header clearfix bg-white" id="header">
     <!-- NAVBAR LEFT(MOBILE MENU COLLAPSE) START-->
@@ -11,6 +16,12 @@
                 <div class="mcw-line"></div>
             </div>
         </div>
+        @if (in_array('admin', user_roles()) || in_array('employee', user_roles()))
+        
+        <x-alert class="m-auto notification" type="danger">
+            @php echo  expirationTime(); @endphp<span class="badge badge-success"></span>
+        </x-alert>
+        @endif
 
         @if (in_array('admin', user_roles()) && $checkListCompleted < $checkListTotal && App::environment('codecanyon'))
             <div class="ml-3 d-none d-lg-block d-md-block">
@@ -50,31 +61,34 @@
             <!-- Sticky Note END -->
 
             @if (!in_array('client', user_roles()))
-                <!-- START TIMER -->
-                <li>
-                    <div class="add_box dropdown">
-                        <a class="d-block dropdown-toggle header-icon-box" type="link" id="show-active-timer"
-                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <i class="fa fa-clock f-16 text-dark-grey"></i>
-                            @if ($activeTimerCount > 0)
-                                <span
-                                    class="badge badge-primary active-timer-count position-absolute">{{ $activeTimerCount }}</span>
+
+                @if (in_array('timelogs', $modules) && (add_timelogs_permission() == 'all' || add_timelogs_permission() == 'added'))
+                    <!-- START TIMER -->
+                    <li>
+                        <div class="add_box dropdown">
+                            <a class="d-block dropdown-toggle header-icon-box" type="link" id="show-active-timer"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fa fa-clock f-16 text-dark-grey"></i>
+                                @if ($activeTimerCount > 0)
+                                    <span
+                                        class="badge badge-primary active-timer-count position-absolute">{{ $activeTimerCount }}</span>
+                                @endif
+                            </a>
+                            @if ($activeTimerCount == 0)
+                                <!-- DROPDOWN - INFORMATION -->
+                                <div class="dropdown-menu dropdown-menu-right" id="active-timer-list"
+                                    aria-labelledby="dropdownMenuLink" tabindex="0">
+                                    <a class="dropdown-item text-primary f-w-500" href="javascript:;"
+                                        id="start-timer-modal">
+                                        <i class="fa fa-play mr-2"></i>
+                                        @lang("modules.timeLogs.startTimer")
+                                    </a>
+                                </div>
                             @endif
-                        </a>
-                        @if ($activeTimerCount == 0)
-                            <!-- DROPDOWN - INFORMATION -->
-                            <div class="dropdown-menu dropdown-menu-right" id="active-timer-list"
-                                aria-labelledby="dropdownMenuLink" tabindex="0">
-                                <a class="dropdown-item text-primary f-w-500" href="javascript:;"
-                                    id="start-timer-modal">
-                                    <i class="fa fa-play mr-2"></i>
-                                    @lang("modules.timeLogs.startTimer")
-                                </a>
-                            </div>
-                        @endif
-                    </div>
-                </li>
-                <!-- START TIMER END -->
+                        </div>
+                    </li>
+                    <!-- START TIMER END -->
+                @endif
 
                 <!-- ADD START -->
                 <li>

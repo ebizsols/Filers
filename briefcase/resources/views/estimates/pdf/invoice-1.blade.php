@@ -400,8 +400,17 @@
             {!! nl2br($estimate->note) !!}<br>
         @endif
         {!! nl2br($invoiceSetting->invoice_terms) !!}
-
     </p>
+
+    @if (isset($taxes) && invoice_setting()->tax_calculation_msg == 1 && $estimate->discount > 0)
+    <p class="text-dark-grey">
+        @if (invoice_setting()->calculate_tax == 'after_discount')
+            @lang('messages.calculateTaxAfterDiscount')
+        @else
+            @lang('messages.calculateTaxBeforeDiscount')
+        @endif
+    </p>
+    @endif
 
 </main>
 </body>

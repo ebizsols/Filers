@@ -266,23 +266,23 @@
             font-size: 15px;
             font-weight: bold;
         }
-        #invoice-info {
+        .invoice-info {
             float: left;
             margin: 50px 40px 0 60px;
         }
-        #invoice-info > div > span {
+        .invoice-info > div > span {
             display: inline-block;
             min-width: 20px;
             min-height: 18px;
             margin-bottom: 3px;
         }
-        #invoice-info > div > span:first-child {
+        .invoice-info > div > span:first-child {
             color: black;
         }
-        #invoice-info > div > span:last-child {
+        .invoice-info > div > span:last-child {
             color: #aaa;
         }
-        #invoice-info:after {
+        .invoice-info:after {
             content: '';
             display: block;
             clear: both;
@@ -495,7 +495,7 @@
 
     <div class="clearfix"></div>
     <br>
-    <section id="invoice-info" width="100%">
+    <section class="invoice-info" width="100%">
 
         <div>
             <span>@lang('app.status'):</span>
@@ -508,21 +508,36 @@
 
     </section>
 
+    <div class="clearfix"></div>
+    <br>
     <section id="terms">
-
         <div class="notes">
             @if(!is_null($proposal->note))
                 <br> {!! nl2br($proposal->note) !!}
             @endif
             <br>{!! nl2br($invoiceSetting->invoice_terms) !!}
         </div>
-
     </section>
 
+    @if (isset($taxes) && invoice_setting()->tax_calculation_msg == 1 && $proposal->discount > 0)
     <div class="clearfix"></div>
     <br>
-
-    <div id="invoice-info" width="100%">
+    <section>
+        <div class="invoice-info" width="100%">
+            <p class="text-dark-grey">
+                @if (invoice_setting()->calculate_tax == 'after_discount')
+                    @lang('messages.calculateTaxAfterDiscount')
+                @else
+                    @lang('messages.calculateTaxBeforeDiscount')
+                @endif
+            </p>
+        </div>
+    </section>
+    @endif
+    
+    <div class="clearfix"></div>
+    <br>
+    <div>
         <p>
             @if ($proposal->signature)
                 <h5 style="margin-bottom: 20px;">@lang('app.signature')</h5>

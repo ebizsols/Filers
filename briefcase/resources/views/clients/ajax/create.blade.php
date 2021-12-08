@@ -381,7 +381,7 @@ $addClientSubCategoryPermission = user()->permission('manage_client_subcategory'
                         if ($(MODAL_XL).hasClass('show')) {
                             $(MODAL_XL).hide();
                             window.location.reload();
-                        } else {
+                        } else if(typeof response.redirectUrl !== 'undefined'){
                             window.location.href = response.redirectUrl;
                         }
                     }

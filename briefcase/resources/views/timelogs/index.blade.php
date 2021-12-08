@@ -27,6 +27,7 @@
                     @foreach ($employees as $employee)
                         <option
                             data-content="<div class='d-inline-block mr-1'><img class='taskEmployeeImg rounded-circle' src='{{ $employee->image_url }}' ></div> {{ ucfirst($employee->name) }}"
+                            {{ request('assignee') == 'me' && $employee->id == user()->id ? 'selected' : '' }}
                             value="{{ $employee->id }}">{{ ucfirst($employee->name) }}</option>
                     @endforeach
                 </select>
@@ -66,8 +67,8 @@
                 <label class="f-14 text-dark-grey mb-12 text-capitalize" for="usr">@lang('app.project')</label>
                 <div class="select-filter mb-4">
                     <div class="select-others">
-                        <select class="form-control select-picker" name="project_id" id="project_id" data-live-search="true" data-container="body"
-                            data-size="8">
+                        <select class="form-control select-picker" name="project_id" id="project_id" data-live-search="true"
+                            data-container="body" data-size="8">
                             <option value="all">@lang('app.all')</option>
                             @foreach ($projects as $project)
                                 <option value="{{ $project->id }}">{{ ucwords($project->project_name) }}</option>
@@ -81,8 +82,8 @@
                 <label class="f-14 text-dark-grey mb-12 text-capitalize" for="usr">@lang('app.status')</label>
                 <div class="select-filter mb-4">
                     <div class="select-others">
-                        <select class="form-control select-picker" name="status" id="status" data-live-search="true" data-container="body"
-                            data-size="8">
+                        <select class="form-control select-picker" name="status" id="status" data-live-search="true"
+                            data-container="body" data-size="8">
                             <option value="all">@lang('app.all')</option>
                             <option value="1">@lang('app.approved')</option>
                             <option value="0">@lang('app.pending')</option>
@@ -96,8 +97,8 @@
                 <label class="f-14 text-dark-grey mb-12 text-capitalize" for="usr">@lang('app.invoiceGenerate')</label>
                 <div class="select-filter mb-4">
                     <div class="select-others">
-                        <select class="form-control select-picker" name="invoice_generate" id="invoice_generate" data-container="body"
-                            data-live-search="true" data-size="8">
+                        <select class="form-control select-picker" name="invoice_generate" id="invoice_generate"
+                            data-container="body" data-live-search="true" data-size="8">
                             <option value="all">@lang('app.all')</option>
                             <option value="1">@lang('app.yes')</option>
                             <option value="0">@lang('app.no')</option>
@@ -158,7 +159,8 @@ $addTimelogPermission = user()->permission('add_timelogs');
                     data-original-title="@lang('app.menu.calendar')"><i class="side-icon bi bi-calendar"></i></a>
 
                 <a href="{{ route('timelogs.by_employee') }}" class="btn btn-secondary f-14" data-toggle="tooltip"
-                    data-original-title="@lang('app.employee') @lang('app.menu.timeLogs')"><i class="side-icon bi bi-person"></i></a>
+                    data-original-title="@lang('app.employee') @lang('app.menu.timeLogs')"><i
+                        class="side-icon bi bi-person"></i></a>
             </div>
         </div>
         <!-- Add Task Export Buttons End -->
@@ -181,7 +183,9 @@ $addTimelogPermission = user()->permission('add_timelogs');
         $('#timelogs-table').on('preXhr.dt', function(e, settings, data) {
 
             var dateRangePicker = $('#datatableRange').data('daterangepicker');
-            var startDate = $('#datatableRange').val();
+
+            let startDate = $('#datatableRange').val();
+            let endDate;
 
             if (startDate == '') {
                 startDate = null;
@@ -403,6 +407,17 @@ $addTimelogPermission = user()->permission('add_timelogs');
                 }
             })
         };
-
     </script>
+
+    @if (!is_null(request('start')) && !is_null(request('end')))
+        <script>
+            $(document).ready(function() {
+                $('#datatableRange').data('daterangepicker').setStartDate('{{ request('start') }}')
+                $('#datatableRange').data('daterangepicker').setEndDate('{{ request('end') }}')
+                $('#datatableRange').val('{{ request('start') }}' +
+                    ' @lang("app.to") ' + '{{ request('end') }}');
+                showTable();
+            });
+        </script>
+    @endif
 @endpush

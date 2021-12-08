@@ -1,9 +1,9 @@
 <html lang="en">
+
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title>@lang('app.invoice')</title>
     <style>
-
         .clearfix:after {
             content: "";
             display: table;
@@ -27,7 +27,7 @@
         }
 
         h2 {
-            font-weight:normal;
+            font-weight: normal;
         }
 
         header {
@@ -65,13 +65,11 @@
             margin: 0;
         }
 
-        #invoice {
-
-        }
+        #invoice {}
 
         #invoice h1 {
             color: #0087C3;
-            font-size: 2.4em;
+            font-size: 1.4em;
             line-height: 1em;
             font-weight: normal;
             margin: 0 0 10px 0;
@@ -105,7 +103,8 @@
             text-align: right;
         }
 
-        table td.desc h3, table td.qty h3 {
+        table td.desc h3,
+        table td.qty h3 {
             color: #57B223;
             font-size: 1.2em;
             font-weight: normal;
@@ -135,21 +134,20 @@
 
         table td.unit,
         table td.qty,
-        table td.total
-        {
+        table td.total {
             font-size: 1.2em;
             text-align: center;
         }
 
-        table td.unit{
+        table td.unit {
             width: 35%;
         }
 
-        table td.desc{
+        table td.desc {
             width: 45%;
         }
 
-        table td.qty{
+        table td.qty {
             width: 5%;
         }
 
@@ -167,12 +165,15 @@
         .status.unpaid {
             background-color: #E7505A;
         }
+
         .status.paid {
             background-color: #26C281;
         }
+
         .status.cancelled {
             background-color: #95A5A6;
         }
+
         .status.error {
             background-color: #F4D03F;
         }
@@ -181,14 +182,17 @@
             text-align: right;
             color: #1BA39C;
         }
+
         table tr.discount .desc {
             text-align: right;
             color: #E43A45;
         }
+
         table tr.subtotal .desc {
             text-align: right;
             color: #1d0707;
         }
+
         table tbody tr:last-child td {
             border: none;
         }
@@ -243,185 +247,217 @@
             text-align: left;
         }
 
-        #notes{
+        #notes {
             color: #767676;
             font-size: 11px;
         }
 
-        .item-summary{
+        .item-summary {
             font-size: 12px
         }
 
-        .mb-3{
+        .mb-3 {
             margin-bottom: 1rem;
         }
 
         .logo {
             text-align: right;
         }
+
         .logo img {
             max-width: 33px !important;
         }
-        .page_break { page-break-before: always; }
+
+        .page_break {
+            page-break-before: always;
+        }
 
         .h3-border {
             border-bottom: 1px solid #AAAAAA;
         }
-        table td.text-center
-        {
+
+        table td.text-center {
             text-align: center;
         }
 
     </style>
 </head>
+
 <body>
-<header class="clearfix">
+    <header class="clearfix">
 
-    <table cellpadding="0" cellspacing="0" class="billing">
-        <tr>
-            <td>
-                <div id="invoiced_to">
-                    <small>@lang("modules.invoices.billedTo"):</small>
-                    <div class="mb-3">
-                        <b>{{ ucwords($proposal->lead->client_name) }}</b>
-                        <div>{{ $proposal->lead->company_name }}</div>
+        <table cellpadding="0" cellspacing="0" class="billing">
+            <tr>
+                <td>
+                    <div id="invoiced_to">
+                        <small>@lang("modules.invoices.billedTo"):</small>
+                        <div class="mb-3">
+                            <b>{{ ucwords($proposal->lead->client_name) }}</b>
+                            <div>{{ $proposal->lead->company_name }}</div>
+                        </div>
                     </div>
-                </div>
-            </td>
-            <td>
-                <div id="company">
-                    <div class="logo">
-                        <img src="{{ invoice_setting()->logo_url }}" alt="home" class="dark-logo" />
-                    </div>
-                    <small>@lang("modules.invoices.generatedBy"):</small>
-                    <h3 class="name">{{ ucwords($global->company_name) }}</h3>
-                    @if(!is_null($settings))
-                        <div>{!! nl2br($global->address) !!}</div>
-                        <div>{{ $global->company_phone }}</div>
-                    @endif
-                    @if($invoiceSetting->show_gst == 'yes' && !is_null($invoiceSetting->gst_number))
-                        <div>@lang('app.gstIn'): {{ $invoiceSetting->gst_number }}</div>
-                    @endif
-                </div>
-            </td>
-        </tr>
-    </table>
-</header>
-<main>
-    <div id="details" class="clearfix">
-
-        <div id="invoice">
-            <h1>@lang('modules.lead.proposal')#{{ $proposal->id }}</h1>
-            <div class="">@lang('app.status'): {{ ucwords($proposal->status) }}</div>
-            <div class="">@lang('modules.estimates.validTill'): {{ $proposal->valid_till->format($global->date_format) }}</div>
-        </div>
-
-    </div>
-    <table border="0" cellspacing="0" cellpadding="0">
-        <thead>
-        <tr>
-            <th class="no">#</th>
-            <th class="desc">@lang("modules.invoices.item")</th>
-            @if ($invoiceSetting->hsn_sac_code_show)
-                <th class="qty">@lang("app.hsnSac")</th>
-            @endif
-            <th class="qty">@lang("modules.invoices.qty")</th>
-            <th class="qty">@lang("modules.invoices.unitPrice") ({!! htmlentities($proposal->currency->currency_code)  !!})</th>
-            <th class="unit">@lang("modules.invoices.price") ({!! htmlentities($proposal->currency->currency_code)  !!})</th>
-        </tr>
-        </thead>
-        <tbody>
-        <?php $count = 0; ?>
-        @foreach($proposal->items as $item)
-            @if($item->type == 'item')
-            <tr style="page-break-inside: avoid;">
-                <td class="no">{{ ++$count }}</td>
-                <td class="desc"><h3>{{ ucfirst($item->item_name) }}</h3>
-                    @if(!is_null($item->item_summary))
-                        <p class="item-summary">{{ $item->item_summary }}</p>
-                    @endif
                 </td>
-                @if ($invoiceSetting->hsn_sac_code_show)
-                    <td class="qty"><h3>{{ $item->hsn_sac_code ? $item->hsn_sac_code : '--' }}</h3></td>
+                <td>
+                    <div id="company">
+                        <div class="logo">
+                            <img src="{{ invoice_setting()->logo_url }}" alt="home" class="dark-logo" />
+                        </div>
+                        <small>@lang("modules.invoices.generatedBy"):</small>
+                        <h3 class="name">{{ ucwords($global->company_name) }}</h3>
+                        @if (!is_null($settings))
+                            <div>{!! nl2br($global->address) !!}</div>
+                            <div>{{ $global->company_phone }}</div>
+                        @endif
+                        @if ($invoiceSetting->show_gst == 'yes' && !is_null($invoiceSetting->gst_number))
+                            <div>@lang('app.gstIn'): {{ $invoiceSetting->gst_number }}</div>
+                        @endif
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </header>
+    <main>
+        <div id="details" class="clearfix">
+
+            <div id="invoice">
+                <h1>@lang('modules.lead.proposal')#{{ $proposal->id }}</h1>
+                <div class="">@lang('app.status'): {{ ucwords($proposal->status) }}</div>
+                <div class="">@lang('modules.estimates.validTill'):
+                    {{ $proposal->valid_till->format($global->date_format) }}</div>
+            </div>
+
+        </div>
+        @if ($proposal->description)
+            <div>{!! strip_tags($proposal->description, ['p', 'b', 'strong', 'a']) !!}
+            </div>
+        @endif
+        <table border="0" cellspacing="0" cellpadding="0">
+            <thead>
+                <tr>
+                    <th class="no">#</th>
+                    <th class="desc">@lang("modules.invoices.item")</th>
+                    @if ($invoiceSetting->hsn_sac_code_show)
+                        <th class="qty">@lang("app.hsnSac")</th>
+                    @endif
+                    <th class="qty">@lang("modules.invoices.qty")</th>
+                    <th class="qty">@lang("modules.invoices.unitPrice") ({!! htmlentities($proposal->currency->currency_code) !!})</th>
+                    <th class="unit">@lang("modules.invoices.price") ({!! htmlentities($proposal->currency->currency_code) !!})</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php $count = 0; ?>
+                @foreach ($proposal->items as $item)
+                    @if ($item->type == 'item')
+                        <tr style="page-break-inside: avoid;">
+                            <td class="no">{{ ++$count }}</td>
+                            <td class="desc">
+                                <h3>{{ ucfirst($item->item_name) }}</h3>
+                                @if (!is_null($item->item_summary))
+                                    <p class="item-summary">{{ $item->item_summary }}</p>
+                                @endif
+                            </td>
+                            @if ($invoiceSetting->hsn_sac_code_show)
+                                <td class="qty">
+                                    <h3>{{ $item->hsn_sac_code ? $item->hsn_sac_code : '--' }}</h3>
+                                </td>
+                            @endif
+                            <td class="qty">
+                                <h3>{{ $item->quantity }}</h3>
+                            </td>
+                            <td class="qty">
+                                <h3>{{ number_format((float) $item->unit_price, 2, '.', '') }}</h3>
+                            </td>
+                            <td class="unit">{{ number_format((float) $item->amount, 2, '.', '') }}</td>
+                        </tr>
+                    @endif
+                @endforeach
+                <tr style="page-break-inside: avoid;" class="subtotal">
+                    <td class="no">&nbsp;</td>
+                    <td class="qty">&nbsp;</td>
+                    @if ($invoiceSetting->hsn_sac_code_show)
+                        <td class="qty">&nbsp;</td>
+                    @endif
+                    <td class="qty">&nbsp;</td>
+                    <td class="desc">@lang("modules.invoices.subTotal")</td>
+                    <td class="unit">{{ number_format((float) $proposal->sub_total, 2, '.', '') }}</td>
+                </tr>
+                @if ($discount != 0 && $discount != '')
+                    <tr style="page-break-inside: avoid;" class="discount">
+                        <td class="no">&nbsp;</td>
+                        <td class="qty">&nbsp;</td>
+                        @if ($invoiceSetting->hsn_sac_code_show)
+                            <td class="qty">&nbsp;</td>
+                        @endif
+                        <td class="qty">&nbsp;</td>
+                        <td class="desc">@lang("modules.invoices.discount")</td>
+                        <td class="unit">{{ number_format((float) $discount, 2, '.', '') }}</td>
+                    </tr>
                 @endif
-                <td class="qty"><h3>{{ $item->quantity }}</h3></td>
-                <td class="qty"><h3>{{ number_format((float)$item->unit_price, 2, '.', '') }}</h3></td>
-                <td class="unit">{{ number_format((float)$item->amount, 2, '.', '') }}</td>
-            </tr>
+                @foreach ($taxes as $key => $tax)
+                    <tr style="page-break-inside: avoid;" class="tax">
+                        <td class="no">&nbsp;</td>
+                        <td class="qty">&nbsp;</td>
+                        @if ($invoiceSetting->hsn_sac_code_show)
+                            <td class="qty">&nbsp;</td>
+                        @endif
+                        <td class="qty">&nbsp;</td>
+                        <td class="desc">{{ strtoupper($key) }}</td>
+                        <td class="unit">{{ number_format((float) $tax, 2, '.', '') }}</td>
+                    </tr>
+                @endforeach
+            </tbody>
+            <tfoot>
+                <tr dontbreak="true">
+                    <td colspan="{{ $invoiceSetting->hsn_sac_code_show ? '5' : '4' }}">
+                        @lang("modules.invoices.subTotal")</td>
+                    <td style="text-align: center">{{ number_format((float) $proposal->sub_total, 2, '.', '') }}</td>
+                </tr>
+                <tr dontbreak="true">
+                    <td colspan="{{ $invoiceSetting->hsn_sac_code_show ? '5' : '4' }}">
+                        @lang("modules.invoices.discount")</td>
+                    <td style="text-align: center">{{ number_format((float) $discount, 2, '.', '') }}</td>
+                </tr>
+                <tr dontbreak="true">
+                    <td colspan="{{ $invoiceSetting->hsn_sac_code_show ? '5' : '4' }}">
+                        @lang("modules.invoices.total")</td>
+                    <td style="text-align: center">{{ number_format((float) $proposal->total, 2, '.', '') }}</td>
+                </tr>
+            </tfoot>
+        </table>
+        <p>&nbsp;</p>
+        <hr>
+        <p id="notes" class="d-flex justify-content-between">
+        </p>
+
+        <div width="100%">
+            <p style="text-align: left; width:50%; float: left;"><br />
+                @lang('app.note')<br>
+                {!! nl2br($proposal->note) !!}
+            </p>
+            <p style="text-align: right; width: 50%; float: left">
+                @lang('modules.invoiceSettings.invoiceTerms')<br>
+                {!! nl2br($invoiceSetting->invoice_terms) !!}
+            </p>
+        </div>
+        @if (isset($taxes) && invoice_setting()->tax_calculation_msg == 1 && $proposal->discount > 0)
+        <div width="100%">
+           <p class="text-dark-grey">
+                @if (invoice_setting()->calculate_tax == 'after_discount')
+                    @lang('messages.calculateTaxAfterDiscount')
+                @else
+                    @lang('messages.calculateTaxBeforeDiscount')
+                @endif
+            </p>
+        </div>
+        @endif
+        <p>
+            @if ($proposal->signature)
+                <h5 style="margin-bottom: 20px;">@lang('app.signature')</h5>
+                <img src="{{ $proposal->signature->signature }}" style="width: 200px;">
+                <p>({{ $proposal->signature->full_name }})</p>
             @endif
-        @endforeach
-        <tr style="page-break-inside: avoid;" class="subtotal">
-            <td class="no">&nbsp;</td>
-            <td class="qty">&nbsp;</td>
-            <td class="qty">&nbsp;</td>
-            <td class="qty">&nbsp;</td>
-            <td class="desc">@lang("modules.invoices.subTotal")</td>
-            <td class="unit">{{ number_format((float)$proposal->sub_total, 2, '.', '') }}</td>
-        </tr>
-        @if($discount != 0 && $discount != '')
-        <tr style="page-break-inside: avoid;" class="discount">
-            <td class="no">&nbsp;</td>
-            <td class="qty">&nbsp;</td>
-            <td class="qty">&nbsp;</td>
-            <td class="qty">&nbsp;</td>
-            <td class="desc">@lang("modules.invoices.discount")</td>
-            <td class="unit">{{ number_format((float)$discount, 2, '.', '') }}</td>
-        </tr>
-        @endif
-        @foreach($taxes as $key=>$tax)
-            <tr style="page-break-inside: avoid;" class="tax">
-                <td class="no">&nbsp;</td>
-                <td class="qty">&nbsp;</td>
-                <td class="qty">&nbsp;</td>
-                <td class="qty">&nbsp;</td>
-                <td class="desc">{{ strtoupper($key) }}</td>
-                <td class="unit">{{ number_format((float)$tax, 2, '.', '') }}</td>
-            </tr>
-        @endforeach
-        </tbody>
-        <tfoot>
-            <tr dontbreak="true">
-                <td colspan="5">@lang("modules.invoices.subTotal")</td>
-                <td style="text-align: center">{{ number_format((float) $proposal->sub_total, 2, '.', '') }}</td>
-            </tr>
-            <tr dontbreak="true">
-                <td colspan="5">@lang("modules.invoices.discount")</td>
-                <td style="text-align: center">{{ number_format((float) $discount, 2, '.', '') }}</td>
-            </tr>
-            <tr dontbreak="true">
-                <td colspan="5">@lang("modules.invoices.total")</td>
-                <td style="text-align: center">{{ number_format((float) $proposal->total, 2, '.', '') }}</td>
-            </tr>
-        </tfoot>
-    </table>
-    <p>&nbsp;</p>
-    <hr>
-    <p id="notes" class="d-flex justify-content-between">
-        {{-- @if(!is_null($proposal->note))
-            {!! nl2br($proposal->note) !!}<br>
-        @endif
-        {!! nl2br($invoiceSetting->invoice_terms) !!} --}}
-
-
-    </p>
-
-    <div width="100%">
-        <p style="text-align: left; width:50%; float: left;"><br />
-            @lang('app.note')<br>
-            {!! nl2br($proposal->note) !!}
         </p>
-        <p style="text-align: right; width: 50%; float: left">
-            @lang('modules.invoiceSettings.invoiceTerms')<br>
-            {!! nl2br($invoiceSetting->invoice_terms) !!}
-        </p>
-    </div>
-    <p>
-        @if ($proposal->signature)
-            <h5 style="margin-bottom: 20px;">@lang('app.signature')</h5>
-            <img src="{{ $proposal->signature->signature }}" style="width: 200px;">
-            <p>({{ $proposal->signature->full_name }})</p>
-        @endif
-    </p>
-</main>
+    </main>
 </body>
+
 </html>

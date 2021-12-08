@@ -20,7 +20,7 @@ class TestPush extends Notification implements ShouldQueue
      * @param  mixed  $notifiable
      * @return array
      */
-    // phpcs:ignore    
+    // phpcs:ignore
     public function via($notifiable)
     {
         return [OneSignalChannel::class];
@@ -32,13 +32,13 @@ class TestPush extends Notification implements ShouldQueue
      * @param  mixed  $notifiable
      * @return \Illuminate\Notifications\Messages\MailMessage
      */
-    // phpcs:ignore    
+    // phpcs:ignore
     public function toMail($notifiable)
     {
         return (new MailMessage)
-            ->line('The introduction to the notification.')
-            ->action('Notification Action', url('/'))
-            ->line('Thank you for using our application!');
+            ->line(__('email.notificationIntro'))
+            ->action(__('email.notificationAction'), url('/'))
+            ->line(__('email.thankyouNote'));
     }
 
     /**
@@ -55,7 +55,7 @@ class TestPush extends Notification implements ShouldQueue
         ];
     }
 
-    // phpcs:ignore    
+    // phpcs:ignore
     public function toOneSignal($notifiable)
     {
         return OneSignalMessage::create()

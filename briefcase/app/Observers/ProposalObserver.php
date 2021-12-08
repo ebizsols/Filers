@@ -61,6 +61,11 @@ class ProposalObserver
 
                 endforeach;
             }
+
+            if (request()->type == 'send') {
+                $type = 'new';
+                event(new NewProposalEvent($proposal, $type));
+            }
         }
     }
 

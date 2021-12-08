@@ -274,15 +274,18 @@
                         </tr>
                     </table>
                 </td>
-
-
             </tr>
             <!-- Table Row End -->
-            <!-- Table Row Start -->
-            <tr>
-                <td height="30" colspan="2"></td>
-            </tr>
-            <!-- Table Row End -->
+            @if ($proposal->description)
+                <!-- Table Row Start -->
+                <tr>
+                    <td height="10"></td>
+                </tr>
+                <!-- Table Row End -->
+                <tr>
+                    <td colspan="2" class="f-14 line-height"> {!! strip_tags($proposal->description, ['p', 'b', 'strong', 'a']) !!}</td>
+                </tr>
+            @endif
             <!-- Table Row Start -->
             <tr>
                 <td colspan="2">
@@ -316,7 +319,8 @@
                                 @if ($item->item_summary != '')
                                     <!-- Table Row Start -->
                                     <tr class="main-table-items text-black f-13">
-                                        <td colspan="{{ $invoiceSetting->hsn_sac_code_show ? '5' : '4' }}">{{ $item->item_summary }}</td>
+                                        <td colspan="{{ $invoiceSetting->hsn_sac_code_show ? '5' : '4' }}">
+                                            {{ $item->item_summary }}</td>
                                     </tr>
                                     <!-- Table Row End -->
                                 @endif
@@ -337,7 +341,8 @@
                                     @if ($discount != 0 && $discount != '')
                                         <!-- Table Row Start -->
                                         <tr align="right" class="text-grey">
-                                            <td width="50%" class="subtotal">@lang("modules.invoices.discount")</td>
+                                            <td width="50%" class="subtotal">@lang("modules.invoices.discount")
+                                            </td>
                                             <td class="subtotal-amt">
                                                 {{ number_format((float) $discount, 2, '.', '') }}</td>
                                         </tr>
@@ -376,7 +381,8 @@
             <!-- Table Row Start -->
             <tr>
                 <td width="50%" class="f-14">@lang('app.note')</td>
-                <td width="50%" style="text-align: right" class="f-14">@lang('modules.invoiceSettings.invoiceTerms')</td>
+                <td width="50%" style="text-align: right" class="f-14">
+                    @lang('modules.invoiceSettings.invoiceTerms')</td>
             </tr>
             <!-- Table Row End -->
             <!-- Table Row Start -->
@@ -385,6 +391,21 @@
                 <td width="50%" style="text-align: right" class="f-14 line-height">{!! nl2br($invoiceSetting->invoice_terms) !!}</td>
             </tr>
             <!-- Table Row End -->
+            @if (isset($taxes) && invoice_setting()->tax_calculation_msg == 1 && $proposal->discount > 0)
+                <!-- Table Row Start -->
+                <tr class="text-grey">
+                    <td width="100%" class="f-14 line-height">
+                        <p class="text-dark-grey">
+                            @if (invoice_setting()->calculate_tax == 'after_discount')
+                                @lang('messages.calculateTaxAfterDiscount')
+                            @else
+                                @lang('messages.calculateTaxBeforeDiscount')
+                            @endif
+                        </p>
+                    </td>
+                </tr>
+                <!-- Table Row End -->
+            @endif
             <!-- Table Row End -->
             <!-- Table Row Start -->
             <tr class="text-grey">

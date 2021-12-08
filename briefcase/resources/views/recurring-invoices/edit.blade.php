@@ -583,12 +583,12 @@ $addProductPermission = user()->permission('add_product');
 
         const dp1 = datepicker('#invoice_date', {
             position: 'bl',
-            dateSelected: new Date("{{ $invoice->issue_date }}"),
+            dateSelected: new Date("{{ str_replace('-', '/', $invoice->issue_date) }}"),
             ...datepickerConfig
         });
         const dp2 = datepicker('#due_date', {
             position: 'bl',
-            dateSelected: new Date("{{ $invoice->due_date }}"),
+            dateSelected: new Date("{{ str_replace('-', '/', $invoice->due_date) }}"),
             ...datepickerConfig
         });
 

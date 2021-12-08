@@ -5,6 +5,7 @@ namespace App\Console;
 use App\Console\Commands\AddMenu;
 use App\Console\Commands\AutoCreateRecurringExpenses;
 use App\Console\Commands\AutoCreateRecurringInvoices;
+use App\Console\Commands\AutoCreateRecurringTasks;
 use App\Console\Commands\AutoStopTimer;
 use App\Console\Commands\ClearNullSessions;
 use App\Console\Commands\CreateTranslations;
@@ -40,7 +41,8 @@ class Kernel extends ConsoleKernel
         ClearNullSessions::class,
         SendInvoiceReminder::class,
         RemoveSeenNotification::class,
-        SendAttendanceReminder::class
+        SendAttendanceReminder::class,
+        AutoCreateRecurringTasks::class
 
     ];
 
@@ -53,7 +55,7 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $schedule->command('update-exchange-rate')->daily();
-        $schedule->command('auto-stop-timer')->daily();
+        $schedule->command('auto-stop-timer')->dailyAt('23:59');
         $schedule->command('send-event-reminder')->everyMinute();
         $schedule->command('send-project-reminder')->daily();
         $schedule->command('hide-cron-message')->everyMinute();
@@ -65,6 +67,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('queue:work --tries=3 --stop-when-empty')->withoutOverlapping();
         $schedule->command('delete-seen-notification')->daily();
         $schedule->command('send-attendance-reminder')->everyMinute();
+        $schedule->command('recurring-task-create')->daily();
 
 
     }

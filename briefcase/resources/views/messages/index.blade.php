@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+<link rel="stylesheet" href="{{ asset('vendor/css/dropzone.min.css') }}">
+
 @push('styles')
     <style>
         .message-action {
@@ -22,9 +24,9 @@
 
         <!-- MESSAGE HEADER END -->
         <!-- MESSAGE CONTENT START -->
-        <div class="w-100">
+        <div class="w-100 d-lg-flex d-md-flex d-block">
             <!-- MESSAGE CONTENT LEFT START -->
-            <div class="msg-content-left border-top-0 ">
+            <div class="msg-content-left border-top-0 border-bottom-0">
                 <div class="msg-header d-flex align-items-center">
                     <div class="msg-header-left d-flex justify-content-between">
 
@@ -50,7 +52,7 @@
                 </div>
                 <!-- This msgLeft id is for scroll plugin -->
                 <div data-menu-vertical="1" data-menu-scroll="1" data-menu-dropdown-timeout="500" id="msgLeft"
-                    class="nav nav-tabs" role="tablist">
+                    class="nav nav-tabs border-bottom-0" role="tablist">
                     @include('messages.user_list')
                 </div>
 
@@ -93,18 +95,42 @@
 
                 <!-- SEND MESSAGE START -->
 
-                <x-form id="sendMessageForm" class="d-none">
+                <x-form id="sendMessageForm" class="d-none mb-0">
                     <input type="hidden" name="user_id" id="current_user_id">
                     <div class="w-100">
                         <textarea id="submitTexts" name="message"
-                            class="form-control rounded-0 f-14 p-3 border-left-0 border-right-0" rows="3"
+                            class="form-control rounded-0 f-14 p-3 border-left-0 border-right-0 border-bottom-0" rows="3"
                             placeholder="@lang('placeholders.message')"></textarea>
+
+                        <div class="w-100 justify-content-start attach-send bg-white">
+                            <a class="f-15 f-w-500" href="javascript:;" id="add-file"><i
+                                    class="fa fa-paperclip font-weight-bold mr-1"></i>@lang('modules.projects.uploadFile')</a>
+                        </div>
                     </div>
-                    <div class="w-100 d-block d-lg-flex d-md-flex justify-content-start attach-send bg-white">
-                        <x-forms.button-primary id="sendMessge" class="mr-1" icon="location-arrow">
-                            @lang('modules.messages.send')
-                        </x-forms.button-primary>
+
+                    <div class="col-md-12 d-none file-container">
+                        <x-forms.file-multiple class="mr-0 mr-lg-2 mr-md-2"
+                            :fieldLabel="__('app.add') . ' ' .__('app.file')" fieldName="file"
+                            fieldId="file-upload-dropzone" />
+                        <input type="hidden" name="message_id" id="messageId">
+                        <input type="hidden" name="type" id="message">
+
+                        {{-- These inputs fields are used for file attchment --}}
+                        <input type="hidden" name="user_list" id="user_list">
+                        <input type="hidden" name="message_list" id="message_list">
+                        <input type="hidden" name="receiver_id" id="receiver_id">
                     </div>
+
+                    <div class="col-md-12 border-top-grey p-0">
+                        <div class="w-100 justify-content-start attach-send bg-white">
+                            <x-forms.button-primary id="sendMessage" class="mr-1" icon="location-arrow">
+                                @lang('modules.messages.send')
+                            </x-forms.button-primary>
+                        </div>
+
+                    </div>
+
+
                 </x-form>
                 <!-- SEND MESSAGE END -->
 
@@ -117,7 +143,95 @@
 @endsection
 
 @push('scripts')
+
+    <script src="{{ asset('vendor/jquery/dropzone.min.js') }}"></script>
+
     <script>
+
+        /* Upload images */
+        Dropzone.autoDiscover = false;
+
+        //Dropzone class
+        taskDropzone = new Dropzone("#file-upload-dropzone", {
+            dictDefaultMessage: "{{ __('app.dragDrop') }}",
+            url: "{{ route('message-file.store') }}",
+            headers: {
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            },
+            paramName: "file",
+            maxFilesize: 10,
+            maxFiles: 10,
+            autoProcessQueue: false,
+            uploadMultiple: true,
+            addRemoveLinks: true,
+            parallelUploads: 10,
+            acceptedFiles: dropzoneFileAllow,
+            init: function () {
+                taskDropzone = this;
+                this.on("success", function(file, response) {
+                    console.log(response);
+                    $('#chatBox').html(response.message_list);
+                    showContent();
+                    $.easyUnblockUI();
+                    taskDropzone.removeAllFiles(true);
+                })
+            }
+        });
+
+        taskDropzone.on('sending', function (file, xhr, formData) {
+            var ids = $('#messageId').val();
+            formData.append('message_id', ids);
+            formData.append('type', 'message');
+            formData.append('receiver_id', $('#receiver_id').val());
+            $.easyBlockUI();
+        });
+
+        taskDropzone.on('uploadprogress', function () {
+            $.easyBlockUI();
+        });
+
+        // Submitting message
+        $('body').on('click', '#sendMessage', function(e) {
+            //getting values by input fields
+            var url = "{{ route('messages.store') }}";
+
+            $.easyAjax({
+                url: url,
+                container: '#sendMessageForm',
+                type: "POST",
+                disableButton: true,
+                blockUI: true,
+                buttonSelector: "#sendMessage",
+                data: $('#sendMessageForm').serialize(),
+                success: function(response) {
+
+                    $('#user_list').val(response.user_list);
+                    $('#message_list').val(response.message_list);
+                    $('#receiver_id').val(response.receiver_id);
+
+                    if (taskDropzone.getQueuedFiles().length > 0) {
+                        messageId = response.message_id;
+                        $('#messageId').val(response.message_id);
+                        taskDropzone.processQueue();
+                    } else {
+                        showContent();
+                    }
+                }
+            });
+
+            return false;
+        });
+
+        function showContent() {
+            $('#submitTexts').val('');
+            $('#sendMessageForm').removeClass('d-none');
+            scrollChat();
+            $('#msgContentRight').addClass('d-block');
+            $('.file-container').addClass('d-none');
+
+            fetchUserMessages();
+        }
+
         $('#new-chat, #new-chat-mbl').click(function() {
             const url = "{{ route('messages.create') }}";
             $(MODAL_LG + ' ' + MODAL_HEADING).html('...');
@@ -137,13 +251,17 @@
                 },
                 success: function(response) {
                     if (response.status == "success") {
-                        $('#msgLeft').html(response.userList);
+                        $('#msgLeft').html(response.user_list);
                         $('#current_user_id').val('');
                         $('#chatBox').html('');
                         $('#sendMessageForm').addClass('d-none');
                     }
                 }
             });
+        });
+
+        $('body').on('click', '#add-file', function() {
+            $('.file-container').toggleClass('d-none');
         });
 
         $('body').on('click', '.show-user-messages', function() {
@@ -180,36 +298,9 @@
             if (key == 13 && !e.shiftKey) // the enter key code
             {
                 e.preventDefault();
-                $('#sendMessge').click();
+                $('#sendMessage').click();
                 return false;
             }
-        });
-
-        // Submitting message
-        $('body').on('click', '#sendMessge', function(e) {
-            //getting values by input fields
-            var url = "{{ route('messages.store') }}";
-
-            $.easyAjax({
-                url: url,
-                container: '#sendMessageForm',
-                type: "POST",
-                disableButton: true,
-                blockUI: true,
-                buttonSelector: "#sendMessge",
-                data: $('#sendMessageForm').serialize(),
-                success: function(response) {
-                    $('#submitTexts').val('');
-
-                    $('#msgLeft').html(response.userList);
-                    $('#chatBox').html(response.messageList);
-                    $('#sendMessageForm').removeClass('d-none');
-                    scrollChat();
-                    $('#msgContentRight').addClass('d-block');
-                }
-            });
-
-            return false;
         });
 
         function scrollChat(params) {
@@ -275,7 +366,7 @@
                     '_token': token,
                 },
                 success: function(response) {
-                    $('#chatBox').html(response.messageList);
+                    $('#chatBox').html(response.message_list);
                     scrollChat();
                     $('#msgContentRight').addClass('d-block');
                 }

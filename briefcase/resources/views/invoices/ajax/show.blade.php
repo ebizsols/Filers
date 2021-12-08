@@ -60,11 +60,11 @@ $editInvoicePermission = user()->permission('edit_invoices');
                         <p class="mt-3 mb-0">
                             {{ ucwords($global->company_name) }}<br>
                             @if (!is_null($settings))
-                                {!! nl2br($global->address) !!}<br>
+                                {!! nl2br($invoice->address->address) !!}<br>
                                 {{ $global->company_phone }}
                             @endif
-                            @if ($invoiceSetting->show_gst == 'yes' && !is_null($invoiceSetting->gst_number))
-                                <br>@lang('app.gstIn'): {{ $invoiceSetting->gst_number }}
+                            @if ($invoiceSetting->show_gst == 'yes')
+                                <br>{{ $invoice->address->tax_name }}: {{ $invoice->address->tax_number }}
                             @endif
                         </p><br>
                     </td>
@@ -104,9 +104,14 @@ $editInvoicePermission = user()->permission('edit_invoices');
                     <td class="f-14 text-dark">
                         <p class="mb-0 text-left"><span
                                 class="text-dark-grey text-capitalize">@lang("modules.invoices.billedTo")</span><br>
-                            {{ ucwords($invoice->client->name) }}<br>
+                            {{ $invoice->client ? ucwords($invoice->client->name).'<br>' : '' }}
                             {{ ucwords($client->clientDetails->company_name) }}<br>
-                            {!! nl2br($client->clientDetails->address) !!}</p>
+                            {!! nl2br($client->clientDetails->address) !!}
+                            @if ($invoiceSetting->show_gst == 'yes' && !is_null($client->clientDetails->gst_number))
+                            <br>@lang('app.gstIn'):
+                                    {{ $client->clientDetails->gst_number }}
+                            @endif
+                        </p>
                     </td>
                     @if ($invoice->show_shipping_address == 'yes')
                         <td class="f-14 text-black">
@@ -321,6 +326,26 @@ $editInvoicePermission = user()->permission('edit_invoices');
                         </table>
                     </td>
                 </tr>
+                <tr>
+                    <td>
+                        <table>
+                            <tr>
+                                @if (isset($taxes) && invoice_setting()->tax_calculation_msg == 1 && $invoice->discount > 0)
+                                    <p class="text-dark-grey">
+                                        @if (invoice_setting()->calculate_tax == 'after_discount')
+                                            @lang('messages.calculateTaxAfterDiscount')
+                                        @else
+                                            @lang('messages.calculateTaxBeforeDiscount')
+                                        @endif
+                                    </p>
+                                @endif
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+
+
+
             </table>
         </div>
     </div>
@@ -339,24 +364,27 @@ $editInvoicePermission = user()->permission('edit_invoices');
 
                     @if ($invoice->status == 'paid' && !in_array('client', user_roles()) && $invoice->amountPaid() == 0)
                         <li>
-                            <a class="dropdown-item f-14 text-dark openRightModal"
+                            <a class="dropdown-item f-14 text-dark"
                                 href="{{ route('invoices.edit', [$invoice->id]) }}">
                                 <i class="fa fa-edit f-w-500 mr-2 f-11"></i> @lang('app.edit')
                             </a>
                         </li>
                     @endif
 
-                    @if($invoice->status != 'paid' &&
-                            $invoice->status != 'canceled' &&
-                            is_null($invoice->invoice_recurring_id) &&
+                    @if(
+                        $invoice->status != 'paid' &&
+                        $invoice->status != 'canceled' &&
+                        is_null($invoice->invoice_recurring_id) &&
+                        (
                             $editInvoicePermission == 'all' ||
                             ($editInvoicePermission == 'added' && $invoice->added_by == user()->id) ||
                             ($editInvoicePermission == 'owned' && $invoice->client_id == user()->id) ||
                             ($editInvoicePermission == 'both' && ($invoice->client_id == user()->id ||
                             $invoice->added_by == user()->id))
                         )
+                    )
                         <li>
-                            <a class="dropdown-item f-14 text-dark openRightModal"
+                            <a class="dropdown-item f-14 text-dark"
                                 href="{{ route('invoices.edit', [$invoice->id]) }}">
                                 <i class="fa fa-edit f-w-500 mr-2 f-11"></i> @lang('app.edit')
                             </a>
@@ -372,15 +400,6 @@ $editInvoicePermission = user()->permission('edit_invoices');
                         </li>
                     @endif
 
-                    @if ($firstInvoice->id != $invoice->id && ($invoice->status == 'unpaid' || $invoice->status == 'draft') && !in_array('client', user_roles()))
-                        <li>
-                            <a class="dropdown-item f-14 text-dark cancel-invoice"
-                                href="javascript:;" data-invoice-id="{{ $invoice->id }}">
-                                <i class="fa fa-times f-w-500 mr-2 f-11"></i> @lang('app.cancel')
-                            </a>
-                        </li>
-                    @endif
-
                     <li>
                         <a class="dropdown-item f-14 text-dark"
                             href="{{ route('invoices.download', [$invoice->id]) }}">
@@ -389,12 +408,6 @@ $editInvoicePermission = user()->permission('edit_invoices');
                     </li>
 
                     @if ($invoice->status != 'canceled' && $invoice->status != 'paid' && !$invoice->credit_note && !in_array('client', user_roles()))
-                        <li>
-                            <a class="dropdown-item f-14 text-dark" href="{{ route('invoices.edit', $invoice->id) }}"
-                                data-invoice-id="{{ $invoice->id }}">
-                                <i class="fa fa-edit f-w-500 mr-2 f-11"></i> @lang('app.edit')
-                            </a>
-                        </li>
                         <li>
                             <a class="dropdown-item f-14 text-dark sendButton" href="javascript:;"
                                 data-invoice-id="{{ $invoice->id }}">
@@ -515,7 +528,7 @@ $editInvoicePermission = user()->permission('edit_invoices');
             </div>
 
             {{-- PAYMENT GATEWAY --}}
-            @if (in_array('client', user_roles()) && $invoice->total > 0 && ($invoice->status == 'unpaid' || $invoice->status == 'partial') && ($credentials->paypal_status == 'active' || $credentials->stripe_status == 'active' || $credentials->razorpay_status == 'active' || $methods->count() > 0))
+            @if (in_array('client', user_roles()) && $invoice->total > 0 && ($invoice->status == 'unpaid' || $invoice->status == 'partial') && ($credentials->paypal_status == 'active' || $credentials->stripe_status == 'active' || $credentials->paystack_status == 'active'|| $credentials->mollie_status == 'active' || $credentials->razorpay_status == 'active' || $credentials->payfast_status == 'active' || $credentials->square_status == 'active' || $credentials->authorize_status == 'active' || $methods->count() > 0))
                 <div class="inv-action mr-3 mr-lg-3 mr-md-3 dropup">
                     <button class="dropdown-toggle btn-primary rounded mr-3 mr-lg-0 mr-md-0 f-15" type="button"
                         id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
@@ -531,6 +544,45 @@ $editInvoicePermission = user()->permission('edit_invoices');
                                     <i class="fab fa-stripe-s f-w-500 mr-2 f-11"></i>
                                     @lang('modules.invoices.payStripe')
                                 </a>
+                            </li>
+                        @endif
+                        @if ($credentials->paystack_status == 'active')
+                            <li>
+                                <a class="dropdown-item f-14 text-dark" href="javascript:void(0);" data-invoice-id="{{ $invoice->id }}"  id="paystackModal">
+                                    <img style="height: 15px;" src="https://s3-eu-west-1.amazonaws.com/pstk-integration-logos/paystack.jpg"> @lang('modules.invoices.payPaystack')</a>
+                            </li>
+                        @endif
+                        @if ($credentials->payfast_status == 'active')
+                            <li>
+                                <a class="dropdown-item f-14 text-dark" href="javascript:void(0);"
+                                    id="payfastModal">
+                                    <img style="height: 15px;" src="{{ asset('img/payfast.png') }}">
+                                    @lang('modules.invoices.payPayfast')</a>
+                            </li>
+                        @endif
+
+                        @if ($credentials->square_status == 'active')
+                            <li>
+                                <a class="dropdown-item f-14 text-dark" href="javascript:void(0);"
+                                    id="squareModal">
+                                    <img style="height: 15px;" src="{{ asset('img/square.svg') }}">
+                                    @lang('modules.invoices.paySquare')</a>
+                            </li>
+                        @endif
+
+                        @if ($credentials->authorize_status == 'active')
+                        <li>
+                            <a class="dropdown-item f-14 text-dark" href="javascript:void(0);"
+                            data-invoice-id="{{ $invoice->id }}" id="authorizeModal">
+                                <img style="height: 15px;" src="{{ asset('img/authorize.png') }}">
+                                @lang('modules.invoices.payAuthorize')</a>
+                        </li>
+                        @endif
+
+                        @if ($credentials->mollie_status == 'active')
+                            <li>
+                                <a class="dropdown-item f-14 text-dark" href="javascript:void(0);" data-invoice-id="{{ $invoice->id }}"  id="mollieModal">
+                                    <img style="height: 10px;" src="{{ asset('img/mollie.svg') }}"> @lang('modules.invoices.payMollie')</a>
                             </li>
                         @endif
                         @if ($credentials->razorpay_status == 'active')
@@ -644,6 +696,81 @@ $editInvoicePermission = user()->permission('edit_invoices');
         $(MODAL_LG + ' ' + MODAL_HEADING).html('...');
         $.ajaxModal(MODAL_LG, url);
     });
+
+    $('body').on('click', '#paystackModal', function() {
+
+        let id = $(this).data('invoice-id');
+        let queryString = "?id="+id+"&type=invoice";
+
+        let url = "{{ route('front.paystack_modal') }}"+queryString;
+
+        $(MODAL_LG + ' ' + MODAL_HEADING).html('...');
+        $.ajaxModal(MODAL_LG, url);
+
+    })
+
+    $('body').on('click', '#authorizeModal', function() {
+
+        let id = $(this).data('invoice-id');
+        let queryString = "?id="+id+"&type=invoice";
+
+        let url = "{{ route('front.authorize_modal') }}"+queryString;
+
+        $(MODAL_LG + ' ' + MODAL_HEADING).html('...');
+        $.ajaxModal(MODAL_LG, url);
+
+    })
+
+    $('body').on('click', '#mollieModal', function() {
+
+        let id = $(this).data('invoice-id');
+        let queryString = "?id="+id+"&type=invoice";
+
+        let url = "{{ route('front.mollie_modal') }}"+queryString;
+
+        $(MODAL_LG + ' ' + MODAL_HEADING).html('...');
+        $.ajaxModal(MODAL_LG, url);
+
+    })
+
+    $('body').on('click', '#payfastModal', function() {
+
+        let url = "{{route('payfast_public')}}";
+        $.easyAjax({
+            url: url,
+            type: "POST",
+            blockUI: true,
+            data: {
+                id:'{{$invoice->id}}',
+                type:'invoice',
+                _token: '{{ csrf_token() }}'
+            },
+            success: function(response) {
+                if(response.status == 'success'){
+                    $('body').append(response.form);
+                    console.log(response.form);
+                    $('#payfast-pay-form').submit();
+                }
+            }
+        });
+
+    });
+
+
+    $('body').on('click', '#squareModal', function() {
+
+        $.easyAjax({
+            url: "{{route('square_public')}}",
+            type: "POST",
+            blockUI: true,
+            data: {
+                id:'{{$invoice->id}}',
+                type:'invoice',
+                _token: '{{ csrf_token() }}'
+            }
+        });
+    });
+
 
     $('body').on('click', '#offlinePaymentModal', function() {
 

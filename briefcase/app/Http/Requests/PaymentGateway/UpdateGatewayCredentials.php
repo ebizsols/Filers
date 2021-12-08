@@ -66,6 +66,36 @@ class UpdateGatewayCredentials extends FormRequest
             }
         }
 
+        if ($this->payment_method == 'paystack' && $this->paystack_status == 'active') {
+            $rules['paystack_key'] = 'required';
+            $rules['paystack_secret'] = 'required';
+            $rules['paystack_merchant_email'] = 'required';
+        }
+
+        if ($this->payment_method == 'mollie' && $this->mollie_status == 'active') {
+            $rules['mollie_api_key'] = 'required';
+        }
+
+        if ($this->payment_method == 'payfast' && $this->payfast_status == 'active') {
+            $rules['payfast_merchant_id'] = 'required';
+            $rules['payfast_merchant_key'] = 'required';
+            $rules['payfast_passphrase'] = 'required';
+            $rules['payfast_mode'] = 'required';
+        }
+
+        if ($this->payment_method == 'authorize' && $this->authorize_status == 'active') {
+            $rules['authorize_api_login_id'] = 'required';
+            $rules['authorize_transaction_key'] = 'required';
+            $rules['authorize_environment'] = 'required';
+        }
+
+        if ($this->payment_method == 'square' && $this->square_status == 'active') {
+            $rules['square_application_id'] = 'required';
+            $rules['square_access_token'] = 'required';
+            $rules['square_location_id'] = 'required';
+            $rules['square_environment'] = 'required';
+        }
+
         return $rules;
     }
 

@@ -79,10 +79,13 @@
                                 </x-forms.input-group>
                             </div>
                             <div class="col-lg-2">
-                                <x-forms.button-primary class="mr-3 mt-5" icon="check" id="verify-v3">Verify
+                                <x-forms.button-primary class="mr-3 mt-5" icon="check" id="verify-v3">@lang('app.verify')
                                 </x-forms.button-primary>
                             </div>
                         </div>
+                    </div>
+                    <div class="col-sm-12">
+                        <a href="https://www.google.com/recaptcha/admin/create" class="text-lightest f-12" target="_blank"><u>@lang('modules.accountSettings.generateCredentials') <i class="fa fa-external-link-alt"></i></u></a>
                     </div>
                 </div>
             </div>

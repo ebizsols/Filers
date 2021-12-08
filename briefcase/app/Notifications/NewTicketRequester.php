@@ -66,7 +66,7 @@ class NewTicketRequester extends Notification implements ShouldQueue
     {
         return (new MailMessage)
             ->subject(__('email.newTicketRequester.subject') . ' - ' . ucfirst($this->ticket->subject) . ' - ' . __('modules.tickets.ticket') . ' # ' . $this->ticket->id)
-            ->greeting(__('email.hello').' '.ucwords($notifiable->name).'!')
+            ->greeting(__('email.hello').' '.ucwords($notifiable->name).__('!'))
             ->line(__('email.newTicketRequester.text'))
             ->line(ucfirst($this->ticket->subject) . ' # ' . $this->ticket->id)
             ->action(__('email.loginDashboard'), url('/login'))

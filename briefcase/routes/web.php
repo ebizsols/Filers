@@ -1,139 +1,147 @@
 <?php
 
-use App\Http\Controllers\SlackSettingController;
-use App\Http\Controllers\ProfileSettingController;
+use App\Http\Controllers\DiscussionFilesController;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\GdprController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\LeadController;
+use App\Http\Controllers\TaskController;
+use App\Http\Controllers\LeaveController;
+use App\Http\Controllers\LoginController;
+use App\Http\Controllers\OrderController;
+use App\Http\Controllers\ClientController;
+use App\Http\Controllers\NoticeController;
+use App\Http\Controllers\PaypalController;
+use App\Http\Controllers\SearchController;
+use App\Http\Controllers\StripeController;
+use App\Http\Controllers\TicketController;
+use App\Http\Controllers\ExpenseController;
+use App\Http\Controllers\HolidayController;
+use App\Http\Controllers\InvoiceController;
+use App\Http\Controllers\MessageController;
+use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\SubTaskController;
+use App\Http\Controllers\TimelogController;
+use App\Http\Controllers\ContractController;
+use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\EstimateController;
+use App\Http\Controllers\LeadFileController;
+use App\Http\Controllers\ProposalController;
+use App\Http\Controllers\RazorPayController;
+use App\Http\Controllers\RegisterController;
+use App\Http\Controllers\SettingsController;
+use App\Http\Controllers\TaskFileController;
+use App\Http\Controllers\TaskNoteController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\LeadBoardController;
+use App\Http\Controllers\LeaveTypeController;
+use App\Http\Controllers\PaypalIPNController;
+use App\Http\Controllers\PublicUrlController;
+use App\Http\Controllers\TaskBoardController;
+use App\Http\Controllers\TaskLabelController;
+use App\Http\Controllers\UpdateAppController;
 use App\Http\Controllers\AppSettingController;
 use App\Http\Controllers\AttendanceController;
-use App\Http\Controllers\AttendanceReportController;
-use App\Http\Controllers\AttendanceSettingController;
-use App\Http\Controllers\ClientCategoryController;
-use App\Http\Controllers\ClientContactController;
-use App\Http\Controllers\ClientController;
 use App\Http\Controllers\ClientNoteController;
-use App\Http\Controllers\ClientSubCategoryController;
-use App\Http\Controllers\ContractController;
-use App\Http\Controllers\ContractDiscussionController;
-use App\Http\Controllers\ContractFileController;
-use App\Http\Controllers\ContractRenewController;
-use App\Http\Controllers\ContractTypeController;
 use App\Http\Controllers\CreditNoteController;
-use App\Http\Controllers\CurrencySettingController;
-use App\Http\Controllers\CustomFieldController;
-use App\Http\Controllers\CustomModuleController;
-use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DepartmentController;
-use App\Http\Controllers\DesignationController;
-use App\Http\Controllers\DiscussionCategoryController;
 use App\Http\Controllers\DiscussionController;
-use App\Http\Controllers\DiscussionReplyController;
-use App\Http\Controllers\EmployeeController;
-use App\Http\Controllers\EmployeeDocController;
-use App\Http\Controllers\EstimateController;
-use App\Http\Controllers\EventCalendarController;
-use App\Http\Controllers\ExpenseCategoryController;
-use App\Http\Controllers\ExpenseController;
-use App\Http\Controllers\FinanceReportController;
-use App\Http\Controllers\GdprController;
-use App\Http\Controllers\GdprSettingsController;
-use App\Http\Controllers\HolidayController;
-use App\Http\Controllers\HomeController;
-use App\Http\Controllers\IncomeVsExpenseReportController;
-use App\Http\Controllers\InvoiceController;
-use App\Http\Controllers\InvoiceSettingController;
-use App\Http\Controllers\LanguageSettingController;
-use App\Http\Controllers\LeadAgentSettingController;
-use App\Http\Controllers\LeadBoardController;
-use App\Http\Controllers\LeadCategoyController;
-use App\Http\Controllers\LeadController;
-use App\Http\Controllers\LeadCustomFormController;
-use App\Http\Controllers\LeadFileController;
-use App\Http\Controllers\LeadSettingController;
-use App\Http\Controllers\LeadSourceSettingController;
-use App\Http\Controllers\LeadStatusSettingController;
-use App\Http\Controllers\LeaveController;
-use App\Http\Controllers\LeaveReportController;
-use App\Http\Controllers\LeaveSettingController;
-use App\Http\Controllers\LeavesQuotaController;
-use App\Http\Controllers\LeaveTypeController;
-use App\Http\Controllers\LoginController;
-use App\Http\Controllers\MessageController;
-use App\Http\Controllers\MessageSettingController;
-use App\Http\Controllers\ModuleSettingController;
-use App\Http\Controllers\NoticeController;
-use App\Http\Controllers\NotificationController;
-use App\Http\Controllers\NotificationSettingController;
-use App\Http\Controllers\OfflinePaymentSettingController;
-use App\Http\Controllers\OrderController;
-use App\Http\Controllers\PaymentController;
-use App\Http\Controllers\PaymentGatewayCredentialController;
-use App\Http\Controllers\PaypalController;
-use App\Http\Controllers\ProductCategoryController;
-use App\Http\Controllers\ProductController;
-use App\Http\Controllers\ProductSubCategoryController;
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\ProjectCategoryController;
-use App\Http\Controllers\ProjectController;
-use App\Http\Controllers\ProjectFileController;
-use App\Http\Controllers\ProjectMemberController;
-use App\Http\Controllers\ProjectMilestoneController;
-use App\Http\Controllers\ProjectNoteController;
-use App\Http\Controllers\ProjectRatingController;
-use App\Http\Controllers\ProjectSettingController;
-use App\Http\Controllers\ProposalController;
-use App\Http\Controllers\PublicLeadGdprController;
-use App\Http\Controllers\PublicUrlController;
-use App\Http\Controllers\PusherSettingsController;
-use App\Http\Controllers\PushNotificationController;
-use App\Http\Controllers\RazorPayController;
-use App\Http\Controllers\RecurringInvoiceController;
-use App\Http\Controllers\RegisterController;
-use App\Http\Controllers\RolePermissionController;
-use App\Http\Controllers\SearchController;
-use App\Http\Controllers\SecuritySettingController;
-use App\Http\Controllers\SettingsController;
-use App\Http\Controllers\SmtpSettingController;
-use App\Http\Controllers\SubTaskController;
-use App\Http\Controllers\TaskCategoryController;
-use App\Http\Controllers\TaskCommentController;
-use App\Http\Controllers\TaskController;
-use App\Http\Controllers\TaskFileController;
-use App\Http\Controllers\SubTaskFileController;
-use App\Http\Controllers\TaskLabelController;
-use App\Http\Controllers\TaskNoteController;
-use App\Http\Controllers\SocialAuthSettingController;
 use App\Http\Controllers\StickyNoteController;
-use App\Http\Controllers\StorageSettingController;
-use App\Http\Controllers\StripeController;
-use App\Http\Controllers\TaskBoardController;
-use App\Http\Controllers\TaskCalendarController;
 use App\Http\Controllers\TaskReportController;
-use App\Http\Controllers\TaskSettingController;
 use App\Http\Controllers\TaxSettingController;
-use App\Http\Controllers\ThemeSettingController;
-use App\Http\Controllers\TicketAgentController;
-use App\Http\Controllers\TicketChannelController;
-use App\Http\Controllers\TicketController;
 use App\Http\Controllers\TicketFileController;
+use App\Http\Controllers\TicketTypeController;
+use App\Http\Controllers\CustomFieldController;
+use App\Http\Controllers\DesignationController;
+use App\Http\Controllers\EmployeeDocController;
+use App\Http\Controllers\LeadCategoyController;
+use App\Http\Controllers\LeadSettingController;
+use App\Http\Controllers\LeaveReportController;
+use App\Http\Controllers\LeavesQuotaController;
+use App\Http\Controllers\ProjectFileController;
+use App\Http\Controllers\ProjectNoteController;
+use App\Http\Controllers\SmtpSettingController;
+use App\Http\Controllers\SubTaskFileController;
+use App\Http\Controllers\TaskCommentController;
+use App\Http\Controllers\TaskSettingController;
+use App\Http\Controllers\TicketAgentController;
 use App\Http\Controllers\TicketGroupController;
 use App\Http\Controllers\TicketReplyController;
-use App\Http\Controllers\TicketReplyTemplatesController;
-use App\Http\Controllers\TicketSettingController;
-use App\Http\Controllers\TicketTypeController;
-use App\Http\Controllers\TimelogCalendarController;
-use App\Http\Controllers\TimelogController;
-use App\Http\Controllers\TimelogReportController;
-use App\Http\Controllers\TimeLogSettingController;
-use App\Http\Controllers\UpdateAppController;
-use App\Http\Controllers\UserPermissionController;
-use App\Http\Controllers\ProjectTemplateController;
-use App\Http\Controllers\ProjectTemplateMemberController;
-use App\Http\Controllers\ProjectTemplateTaskController;
-use App\Http\Controllers\ProjectTemplateSubTaskController;
-use App\Http\Controllers\PaypalIPNController;
-use App\Http\Controllers\StripeWebhookController;
-use App\Http\Controllers\TicketCustomFormController;
+use App\Http\Controllers\ContractFileController;
+use App\Http\Controllers\ContractTypeController;
+use App\Http\Controllers\CustomModuleController;
+use App\Http\Controllers\GdprSettingsController;
+use App\Http\Controllers\LeaveSettingController;
+use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\SlackSettingController;
+use App\Http\Controllers\TaskCalendarController;
+use App\Http\Controllers\TaskCategoryController;
+use App\Http\Controllers\ThemeSettingController;
 use App\Http\Controllers\TwoFASettingController;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ClientContactController;
+use App\Http\Controllers\ContractRenewController;
+use App\Http\Controllers\EventCalendarController;
+use App\Http\Controllers\FinanceReportController;
+use App\Http\Controllers\ModuleSettingController;
+use App\Http\Controllers\ProjectMemberController;
+use App\Http\Controllers\ProjectRatingController;
+use App\Http\Controllers\StripeWebhookController;
+use App\Http\Controllers\TicketChannelController;
+use App\Http\Controllers\TicketSettingController;
+use App\Http\Controllers\TimelogReportController;
+use App\Http\Controllers\ClientCategoryController;
+use App\Http\Controllers\InvoiceSettingController;
+use App\Http\Controllers\LeadCustomFormController;
+use App\Http\Controllers\MessageSettingController;
+use App\Http\Controllers\Payment\MollieController;
+use App\Http\Controllers\Payment\SquareController;
+use App\Http\Controllers\ProfileSettingController;
+use App\Http\Controllers\ProjectSettingController;
+use App\Http\Controllers\PublicLeadGdprController;
+use App\Http\Controllers\PusherSettingsController;
+use App\Http\Controllers\RolePermissionController;
+use App\Http\Controllers\StorageSettingController;
+use App\Http\Controllers\TimeLogSettingController;
+use App\Http\Controllers\UserPermissionController;
+use App\Http\Controllers\BusinessAddressController;
+use App\Http\Controllers\CurrencySettingController;
+use App\Http\Controllers\DiscussionReplyController;
+use App\Http\Controllers\ExpenseCategoryController;
+use App\Http\Controllers\LanguageSettingController;
+use App\Http\Controllers\Payment\PayfastController;
+use App\Http\Controllers\ProductCategoryController;
+use App\Http\Controllers\ProjectCategoryController;
+use App\Http\Controllers\ProjectTemplateController;
+use App\Http\Controllers\SecuritySettingController;
+use App\Http\Controllers\TimelogCalendarController;
+use App\Http\Controllers\AttendanceReportController;
+use App\Http\Controllers\LeadAgentSettingController;
+use App\Http\Controllers\Payment\PaystackController;
+use App\Http\Controllers\ProjectMilestoneController;
+use App\Http\Controllers\PushNotificationController;
+use App\Http\Controllers\RecurringInvoiceController;
+use App\Http\Controllers\TicketCustomFormController;
+use App\Http\Controllers\AttendanceSettingController;
+use App\Http\Controllers\ClientSubCategoryController;
+use App\Http\Controllers\LeadSourceSettingController;
+use App\Http\Controllers\LeadStatusSettingController;
+use App\Http\Controllers\Payment\AuthorizeController;
+use App\Http\Controllers\SocialAuthSettingController;
+use App\Http\Controllers\ContractDiscussionController;
+use App\Http\Controllers\DiscussionCategoryController;
+use App\Http\Controllers\ProductSubCategoryController;
+use App\Http\Controllers\NotificationSettingController;
+use App\Http\Controllers\ProjectTemplateTaskController;
+use App\Http\Controllers\TicketReplyTemplatesController;
+use App\Http\Controllers\IncomeVsExpenseReportController;
+use App\Http\Controllers\MessageFileController;
+use App\Http\Controllers\OfflinePaymentSettingController;
+use App\Http\Controllers\ProjectTemplateMemberController;
+use App\Http\Controllers\ProjectTemplateSubTaskController;
+use App\Http\Controllers\PaymentGatewayCredentialController;
 
 /*
 |--------------------------------------------------------------------------
@@ -157,6 +165,9 @@ Route::post('/invitation/accept-invite', [RegisterController::class, 'acceptInvi
 
 Route::get('/invoice/{hash}', [HomeController::class, 'invoice'])->name('front.invoice');
 Route::get('/invoice-stripe/stripe-modal/', [HomeController::class, 'stripeModal'])->name('front.stripe_modal');
+Route::get('/invoice-paystack/paystack-modal/', [HomeController::class, 'paystackModal'])->name('front.paystack_modal');
+Route::get('/invoice-mollie/mollie-modal/', [HomeController::class, 'mollieModal'])->name('front.mollie_modal');
+Route::get('/invoice-authorize/authorize-modal/', [HomeController::class, 'authorizeModal'])->name('front.authorize_modal');
 Route::post('invoice-stripe/save-stripe-detail/', [HomeController::class, 'saveStripeDetail'])->name('front.save_stripe_detail');
 Route::get('/invoice/download/{id}', [HomeController::class, 'downloadInvoice'])->name('front.invoice_download');
 Route::post('/invoice-payment-failed/{invoiceId}', [HomeController::class, 'invoicePaymentfailed'])->name('front.invoice_payment_failed');
@@ -202,6 +213,24 @@ Route::get('resend-code', [LoginController::class, 'resendCode'])->name('resend_
 // Payment routes
 Route::post('stripe/{invoiceId}', [StripeController::class, 'paymentWithStripe'])->name('stripe');
 Route::post('stripe-public/{hash}', [StripeController::class, 'paymentWithStripePublic'])->name('stripe_public');
+
+Route::post('paystack-public/{id}', [PaystackController::class, 'paymentWithPaystackPublic'])->name('paystack_public');
+Route::get('paystack/callback/{id}/{type}', [PaystackController::class, 'handleGatewayCallback'])->name('paystack.callback');
+Route::post('paystack_webhook', [PaystackController::class, 'handleGatewayWebhook'])->name('paystack.webhook');
+
+Route::post('mollie-public/{id}', [MollieController::class, 'paymentWithMolliePublic'])->name('mollie_public');
+Route::get('mollie/callback/{id}/{type}', [MollieController::class, 'handleGatewayCallback'])->name('mollie.callback');
+Route::post('mollie_webhook', [MollieController::class, 'handleGatewayWebhook'])->name('mollie.webhook');
+
+Route::post('payfast-public', [PayfastController::class, 'paymentWithPayfastPublic'])->name('payfast_public');
+Route::get('payfast/callback/{id}/{type}/{status}', [PayfastController::class, 'handleGatewayCallback'])->name('payfast.callback');
+Route::post('payfast_webhook', [PayfastController::class, 'handleGatewayWebhook'])->name('payfast.webhook');
+
+Route::post('authorize-public/{id}', [AuthorizeController::class, 'paymentWithAuthorizePublic'])->name('authorize_public');
+
+Route::post('square-public', [SquareController::class, 'paymentWithSquarePublic'])->name('square_public');
+Route::get('square/callback/{id}/{type}', [SquareController::class, 'handleGatewayCallback'])->name('square.callback');
+
 Route::post('pay-with-razorpay', [RazorPayController::class, 'payWithRazorPay'])->name('pay_with_razorpay');
 Route::get('paypal-public/{invoiceId}', [PaypalController::class, 'paymentWithpaypalPublic'])->name('paypal_public');
 Route::get('paypal/{invoiceId}', [PaypalController::class, 'paymentWithpaypal'])->name('paypal');
@@ -216,8 +245,13 @@ Route::post('/verify_webhook', [StripeWebhookController::class, 'verifyStripeWeb
 
 Route::post('setup-account', [RegisterController::class, 'setupAccount'])->name('setup_account');
 
+// Get quill image uploaded
+Route::get('quill-image/{image}', [\App\Http\Controllers\ImageController::class, 'getImage'])->name('image.getImage');
+
 /* Account routes starts from here */
 Route::group(['middleware' => 'auth', 'prefix' => 'account'], function () {
+    Route::post('image/upload', [\App\Http\Controllers\ImageController::class, 'store'])->name('image.store');
+
     Route::get('account-unverified', [DashboardController::class, 'accountUnverified'])->name('account_unverified');
     Route::get('checklist', [DashboardController::class, 'checklist'])->name('checklist');
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
@@ -353,6 +387,9 @@ Route::group(['middleware' => 'auth', 'prefix' => 'account'], function () {
         // Custom Modules
         Route::post('custom-modules/verify-purchase', [CustomModuleController::class, 'verifyingModulePurchase'])->name('custom-modules.verify_purchase');
         Route::resource('custom-modules', CustomModuleController::class);
+
+        Route::post('business-address/set-default', [BusinessAddressController::class, 'setDefaultAddress'])->name('business-address.set_default');
+        Route::resource('business-address', BusinessAddressController::class);
     });
     /* Setting menu routes ends here */
     Route::resource('company-settings', SettingsController::class)->only(['edit', 'update', 'index', 'change_language']);
@@ -445,11 +482,16 @@ Route::group(['middleware' => 'auth', 'prefix' => 'account'], function () {
             Route::resource('discussion-reply', DiscussionReplyController::class);
             // discussion reply end
 
+            // Discussion Files
+            Route::get('discussion-files/download/{id}', [DiscussionFilesController::class, 'download'])->name('discussion_file.download');
+
+            Route::resource('discussion-files', DiscussionFilesController::class);
+
             // rating routes
             Route::resource('project-ratings', ProjectRatingController::class);
             // rating end
 
-            Route::get('projects/burndown// {projectId?}', [ProjectController::class, 'burndown'])->name('projects.burndown');
+            Route::get('projects/burndown/{projectId?}', [ProjectController::class, 'burndown'])->name('projects.burndown');
 
 
             /* PROJECT TEMPLATE */
@@ -531,15 +573,15 @@ Route::group(['middleware' => 'auth', 'prefix' => 'account'], function () {
             Route::get('task-files/download/{id}', [TaskFileController::class, 'download'])->name('task_files.download');
             Route::resource('task-files', TaskFileController::class);
 
-            // sub task routes
+            // Sub task routes
             Route::post('sub-task/change-status', [SubTaskController::class, 'changeStatus'])->name('sub_tasks.change_status');
             Route::resource('sub-tasks', SubTaskController::class);
 
-            // task files routes
+            // Task files routes
             Route::get('sub-task-files/download/{id}', [SubTaskFileController::class, 'download'])->name('sub-task-files.download');
             Route::resource('sub-task-files', SubTaskFileController::class);
 
-            // taskboard routes
+            // Taskboard routes
             Route::post('taskboards/collapseColumn', [TaskBoardController::class, 'collapseColumn'])->name('taskboards.collapse_column');
             Route::post('taskboards/updateIndex', [TaskBoardController::class, 'updateIndex'])->name('taskboards.update_index');
             Route::get('taskboards/loadMore', [TaskBoardController::class, 'loadMore'])->name('taskboards.load_more');
@@ -593,7 +635,8 @@ Route::group(['middleware' => 'auth', 'prefix' => 'account'], function () {
     Route::resource('leads', LeadController::class);
 
     /* LEAVES */
-    Route::get('leaves/calendar', [LeaveController::class, 'leaveCalendar'])->name('leave.calendar');
+    Route::get('leaves/personal', [LeaveController::class, 'personalLeaves'])->name('leaves.personal');
+    Route::get('leaves/calendar', [LeaveController::class, 'leaveCalendar'])->name('leaves.calendar');
     Route::post('leaves/data', [LeaveController::class, 'data'])->name('leaves.data');
     Route::post('leaves/leaveAction', [LeaveController::class, 'leaveAction'])->name('leaves.leave_action');
     Route::get('leaves/show-reject-modal', [LeaveController::class, 'rejectLeave'])->name('leaves.show_reject_modal');
@@ -603,6 +646,11 @@ Route::group(['middleware' => 'auth', 'prefix' => 'account'], function () {
     // Messages
     Route::post('messages/fetch_messages/{id}', [MessageController::class, 'fetchUserMessages'])->name('messages.fetch_messages');
     Route::resource('messages', MessageController::class);
+
+    // Chat Files
+    Route::get('message-file/download/{id}', [MessageFileController::class, 'download'])->name('message_file.download');
+
+    Route::resource('message-file', MessageFileController::class);
 
     // Invoices
 
@@ -689,6 +737,7 @@ Route::group(['middleware' => 'auth', 'prefix' => 'account'], function () {
         function () {
             Route::resource('timelog-calendar', TimelogCalendarController::class);
         });
+    Route::get('timelogs/export', [TimelogController::class, 'export'])->name('timelogs.export');
     Route::get('timelogs/show-active-timer', [TimelogController::class, 'showActiveTimer'])->name('timelogs.show_active_timer');
     Route::get('timelogs/show-timer', [TimelogController::class, 'showTimer'])->name('timelogs.show_timer');
     Route::post('timelogs/start-timer', [TimelogController::class, 'startTimer'])->name('timelogs.start_timer');

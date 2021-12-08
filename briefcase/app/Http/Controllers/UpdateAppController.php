@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Helper\Reply;
 use App\Http\Requests\UploadInstallRequest;
-use App\Models\Role;
 use GuzzleHttp\Client;
+use App\Models\Role;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
@@ -29,7 +29,7 @@ class UpdateAppController extends AccountBaseController
         $roles = new Role();
         $superRole = $roles->where('name', 'Super Admin')->first();
         $this->superRole = $superRole->name;
-        // dd($this->superRole);
+        
         try {
             $results = DB::select(DB::raw('select version()'));
             $this->mysql_version = $results[0]->{'version()'};

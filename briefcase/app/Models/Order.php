@@ -28,6 +28,7 @@ use Illuminate\Support\Str;
  * @property-read \App\Models\ClientDetails|null $clientdetails
  * @property-read \App\Models\Currency|null $currency
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\OrderItems[] $items
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Invoice[] $invoice
  * @property-read int|null $items_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Payment[] $payment
  * @property-read int|null $payment_count
@@ -80,6 +81,11 @@ class Order extends Model
     public function payment()
     {
         return $this->hasMany(Payment::class, 'invoice_id')->orderBy('paid_on', 'desc');
+    }
+
+    public function invoice()
+    {
+        return $this->hasOne(Invoice::class, 'order_id');
     }
 
     public function currency()

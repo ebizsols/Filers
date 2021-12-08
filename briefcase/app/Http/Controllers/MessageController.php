@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Helper\Reply;
 use App\Http\Requests\ChatStoreRequest;
-use App\Models\MessageSetting;
 use App\Models\User;
 use App\Models\UserChat;
 
@@ -113,7 +112,7 @@ class MessageController extends AccountBaseController
         $this->chatDetails = UserChat::chatDetail($receiverID, user()->id);
         $messageList = view('messages.message_list', $this->data)->render();
 
-        return Reply::dataOnly(['userList' => $userList, 'messageList' => $messageList]);
+        return Reply::dataOnly(['user_list' => $userList, 'message_list' => $messageList, 'message_id' => $message->id, 'receiver_id' => $receiverID]);
     }
 
     /**
@@ -140,7 +139,7 @@ class MessageController extends AccountBaseController
         $this->chatDetails = UserChat::chatDetail($receiverID, user()->id);
         $messageList = view('messages.message_list', $this->data)->render();
 
-        return Reply::dataOnly(['messageList' => $messageList]);
+        return Reply::dataOnly(['message_list' => $messageList]);
     }
 
 }

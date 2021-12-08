@@ -1,6 +1,3 @@
-
-
-
 <!-- CREATE INVOICE START -->
 <div class="bg-white rounded b-shadow-4 create-inv">
     <!-- HEADING START -->
@@ -159,6 +156,39 @@
                 </div>
             </div>
             <!-- TIMELOG TO END -->
+
+            <!-- CALCULATE TAX START -->
+            <div class="col-lg-3 col-md-6 mt-4">
+                <div class="form-group mb-lg-0 mb-4">
+                    <x-forms.label fieldId="calculate_tax" :fieldLabel="__('modules.invoices.calculateTax')">
+                    </x-forms.label>
+                    <div class="select-others height-35 rounded">
+                        <select class="form-control select-picker" data-live-search="true" data-size="8"
+                            name="calculate_tax" id="calculate_tax">
+                            <option value="after_discount">@lang('modules.invoices.afterDiscount')</option>
+                            <option value="before_discount">@lang('modules.invoices.beforeDiscount')</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <!-- CALCULATE TAX END -->
+
+            <div class="col-lg-3 col-md-6 mt-4">
+                <div class="form-group c-inv-select mb-4">
+                    <x-forms.label fieldId="company_address_id" :fieldLabel="__('modules.invoices.generatedBy')">
+                    </x-forms.label>
+                    <div class="select-others height-35 rounded">
+                        <select class="form-control select-picker" data-live-search="true" data-size="8"
+                            name="company_address_id" id="company_address_id">
+                            @foreach ($companyAddresses as $item)
+                                <option {{ $item->is_default ? 'selected' : '' }} value="{{ $item->id }}">
+                                    {{ $item->address }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+            </div>
+
 
         </div>
         <!-- INVOICE NUMBER, PROJECT, COMPANY NAME, INVOICE DATE, DUE DATE, CURRENCY, TIMELOG FROM AND TO END -->

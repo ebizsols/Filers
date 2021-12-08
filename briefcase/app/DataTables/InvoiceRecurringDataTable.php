@@ -205,7 +205,6 @@ class InvoiceRecurringDataTable extends BaseDataTable
             ->setTableId('invoices-recurring-table')
             ->columns($this->getColumns())
             ->minifiedAjax()
-            ->dom("<'row'<'col-md-6'l><'col-md-6'Bf>><'row'<'col-sm-12'tr>><'row'<'col-sm-5'i><'col-sm-7'p>>")
             ->orderBy(0)
             ->destroy(true)
             ->responsive(true)
@@ -238,14 +237,14 @@ class InvoiceRecurringDataTable extends BaseDataTable
         $modules = $this->user->modules;
 
         $dsData = [
-            __('app.id') => ['data' => 'id', 'name' => 'id', 'visible' => false],
+            __('app.id') => ['data' => 'id', 'name' => 'id', 'visible' => false, 'title' => __('app.id')],
             '#' => ['data' => 'DT_RowIndex', 'orderable' => false, 'searchable' => false],
-            __('app.client') => ['data' => 'name', 'name' => 'project.client.name', 'exportable' => false],
-            __('app.customers')  => ['data' => 'client_name', 'name' => 'project.client.name', 'visible' => false],
-            __('modules.invoices.total') => ['data' => 'total', 'name' => 'total'],
-            __('modules.invoices.invoiceDate') => ['data' => 'issue_date', 'name' => 'issue_date'],
-            __('app.status') => ['data' => 'status', 'name' => 'status', 'exportable' => false],
-            __('app.invoice').' '.__('app.status') => ['data' => 'invoice_status', 'name' => 'status', 'visible' => false],
+            __('app.client') => ['data' => 'name', 'name' => 'project.client.name', 'exportable' => false, 'title' => __('app.client')],
+            __('app.customers')  => ['data' => 'client_name', 'name' => 'project.client.name', 'visible' => false, 'title' => __('app.customers')],
+            __('modules.invoices.total') => ['data' => 'total', 'name' => 'total', 'title' => __('modules.invoices.total')],
+            __('modules.invoices.invoiceDate') => ['data' => 'issue_date', 'name' => 'issue_date', 'title' => __('modules.invoices.invoiceDate')],
+            __('app.status') => ['data' => 'status', 'name' => 'status', 'exportable' => false, 'title' => __('app.status')],
+            __('app.invoice').' '.__('app.status') => ['data' => 'invoice_status', 'name' => 'status', 'visible' => false, 'title' => __('app.invoice')],
             Column::computed('action', __('app.action'))
                 ->exportable(false)
                 ->printable(false)

@@ -130,12 +130,12 @@ class RecurringExpensesDataTable extends BaseDataTable
     {
         return [
             '#' => ['data' => 'DT_RowIndex', 'orderable' => false, 'searchable' => false ],
-            __('modules.expenses.itemName')  => ['data' => 'item_name', 'name' => 'item_name'],
-            __('app.price') => ['data' => 'price', 'name' => 'price'],
-            __('app.menu.employees') => ['data' => 'user_id', 'name' => 'user_id'],
-            __('modules.expenses.purchaseDate') => ['data' => 'purchase_date', 'name' => 'purchase_date'],
-            __('app.status') => ['data' => 'status', 'name' => 'status', 'exportable' => false],
-            __('app.status') => ['data' => 'status_export', 'name' => 'status_export', 'visible' => false],
+            __('modules.expenses.itemName')  => ['data' => 'item_name', 'name' => 'item_name', 'title' => __('modules.expenses.itemName')],
+            __('app.price') => ['data' => 'price', 'name' => 'price', 'title' => __('app.price')],
+            __('app.menu.employees') => ['data' => 'user_id', 'name' => 'user_id', 'title' => __('app.menu.employees')],
+            __('modules.expenses.purchaseDate') => ['data' => 'purchase_date', 'name' => 'purchase_date', 'title' => __('modules.expenses.purchaseDate')],
+            __('app.status') => ['data' => 'status', 'name' => 'status', 'exportable' => false, 'title' => __('app.status')],
+            __('app.status') => ['data' => 'status_export', 'name' => 'status_export', 'visible' => false, 'title' => __('app.status')],
             Column::computed('action', __('app.action'))
                 ->exportable(false)
                 ->printable(false)

@@ -20,7 +20,7 @@ class Password extends Component
      *
      * @return void
      */
-    public function __construct($fieldLabel, $fieldRequired = false, $fieldPlaceholder, $fieldValue = null, $fieldName, $fieldId, $fieldHelp = null)
+    public function __construct($fieldLabel, $fieldPlaceholder, $fieldName, $fieldId, $fieldRequired = false, $fieldValue = null, $fieldHelp = null)
     {
         $this->fieldLabel = $fieldLabel;
         $this->fieldRequired = $fieldRequired;

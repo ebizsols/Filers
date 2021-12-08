@@ -25,6 +25,7 @@ class TaskBoardController extends AccountBaseController
         $this->pageTitle = 'modules.tasks.taskBoard';
         $this->middleware(function ($request, $next) {
             abort_403(!in_array('tasks', $this->user->modules));
+            $this->viewTaskPermission = user()->permission('view_tasks');
             return $next($request);
         });
     }
@@ -126,6 +127,32 @@ class TaskBoardController extends AccountBaseController
                     });
                 }
 
+                if ($this->viewTaskPermission == 'owned') {
+                    $q->where(function ($q1) {
+                        $q1->where('task_users.user_id', '=', user()->id);
+        
+                        if (in_array('client', user_roles())) {
+                            $q1->orWhere('projects.client_id', '=', user()->id);
+                        }
+                    });
+                }
+        
+                if ($this->viewTaskPermission == 'added') {
+                    $q->where('tasks.added_by', '=', user()->id);
+                }
+        
+                if ($this->viewTaskPermission == 'both') {
+                    $q->where(function ($q1) {
+                        $q1->where('task_users.user_id', '=', user()->id);
+        
+                        $q1->orWhere('tasks.added_by', '=', user()->id);
+        
+                        if (in_array('client', user_roles())) {
+                            $q1->orWhere('projects.client_id', '=', user()->id);
+                        }
+                    });
+                }
+
                 $q->select(DB::raw('count(distinct tasks.id)'));
             }])
                 ->with(['tasks' => function ($q) use ($startDate, $endDate, $request) {
@@ -193,6 +220,32 @@ class TaskBoardController extends AccountBaseController
 
                     if ($request->billable != '' && $request->billable != null && $request->billable != 'all') {
                         $q->where('tasks.billable', '=', $request->billable);
+                    }
+
+                    if ($this->viewTaskPermission == 'owned') {
+                        $q->where(function ($q1) {
+                            $q1->where('task_users.user_id', '=', user()->id);
+            
+                            if (in_array('client', user_roles())) {
+                                $q1->orWhere('projects.client_id', '=', user()->id);
+                            }
+                        });
+                    }
+            
+                    if ($this->viewTaskPermission == 'added') {
+                        $q->where('tasks.added_by', '=', user()->id);
+                    }
+            
+                    if ($this->viewTaskPermission == 'both') {
+                        $q->where(function ($q1) {
+                            $q1->where('task_users.user_id', '=', user()->id);
+            
+                            $q1->orWhere('tasks.added_by', '=', user()->id);
+            
+                            if (in_array('client', user_roles())) {
+                                $q1->orWhere('projects.client_id', '=', user()->id);
+                            }
+                        });
                     }
 
                     if ($request->searchText != '') {
@@ -276,6 +329,32 @@ class TaskBoardController extends AccountBaseController
 
                 if ($request->billable != '' && $request->billable != null && $request->billable != 'all') {
                     $tasks->where('tasks.billable', '=', $request->billable);
+                }
+
+                if ($this->viewTaskPermission == 'owned') {
+                    $tasks->where(function ($q1) {
+                        $q1->where('task_users.user_id', '=', user()->id);
+        
+                        if (in_array('client', user_roles())) {
+                            $q1->orWhere('projects.client_id', '=', user()->id);
+                        }
+                    });
+                }
+        
+                if ($this->viewTaskPermission == 'added') {
+                    $tasks->where('tasks.added_by', '=', user()->id);
+                }
+        
+                if ($this->viewTaskPermission == 'both') {
+                    $tasks->where(function ($q1) {
+                        $q1->where('task_users.user_id', '=', user()->id);
+        
+                        $q1->orWhere('tasks.added_by', '=', user()->id);
+        
+                        if (in_array('client', user_roles())) {
+                            $q1->orWhere('projects.client_id', '=', user()->id);
+                        }
+                    });
                 }
 
                 if ($request->searchText != '') {
@@ -381,6 +460,32 @@ class TaskBoardController extends AccountBaseController
 
         if ($request->label_id != '' && $request->label_id != null && $request->label_id != 'all') {
             $tasks->where('task_labels.label_id', '=', $request->label_id);
+        }
+
+        if ($this->viewTaskPermission == 'owned') {
+            $tasks->where(function ($q1) {
+                $q1->where('task_users.user_id', '=', user()->id);
+
+                if (in_array('client', user_roles())) {
+                    $q1->orWhere('projects.client_id', '=', user()->id);
+                }
+            });
+        }
+
+        if ($this->viewTaskPermission == 'added') {
+            $tasks->where('tasks.added_by', '=', user()->id);
+        }
+
+        if ($this->viewTaskPermission == 'both') {
+            $tasks->where(function ($q1) {
+                $q1->where('task_users.user_id', '=', user()->id);
+
+                $q1->orWhere('tasks.added_by', '=', user()->id);
+
+                if (in_array('client', user_roles())) {
+                    $q1->orWhere('projects.client_id', '=', user()->id);
+                }
+            });
         }
 
         if ($request->searchText != '') {
@@ -508,6 +613,7 @@ class TaskBoardController extends AccountBaseController
         }
 
         $board->column_name = $request->column_name;
+        $board->slug = str_slug($request->column_name, '_');
         $board->label_color = $request->label_color;
         $board->priority = $request->priority;
         $board->save();

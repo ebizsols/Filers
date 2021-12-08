@@ -17,7 +17,7 @@ class SettingMenuItem extends Component
      *
      * @return void
      */
-    public function __construct($href, $text, $active = false, $menu)
+    public function __construct($href, $text, $menu, $active = false)
     {
         $this->text = $text;
         $this->href = $href;

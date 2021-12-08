@@ -12,7 +12,7 @@ use App\Http\Requests\Invoices\StoreInvoice;
 use App\Http\Requests\Invoices\UpdateInvoice;
 use App\Http\Requests\Stripe\StoreStripeDetail;
 use App\Models\ClientDetails;
-use App\Models\ClientPayment;
+use App\Models\CompanyAddress;
 use App\Models\Country;
 use App\Models\CreditNotes;
 use App\Models\Currency;
@@ -20,6 +20,7 @@ use App\Models\Estimate;
 use App\Models\Invoice;
 use App\Models\InvoiceItems;
 use App\Models\OfflinePaymentMethod;
+use App\Models\Order;
 use App\Models\Payment;
 use App\Models\PaymentGatewayCredentials;
 use App\Models\Product;
@@ -111,6 +112,7 @@ class InvoiceController extends AccountBaseController
         $this->taxes = Tax::all();
         $this->products = Product::all();
         $this->clients = User::allClients();
+        $this->companyAddresses = CompanyAddress::all();
         $this->projects = Project::allProjectsHavingClient();
 
         if (request('type') == 'timelog') {
@@ -207,6 +209,7 @@ class InvoiceController extends AccountBaseController
         $invoice->note = $request->note;
         $invoice->show_shipping_address = $request->show_shipping_address;
         $invoice->invoice_number = $request->invoice_number;
+        $invoice->company_address_id = $request->company_address_id;
         $invoice->save();
 
         // To add custom fields data
@@ -577,6 +580,8 @@ class InvoiceController extends AccountBaseController
             $this->companyName = $companyName->clientdetails ? $companyName->clientdetails->company_name : '';
         }
 
+        $this->companyAddresses = CompanyAddress::all();
+
         if (request()->ajax()) {
             $html = view('invoices.ajax.edit', $this->data)->render();
             return Reply::dataOnly(['status' => 'success', 'html' => $html, 'title' => $this->pageTitle]);
@@ -649,6 +654,7 @@ class InvoiceController extends AccountBaseController
         $invoice->note = $request->note;
         $invoice->show_shipping_address = $request->show_shipping_address;
         $invoice->invoice_number = $request->invoice_number;
+        $invoice->company_address_id = $request->company_address_id;
         $invoice->save();
 
         // To add custom fields data
@@ -1031,10 +1037,21 @@ class InvoiceController extends AccountBaseController
 
     public function storeOfflinePayment(Request $request)
     {
-        $invoiceId = $request->invoiceID;
-        $invoice = Invoice::findOrFail($invoiceId);
+        $returnUrl = '';
+        $invoice = '';
 
-        $clientPayment = new ClientPayment();
+        if(isset($request->invoiceID)){
+            $invoiceId = $request->invoiceID;
+            $invoice = Invoice::findOrFail($request->invoiceID);
+            $returnUrl = route('invoices.show', $invoiceId);
+        }
+
+        if(isset($request->orderID)){
+            $invoice = $this->makeInvoice($request->orderID);
+            $returnUrl = route('orders.show', $request->orderID);
+        }
+
+        $clientPayment = new Payment();
         $clientPayment->currency_id = $invoice->currency_id;
         $clientPayment->invoice_id = $invoice->id;
         $clientPayment->project_id = $invoice->project_id;
@@ -1054,7 +1071,32 @@ class InvoiceController extends AccountBaseController
         $invoice->status = 'paid';
         $invoice->save();
 
-        return Reply::redirect(route('invoices.show', $invoiceId), __('messages.paymentSuccess'));
+        return Reply::redirect($returnUrl, __('messages.paymentSuccess'));
+    }
+
+    public function makeInvoice($orderId)
+    {
+        /* Step1 -  Set order status paid */
+        $order = Order::find($orderId);
+        $order->status = 'paid';
+        $order->save();
+
+        /* Step2 - make an invoice related to recently paid order_id */
+        $invoice = new Invoice();
+        $invoice->order_id = $orderId;
+        $invoice->client_id = $order->client_id;
+        $invoice->sub_total = $order->sub_total;
+        $invoice->total = $order->total;
+        $invoice->currency_id = $order->currency_id;
+        $invoice->status = 'paid';
+        $invoice->note = $order->note;
+        $invoice->issue_date = Carbon::now();
+        $invoice->send_status = 1;
+        $invoice->invoice_number = Invoice::lastInvoiceNumber() + 1;
+        $invoice->due_amount = 0;
+        $invoice->save();
+
+        return $invoice;
     }
 
     public function cancelStatus(Request $request)

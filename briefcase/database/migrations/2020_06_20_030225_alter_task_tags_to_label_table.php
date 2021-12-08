@@ -43,7 +43,27 @@ class AlterTaskTagsToLabelTable extends Migration
      */
     public function down()
     {
-        //
+        Schema::table('task_labels', function (Blueprint $table) {
+            $table->dropForeign(['label_id']);
+        });
+
+        \Illuminate\Support\Facades\DB::statement('ALTER TABLE `task_labels` CHANGE `label_id` `tag_id` INT(10) UNSIGNED NOT NULL;');
+
+        Schema::table('task_label_list', function (Blueprint $table) {
+            $table->dropColumn('color');
+            $table->dropColumn('description');
+        });
+
+        \Illuminate\Support\Facades\DB::statement('ALTER TABLE `task_label_list` CHANGE `label_name` `tag_name` VARCHAR(191) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL');
+
+        Schema::rename('task_label_list', 'task_tag_list');
+        Schema::rename('task_labels', 'task_tags');
+
+        Schema::table('task_tags', function (Blueprint $table) {
+            $table->dropColumn('tag_id');
+        });
+
+
     }
 
 }

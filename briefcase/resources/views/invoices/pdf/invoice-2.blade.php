@@ -402,7 +402,7 @@
 
                 <span class="spacer"></span>
 
-                <div>{!! nl2br($global->address) !!}</div>
+                <div>{!! nl2br($invoice->address->address) !!}</div>
 
 
                 <span class="clearfix"></span>
@@ -411,8 +411,8 @@
 
                 <span class="clearfix"></span>
 
-                @if($invoiceSetting->show_gst == 'yes' && !is_null($invoiceSetting->gst_number))
-                    <div>@lang('app.gstIn'): {{ $invoiceSetting->gst_number }}</div>
+                @if($invoiceSetting->show_gst == 'yes')
+                    <div>{{ $invoice->address->tax_name }}: {{ $invoice->address->tax_number }}</div>
                 @endif
             </div>
 
@@ -663,7 +663,7 @@
         </section>
         <div class="clearfix"></div>
         @if(!is_null($payments))
-        <div class="page_break"></div>
+            <div class="page_break"></div>
             <div class="invoice-body b-all m-b-20">
                 <h3 class="box-title m-t-20 text-center h3-border">@lang('app.menu.payments')</h3>
                 <div class="row">
@@ -708,6 +708,16 @@
                     </div>
                 </div>
             </div>
+        @endif
+
+        @if (isset($taxes) && invoice_setting()->tax_calculation_msg == 1 && $invoice->discount > 0)
+            <p class="text-dark-grey">
+                @if (invoice_setting()->calculate_tax == 'after_discount')
+                    @lang('messages.calculateTaxAfterDiscount')
+                @else
+                    @lang('messages.calculateTaxBeforeDiscount')
+                @endif
+            </p>
         @endif
 
     </div>

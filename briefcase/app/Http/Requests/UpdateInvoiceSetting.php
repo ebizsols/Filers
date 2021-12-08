@@ -34,10 +34,6 @@ class UpdateInvoiceSetting extends CoreRequest
             'invoice_terms' => 'required'
         ];
 
-        if($this->has('show_gst')){
-            $rules['gst_number'] = 'required';
-        }
-
         return $rules;
     }
 

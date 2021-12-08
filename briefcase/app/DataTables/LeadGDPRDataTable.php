@@ -113,10 +113,10 @@ class LeadGDPRDataTable extends BaseDataTable
     {
         return [
             '#' => ['data' => 'DT_RowIndex', 'orderable' => false, 'searchable' => false, 'visible' => false],
-            __('modules.gdpr.purpose') => ['data' => 'name', 'name' => 'purpose_consent.name'],
-            __('app.date') => ['data' => 'created_at', 'name' => 'purpose_consent.created_at'],
-            __('modules.gdpr.ipAddress') => ['data' => 'ip', 'name' => 'purpose_consent.ip'],
-            __('modules.gdpr.additionalDescription') => ['data' => 'additional_description', 'name' => 'additional_description'],
+            __('modules.gdpr.purpose') => ['data' => 'name', 'name' => 'purpose_consent.name', 'title' => __('modules.gdpr.purpose')],
+            __('app.date') => ['data' => 'created_at', 'name' => 'purpose_consent.created_at', 'title' => __('app.date')],
+            __('modules.gdpr.ipAddress') => ['data' => 'ip', 'name' => 'purpose_consent.ip', 'title' => __('modules.gdpr.ipAddress')],
+            __('modules.gdpr.additionalDescription') => ['data' => 'additional_description', 'name' => 'additional_description', 'title' => __('modules.gdpr.additionalDescription')],
             Column::computed('action', __('app.action'))
                 ->exportable(false)
                 ->printable(false)

@@ -32,7 +32,12 @@ class AddColumnsInNoticesTable extends Migration
      */
     public function down()
     {
-        //
+        Schema::table('notices', function (Blueprint $table) {
+            if (Schema::hasColumn('notices', 'department_id')){
+                $table->dropForeign(['department_id']);
+                $table->dropColumn(['department_id']);
+            }
+        });
     }
 
 }

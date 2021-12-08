@@ -14,7 +14,7 @@ class LinkSecondary extends Component
      *
      * @return void
      */
-    public function __construct($icon = '', $link)
+    public function __construct( $link, $icon = '')
     {
         $this->icon = $icon;
         $this->link = $link;

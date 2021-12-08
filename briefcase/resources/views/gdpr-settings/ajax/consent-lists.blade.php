@@ -1,8 +1,20 @@
 <div class="col-lg-12 col-md-12 ntfcn-tab-content-left w-100 p-4 ">
 
     <!-- Add Task Export Buttons Start -->
-    <div class="d-flex mb-2" id="table-actions">
-        <x-forms.button-primary id="add-consent" icon="plus" class="mr-2">@lang('app.add') @lang('app.menu.consent')</x-forms.button-primary>
+    <div class="d-block d-lg-flex d-md-flex justify-content-between action-bar">
+        <div id="table-actions" class="flex-grow-1 align-items-center">
+            <x-forms.button-primary id="add-consent" icon="plus" class="mr-3 float-left mb-2 mb-lg-0 mb-md-0">@lang('app.add')
+                @lang('app.menu.consent')</x-forms.button-primary>
+        </div>
+
+        <x-datatable.actions>
+            <div class="select-status mr-3 pl-3">
+                <select name="action_type" class="form-control select-picker" id="quick-action-type" disabled>
+                    <option value="">@lang('app.selectAction')</option>
+                    <option value="delete">@lang('app.delete')</option>
+                </select>
+            </div>
+        </x-datatable.actions>
     </div>
     <!-- Add Task Export Buttons End -->
 
@@ -10,21 +22,11 @@
         {!! $dataTable->table(['class' => 'table table-hover border-0 w-100 table-sm-responsive']) !!}
     </div>
 
-    <x-datatable.actions>
-        <div class="select-status mr-3 pl-3">
-            <select name="action_type" class="form-control select-picker" id="quick-action-type" disabled>
-                <option value="">@lang('app.selectAction')</option>
-                <option value="delete">@lang('app.delete')</option>
-            </select>
-        </div>
-    </x-datatable.actions>
-
 </div>
 
 @include('sections.datatable_js')
 
 <script>
-
     const showTable = () => {
         window.LaravelDataTables["consent-table"].draw();
     }
@@ -135,7 +137,7 @@
             buttonSelector: "#quick-action-apply",
             data: {
                 '_token': token,
-                'action_type' : action_type
+                'action_type': action_type
             },
             blockUI: true,
             success: function(response) {
@@ -164,5 +166,4 @@
         $(MODAL_LG + ' ' + MODAL_HEADING).html('...');
         $.ajaxModal(MODAL_LG, url);
     })
-
 </script>

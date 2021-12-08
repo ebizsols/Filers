@@ -344,16 +344,16 @@ class LeadsDataTable extends BaseDataTable
                 'searchable' => false
             ],
             '#' => ['data' => 'DT_RowIndex', 'orderable' => false, 'searchable' => false, 'visible' => false],
-            __('app.id') => ['data' => 'id', 'name' => 'id'],
-            __('app.name') => ['data' => 'client_name', 'name' => 'client_name', 'exportable' => false],
-            __('app.lead') => ['data' => 'lead', 'name' => 'client_name', 'visible' => false],
-            __('modules.lead.companyName') => ['data' => 'company_name', 'name' => 'company_name'],
-            __('app.createdOn') => ['data' => 'created_at', 'name' => 'created_at'],
-            __('modules.lead.nextFollowUp') => ['data' => 'next_follow_up_date', 'name' => 'next_follow_up_date', 'orderable' => false, 'searchable' => false],
-            __('modules.lead.leadAgent') => ['data' => 'agent_name', 'name' => 'users.name', 'exportable' => false],
-            __('app.employee') => ['data' => 'employee_name', 'name' => 'users.name', 'visible' => false],
-            __('app.status') => ['data' => 'status', 'name' => 'status', 'exportable' => false],
-            __('app.leadStatus') => ['data' => 'leadStatus', 'name' => 'leadStatus', 'visible' => false, 'orderable' => false, 'searchable' => false],
+            __('app.id') => ['data' => 'id', 'name' => 'id', 'title' => __('app.id')],
+            __('app.name') => ['data' => 'client_name', 'name' => 'client_name', 'exportable' => false, 'title' => __('app.name')],
+            __('app.lead') => ['data' => 'lead', 'name' => 'client_name', 'visible' => false, 'title' => __('app.lead')],
+            __('modules.lead.companyName') => ['data' => 'company_name', 'name' => 'company_name', 'title' => __('modules.lead.companyName')],
+            __('app.createdOn') => ['data' => 'created_at', 'name' => 'created_at', 'title' => __('app.createdOn')],
+            __('modules.lead.nextFollowUp') => ['data' => 'next_follow_up_date', 'name' => 'next_follow_up_date', 'orderable' => false, 'searchable' => false, 'title' => __('modules.lead.nextFollowUp')],
+            __('modules.lead.leadAgent') => ['data' => 'agent_name', 'name' => 'users.name', 'exportable' => false, 'title' => __('modules.lead.leadAgent')],
+            __('app.employee') => ['data' => 'employee_name', 'name' => 'users.name', 'visible' => false, 'title' => __('app.employee')],
+            __('app.status') => ['data' => 'status', 'name' => 'status', 'exportable' => false, 'title' => __('app.status')],
+            __('app.leadStatus') => ['data' => 'leadStatus', 'name' => 'leadStatus', 'visible' => false, 'orderable' => false, 'searchable' => false, 'title' => __('app.leadStatus')],
             Column::computed('action', __('app.action'))
                 ->exportable(false)
                 ->printable(false)

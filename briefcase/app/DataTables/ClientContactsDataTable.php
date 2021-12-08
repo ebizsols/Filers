@@ -145,10 +145,10 @@ class ClientContactsDataTable extends BaseDataTable
                 'searchable' => false
             ],
             '#' => ['data' => 'DT_RowIndex', 'orderable' => false, 'searchable' => false, 'visible' => false],
-            __('app.name') => ['data' => 'contact_name', 'name' => 'contact_name'],
-            __('app.email') => ['data' => 'email', 'name' => 'email'],
-            __('app.phone') => ['data' => 'phone', 'name' => 'phone'],
-            __('app.createdAt') => ['data' => 'created_at', 'name' => 'created_at'],
+            __('app.name') => ['data' => 'contact_name', 'name' => 'contact_name', 'title' => __('app.name')],
+            __('app.email') => ['data' => 'email', 'name' => 'email', 'title' => __('app.email')],
+            __('app.phone') => ['data' => 'phone', 'name' => 'phone', 'title' => __('app.phone')],
+            __('app.createdAt') => ['data' => 'created_at', 'name' => 'created_at', 'title' => __('app.createdAt')],
             Column::computed('action', __('app.action'))
                 ->exportable(false)
                 ->printable(false)

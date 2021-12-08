@@ -46,6 +46,10 @@ class UpdateRequest extends CoreRequest
             $rules['slack_username'] = 'nullable|unique:employee_details,slack_username';
         }
 
+        if (request()->password != '') {
+            $rules['password'] = 'required|min:8|max:50';
+        }
+
         if (request()->get('custom_fields_data')) {
             $fields = request()->get('custom_fields_data');
 

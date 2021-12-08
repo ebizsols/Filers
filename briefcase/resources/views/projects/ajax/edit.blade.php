@@ -254,7 +254,7 @@ $addClientPermission = user()->permission('add_clients');
                                         value="{{ $item->id }}">{{ ucwords($item->name) }}</option>
                                 @endforeach
                             </x-forms.select>
-                        </div>  
+                        </div>
                     @endif
 
 
@@ -403,59 +403,12 @@ $addClientPermission = user()->permission('add_clients');
             }
         });
 
-        var quill = new Quill('#project_summary', {
-            modules: {
-                toolbar: [
-                    [{
-                        header: [1, 2, 3, 4, 5, false]
-                    }],
-                    [{
-                        'list': 'ordered'
-                    }, {
-                        'list': 'bullet'
-                    }],
-                    ['bold', 'italic', 'underline', 'strike'],
-                    ['image', 'code-block', 'link'],
-                    [{
-                        'direction': 'rtl'
-                    }],
-                    ['clean']
-                ],
-                "emoji-toolbar": true,
-                "emoji-textarea": true,
-                "emoji-shortname": true,
-            },
-            theme: 'snow'
-        });
-
-        var quill2 = new Quill('#notes', {
-            modules: {
-                toolbar: [
-                    [{
-                        header: [1, 2, 3, 4, 5, false]
-                    }],
-                    [{
-                        'list': 'ordered'
-                    }, {
-                        'list': 'bullet'
-                    }],
-                    ['bold', 'italic', 'underline', 'strike'],
-                    ['image', 'code-block', 'link'],
-                    [{
-                        'direction': 'rtl'
-                    }],
-                    ['clean']
-                ],
-                "emoji-toolbar": true,
-                "emoji-textarea": true,
-                "emoji-shortname": true,
-            },
-            theme: 'snow'
-        });
+        quillImageLoad('#project_summary');
+        quillImageLoad('#notes');
 
         const dp1 = datepicker('#start_date', {
             position: 'bl',
-            dateSelected: new Date("{{ $project->start_date }}"),
+            dateSelected: new Date("{{ str_replace('-', '/', $project->start_date) }}"),
             onSelect: (instance, date) => {
                 dp2.setMin(date);
             },
@@ -465,7 +418,7 @@ $addClientPermission = user()->permission('add_clients');
         const dp2 = datepicker('#deadline', {
             position: 'bl',
             dateSelected: new Date(
-                "{{ $project->deadline ? $project->deadline : now($global->timezone) }}"),
+                "{{ $project->deadline ? str_replace('-', '/', $project->deadline) : str_replace('-', '/', now($global->timezone)) }}"),
             onSelect: (instance, date) => {
                 dp1.setMax(date);
             },

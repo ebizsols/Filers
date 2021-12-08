@@ -14,6 +14,10 @@
     </style>
 @endpush
 
+@php
+$editEmployeePermission = user()->permission('edit_employees');
+@endphp
+
 <div class="d-lg-flex">
 
     <div class="project-left w-100 py-0 py-lg-5 py-md-0">
@@ -34,20 +38,24 @@
                                         @endisset
                                     </h4>
                                 </div>
-                                <div class="col-2 text-right">
-                                    <div class="dropdown">
-                                        <button class="btn f-14 px-0 py-0 text-dark-grey dropdown-toggle" type="button"
-                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            <i class="fa fa-ellipsis-h"></i>
-                                        </button>
+                                @if ($editEmployeePermission == 'all' || ($editEmployeePermission == 'added' && $employee->employeeDetail->added_by == user()->id))
+                                    <div class="col-2 text-right">
+                                        <div class="dropdown">
+                                            <button class="btn f-14 px-0 py-0 text-dark-grey dropdown-toggle"
+                                                type="button" data-toggle="dropdown" aria-haspopup="true"
+                                                aria-expanded="false">
+                                                <i class="fa fa-ellipsis-h"></i>
+                                            </button>
 
-                                        <div class="dropdown-menu dropdown-menu-right border-grey rounded b-shadow-4 p-0"
-                                            aria-labelledby="dropdownMenuLink" tabindex="0">
-                                            <a class="dropdown-item openRightModal"
-                                                href="{{ route('employees.edit', $employee->id) }}">@lang('app.edit')</a>
+                                            <div class="dropdown-menu dropdown-menu-right border-grey rounded b-shadow-4 p-0"
+                                                aria-labelledby="dropdownMenuLink" tabindex="0">
+                                                <a class="dropdown-item openRightModal"
+                                                    href="{{ route('employees.edit', $employee->id) }}">@lang('app.edit')</a>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
+                                @endif
+
                             </div>
 
                             <p class="f-13 font-weight-normal text-dark-grey mb-0">
@@ -240,7 +248,7 @@
                                     :date="$activity->created_at->format('d')" />
                             </div>
                             <div class="card-body border-0 p-0 ml-3">
-                                <h4 class="card-title f-14 font-weight-normal text-capitalize">{!! ucfirst($activity->activity) !!}
+                                <h4 class="card-title f-14 font-weight-normal text-capitalize">{!! __($activity->activity) !!}
                                 </h4>
                                 <p class="card-text f-12 text-dark-grey">
                                     {{ $activity->created_at->format($global->time_format) }}

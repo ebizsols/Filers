@@ -274,15 +274,15 @@ class ContractsDataTable extends BaseDataTable
                 'visible' => !in_array('client', user_roles())
             ],
             '#' => ['data' => 'DT_RowIndex', 'orderable' => false, 'searchable' => false, 'visible' => false],
-            __('app.id') => ['data' => 'id', 'name' => 'id'],
-            __('app.subject') => ['data' => 'subject', 'name' => 'subject', 'exportable' => false],
-            __('app.menu.contract').' '.__('app.subject') => ['data' => 'contract_subject', 'name' => 'subject', 'visible' => false],
-            __('app.client')  => ['data' => 'client.name', 'name' => 'client.name', 'exportable' => false],
-            __('app.customers')  => ['data' => 'client_name', 'name' => 'client.name', 'visible' => false],
-            __('app.amount') => ['data' => 'amount', 'name' => 'amount'],
-            __('app.startDate') => ['data' => 'start_date', 'name' => 'start_date'],
-            __('app.endDate') => ['data' => 'end_date', 'name' => 'end_date'],
-            __('app.signature') => ['data' => 'signature', 'name' => 'signature', 'visible' => false],
+            __('app.id') => ['data' => 'id', 'name' => 'id', 'title' => __('app.id')],
+            __('app.subject') => ['data' => 'subject', 'name' => 'subject', 'exportable' => false, 'title' => __('app.subject')],
+            __('app.menu.contract').' '.__('app.subject') => ['data' => 'contract_subject', 'name' => 'subject', 'visible' => false, 'title' => __('app.menu.contract')],
+            __('app.client')  => ['data' => 'client.name', 'name' => 'client.name', 'exportable' => false, 'title' => __('app.client')],
+            __('app.customers')  => ['data' => 'client_name', 'name' => 'client.name', 'visible' => false, 'title' => __('app.customers')],
+            __('app.amount') => ['data' => 'amount', 'name' => 'amount', 'title' => __('app.amount')],
+            __('app.startDate') => ['data' => 'start_date', 'name' => 'start_date', 'title' => __('app.startDate')],
+            __('app.endDate') => ['data' => 'end_date', 'name' => 'end_date', 'title' => __('app.endDate')],
+            __('app.signature') => ['data' => 'signature', 'name' => 'signature', 'visible' => false, 'title' => __('app.signature')],
             Column::computed('action', __('app.action'))
                 ->exportable(false)
                 ->printable(false)

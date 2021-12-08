@@ -256,13 +256,13 @@ class PaymentsDataTable extends BaseDataTable
                 'visible' => !in_array('client', user_roles())
             ],
             '#' => ['data' => 'DT_RowIndex', 'orderable' => false, 'searchable' => false, 'visible' => false],
-            __('app.id') => ['data' => 'id', 'name' => 'payments.id'],
-            __('app.project')  => ['data' => 'project_id', 'name' => 'project_id'],
-            __('app.invoice') . '#' => ['data' => 'invoice_number', 'name' => 'invoice.invoice_number'],
-            __('app.order') . '#' => ['data' => 'order_number', 'name' => 'order.order_number'],
-            __('modules.invoices.amount') => ['data' => 'amount', 'name' => 'amount'],
-            __('modules.payments.paidOn') => ['data' => 'paid_on', 'name' => 'paid_on'],
-            __('app.status') => ['data' => 'status', 'name' => 'status'],
+            __('app.id') => ['data' => 'id', 'name' => 'payments.id', 'title' => __('app.id')],
+            __('app.project')  => ['data' => 'project_id', 'name' => 'project_id', 'title' => __('app.project')],
+            __('app.invoice') . '#' => ['data' => 'invoice_number', 'name' => 'invoice.invoice_number', 'title' => __('app.invoice') . '#'],
+            __('app.order') . '#' => ['data' => 'order_number', 'name' => 'order.order_number', 'title' => __('app.order') . '#'],
+            __('modules.invoices.amount') => ['data' => 'amount', 'name' => 'amount', 'title' => __('modules.invoices.amount')],
+            __('modules.payments.paidOn') => ['data' => 'paid_on', 'name' => 'paid_on', 'title' => __('modules.payments.paidOn')],
+            __('app.status') => ['data' => 'status', 'name' => 'status', 'title' => __('app.status')],
             Column::computed('action', __('app.action'))
                 ->exportable(false)
                 ->printable(false)

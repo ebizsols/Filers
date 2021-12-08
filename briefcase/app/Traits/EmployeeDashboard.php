@@ -7,11 +7,14 @@ use App\Http\Requests\ClockIn\ClockInRequest;
 use App\Models\Attendance;
 use App\Models\Event;
 use App\Models\Holiday;
+use App\Models\Leave;
 use App\Models\Notice;
 use App\Models\Project;
+use App\Models\ProjectTimeLog;
 use App\Models\Task;
 use App\Models\TaskboardColumn;
 use App\Models\Ticket;
+use App\Models\TicketAgentGroups;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -107,24 +110,25 @@ trait EmployeeDashboard
             }
         }
 
-        $this->totalTickets = Ticket::with('agent')->whereHas('agent', function ($q) {
-            $q->where('id', user()->id);
-        })->count();
+        $checkTicketAgent = TicketAgentGroups::where('agent_id', user()->id)->first();
+
+        if (!is_null($checkTicketAgent)) {
+            $this->totalOpenTickets = Ticket::with('agent')->whereHas('agent', function ($q) {
+                $q->where('id', user()->id);
+            })->where('status', 'open')->count();
+        }
 
         $tasks = $this->pendingTasks = Task::with('project')
             ->join('task_users', 'task_users.task_id', '=', 'tasks.id')
             ->where('task_users.user_id', $this->user->id)
+            ->where('tasks.board_column_id', '<>', $completedTaskColumn->id)
             ->select('tasks.*')
-            ->groupBy('tasks.id')
-            ->get();
+            ->groupBy('tasks.id');
 
-        $this->inProcessTasks = $tasks->filter(function ($value, $key) use ($completedTaskColumn) {
-            return $value->board_column_id != $completedTaskColumn->id;
-        })->count();
+        $this->inProcessTasks = $tasks->count();
 
-        $this->dueTasks = $tasks->filter(function ($value, $key) use ($completedTaskColumn) {
-            return $value->board_column_id != $completedTaskColumn->id && $value->due_date <= now()->format('Y-m-d');
-        })->count();
+        $this->dueTasks = $tasks->where(DB::raw('DATE(tasks.`due_date`)'), '<', now()->toDateString())
+            ->count();
 
         $projects = Project::with('members')
             ->leftJoin('project_members', 'project_members.project_id', 'projects.id')
@@ -147,14 +151,21 @@ trait EmployeeDashboard
         })->count();
 
         // Getting Today's Total Check-ins
-        $this->todayTotalClockin = Attendance::where(DB::raw('DATE(clock_in_time)'), now()->format('Y-m-d'))
-            ->where('user_id', $this->user->id)->where(DB::raw('DATE(clock_out_time)'), now()->format('Y-m-d'))->count();
-
-        // Getting Current Clock-in if exist
+        $this->todayTotalHours = ProjectTimeLog::with('task', 'user')
+            ->where('user_id', user()->id)
+            ->where(DB::raw('DATE(project_time_logs.`start_time`)'), '=', now()->toDateString())
+            ->sum('total_minutes');
+            
+            // Getting Current Clock-in if exist
         $this->currentClockIn = Attendance::where(DB::raw('DATE(clock_in_time)'), now()->format('Y-m-d'))
             ->where('user_id', $this->user->id)->whereNull('clock_out_time')->first();
 
-        $currentDate = Carbon::now()->format('Y-m-d');
+        $currentDate = now(global_setting()->timezone)->format('Y-m-d');
+
+        $this->checkTodayLeave = Leave::where('status', 'approved')
+            ->where('leave_date', now(global_setting()->timezone))
+            ->where('user_id', user()->id)
+            ->first();
 
         // Check Holiday by date
         $this->checkTodayHoliday = Holiday::where('date', $currentDate)->first();

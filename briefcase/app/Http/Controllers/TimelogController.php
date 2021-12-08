@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\DataTables\TimeLogsDataTable;
+use App\Exports\EmployeeTimelogs;
 use App\Helper\Reply;
 use App\Http\Requests\TimeLogs\StartTimer;
 use App\Http\Requests\TimeLogs\StoreTimeLog;
@@ -14,6 +15,7 @@ use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
 
 class TimelogController extends AccountBaseController
 {
@@ -83,17 +85,20 @@ class TimelogController extends AccountBaseController
             $assignId = request('default_assign');
             $this->projects = $projects = Project::whereHas('members', function ($query) use ($assignId) {
                 $query->where('user_id', $assignId);
-            })->orderBy('project_name', 'asc')->get();
+            })
+            ->orWhere('projects.public', 1)
+            ->orderBy('project_name', 'asc')->get();
         }
         elseif (request()->has('default_project') && request('default_project') != '') {
             $defaultProject = request('default_project');
-            $this->projects = $projects = Project::where('id', $defaultProject)->get();
+            $this->projects = $projects = Project::where('id', $defaultProject)
+                ->get();
         }
         else {
             $this->projects = Project::allProjects();
         }
 
-        $this->tasks = Task::timelogTasks();
+        $this->tasks = Task::timelogTasks(request('default_project'));
 
         if (request()->ajax()) {
             $html = view('timelogs.ajax.create', $this->data)->render();
@@ -125,7 +130,18 @@ class TimelogController extends AccountBaseController
 
         $activeTimer = ProjectTimeLog::with('user')
             ->where(function ($query) use ($startDateTime, $endDateTime) {
-                $query->whereBetween('end_time', [$startDateTime->format('Y-m-d H:i:s'), $endDateTime->format('Y-m-d H:i:s')])->orWhereNull('end_time');
+                $query->where(
+                        function ($q1) use ($startDateTime, $endDateTime) {
+                            $q1->where('end_time', '>', $startDateTime->format('Y-m-d H:i:s'));
+                            $q1->where('end_time', '<', $endDateTime->format('Y-m-d H:i:s'));
+                        }
+                    )
+                    ->orWhere(
+                    function ($q1) use ($startDateTime) {
+                        $q1->whereDate('start_time', $startDateTime->format('Y-m-d'));
+                        $q1->whereNull('end_time');
+                    }
+                );
             })
             ->join('users', 'users.id', '=', 'project_time_logs.user_id')
             ->where('user_id', $userID)
@@ -221,8 +237,18 @@ class TimelogController extends AccountBaseController
 
         $activeTimer = ProjectTimeLog::with('user')
             ->where(function ($query) use ($start_time, $end_time) {
-                $query->whereBetween('end_time', [$start_time->format('Y-m-d H:i:s'), $end_time->format('Y-m-d H:i:s')])
-                    ->orWhereNull('end_time');
+                $query->where(
+                        function ($q1) use ($start_time, $end_time) {
+                            $q1->where('end_time', '>', $start_time->format('Y-m-d H:i:s'));
+                            $q1->where('end_time', '<', $end_time->format('Y-m-d H:i:s'));
+                        }
+                    )
+                    ->orWhere(
+                        function ($q1) use ($start_time) {
+                            $q1->whereDate('start_time', $start_time->format('Y-m-d'));
+                            $q1->whereNull('end_time');
+                        }
+                    );
             })
             ->join('users', 'users.id', '=', 'project_time_logs.user_id')
             ->where('user_id', $userID)
@@ -382,7 +408,7 @@ class TimelogController extends AccountBaseController
         }
 
         if (!is_null($timeLog->task_id)) {
-            $this->logTaskActivity($timeLog->task_id, user()->id, 'modules.tasks.timerStoppedBy');
+            $this->logTaskActivity($timeLog->task_id, user()->id, 'timerStoppedBy');
         }
 
         $this->logUserActivity($this->user->id, 'modules.tasks.timerStoppedBy');
@@ -400,7 +426,7 @@ class TimelogController extends AccountBaseController
         $this->activeTimers = ProjectTimeLog::with('task', 'user')->whereNull('end_time');
         $this->viewTimelogPermission = user()->permission('view_timelogs');
        
-        abort_403($this->viewTimelogPermission == 'none');
+        abort_403($this->viewTimelogPermission == 'none' || in_array('client', user_roles()));
 
         if ($this->viewTimelogPermission == 'owned') {
             $this->activeTimers->where('user_id', user()->id);
@@ -410,6 +436,14 @@ class TimelogController extends AccountBaseController
             $this->activeTimers->where('added_by', user()->id);
         }
 
+        if ($this->viewTimelogPermission == 'both') {
+            $this->activeTimers->where(function ($q) {
+                $q->where('user_id', '=', user()->id);
+
+                $q->orWhere('added_by', '=', user()->id);
+            });
+        }
+
         $this->activeTimers = $this->activeTimers->get();
 
         return view('timelogs.ajax.active_timer', $this->data);
@@ -417,6 +451,9 @@ class TimelogController extends AccountBaseController
 
     public function byEmployee()
     {
+        $viewPermission = $this->viewTimelogPermission;
+        abort_403(in_array($viewPermission, ['none']));
+        
         $this->employees = User::allEmployees();
         $this->projects = Project::allProjects();
         $this->timeLogProjects = $this->projects;
@@ -469,8 +506,19 @@ class TimelogController extends AccountBaseController
             $this->employees = $this->employees->where('project_time_logs.project_id', '=', $projectId);
         }
 
+        if ($this->viewTimelogPermission == 'owned') {
+            $this->employees = $this->employees->where('project_time_logs.user_id', user()->id);
+        }
+
         if ($this->viewTimelogPermission == 'added') {
             $this->employees = $this->employees->where('project_time_logs.added_by', user()->id);
+        }
+
+        if ($this->viewTimelogPermission == 'both') {
+            $this->employees = $this->employees->where(function ($q) {
+                $q->where('project_time_logs.added_by', user()->id)
+                    ->orWhere('project_time_logs.user_id', '=', user()->id);
+            });
         }
 
         $this->employees = $this->employees->groupBy('project_time_logs.user_id')
@@ -514,6 +562,11 @@ class TimelogController extends AccountBaseController
             ]
         );
         return Reply::dataOnly(['status' => 'success']);
+    }
+
+    public function export()
+    {
+        return Excel::download(new EmployeeTimelogs, 'timelogs.xlsx');
     }
 
 }

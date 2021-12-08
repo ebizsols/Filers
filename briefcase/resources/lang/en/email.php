@@ -6,8 +6,12 @@ return array(
     'text' => 'New event has been created. Download the attachment to add event to your calendar.',
   ),
   'loginDashboard' => 'Go To Dashboard',
+  'viewInvoice' => 'View Invoice',
   'thankyouNote' => 'Thank you for using our application!',
+  'notificationAction' => 'Notification Action',
+  'notificationIntro' => 'The introduction to the notification.',
   'hello' => 'Hello',
+  'whoops' => 'Whoops',
   'regards' => 'Regards',
   'newExpense' => array(
     'subject' => 'New Expense submitted',
@@ -39,7 +43,8 @@ return array(
   ),
   'newTask' => array(
     'subject' => 'New Task Assigned to You',
-  ),
+),
+'dueOn' => 'Due On',
   'newTicket' => array(
     'subject' => 'New Support Ticket Requested',
     'text' => 'New Support Ticket is requested. Login to view the ticket.',
@@ -70,20 +75,25 @@ return array(
     'subject' => 'Reminder for assigned task',
   ),
   'invoices' => array(
-    'paymentReceived' => 'Payment received for invoice.',
+    'paymentReceived' => 'Payment received.',
+    'paymentReceivedForInvoice' => 'Payment received for invoice.',
+    'paymentReceivedForOrder' => 'Payment received for order.',
   ),
   'eventReminder' => array(
     'subject' => 'Event Reminder',
     'text' => 'This is to remind you about the following event. Log in for more details about the event.',
   ),
+  'taskReminder' => array(
+    'subject' => 'Task Reminder',
+  ),
   'estimate' => array(
     'subject' => 'New Estimate Created',
-    'text' => 'A new estimate has been Created. Please click on the link below to approve / reject the estimate.',
+    'text' => 'A new estimate has been Created. Please click on the link below to view estimate.',
     'loginDashboard' => 'Approve / Reject',
   ),
   'invoice' => array(
     'subject' => 'New Invoice Received',
-    'text' => 'A new invoice has been received. Login now to view the invoice.',
+    'text' => 'A new invoice has been received. Please click on the link below to view invoice.',
   ),
   'projectReminder' => array(
     'text' => 'This is to remind you about the due date of the following projects which is',
@@ -245,4 +255,5 @@ return array(
     'subject' => 'New Customer Registeration',
     'text' => 'New customer has registered.'
   ),
+  'footer' => 'If you’re having trouble clicking the ":actionText" button, copy and paste the URL below into your web browser:'
 );

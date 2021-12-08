@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 
 class TaskFileController extends AccountBaseController
 {
-    
+
     public function __construct()
     {
         parent::__construct();
@@ -46,7 +46,6 @@ class TaskFileController extends AccountBaseController
 
                 $this->logTaskActivity($task->id, $this->user->id, 'fileActivity', $task->board_column_id);
             }
-
 
             $this->files = TaskFile::where('task_id', $request->task_id)->orderBy('id', 'desc');
             $viewTaskFilePermission = user()->permission('view_task_files');

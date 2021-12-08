@@ -325,12 +325,12 @@
     $(document).ready(function() {
         const dp1 = datepicker('#invoice_date', {
             position: 'bl',
-            dateSelected: new Date("{{ $creditNote->issue_date }}"),
+            dateSelected: new Date("{{ str_replace('-', '/', $creditNote->issue_date) }}"),
             ...datepickerConfig
         });
         const dp2 = datepicker('#due_date', {
             position: 'bl',
-            dateSelected: new Date("{{ $creditNote->due_date }}"),
+            dateSelected: new Date("{{ str_replace('-', '/', $creditNote->due_date) }}"),
             ...datepickerConfig
         });
 

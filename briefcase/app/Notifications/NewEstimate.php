@@ -53,13 +53,13 @@ class NewEstimate extends Notification implements ShouldQueue
     // phpcs:ignore
     public function toMail($notifiable)
     {
-        $url = url('/');
+        $url = route('front.estimate.show', $this->estimate->hash);
 
         return (new MailMessage)
             ->subject(__('email.estimate.subject') . ' - ' . config('app.name') . '.')
             ->greeting(__('email.hello') . ' ' . ucwords($this->user->name) . '!')
             ->line(__('email.estimate.text'))
-            ->action(__('email.estimate.loginDashboard'), $url)
+            ->action(__('email.estimateDeclined.loginDashboard'), $url)
             ->line(__('email.thankyouNote'));
     }
 

@@ -83,7 +83,6 @@ class Payment extends BaseModel
     protected static function boot()
     {
         parent::boot();
-
         static::observe(PaymentObserver::class);
     }
 

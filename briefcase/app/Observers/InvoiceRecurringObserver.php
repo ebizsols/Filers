@@ -9,17 +9,21 @@ use App\Models\RecurringInvoiceItems;
 class InvoiceRecurringObserver
 {
 
-    public function saving(RecurringInvoice $expense)
+    public function saving(RecurringInvoice $invoice)
     {
         if (!isRunningInConsoleOrSeeding()) {
-            $expense->last_updated_by = user()->id;
+            $invoice->last_updated_by = user()->id;
+        }
+
+        if (request()->has('calculate_tax')) {
+            $invoice->calculate_tax = request()->calculate_tax;
         }
     }
 
-    public function creating(RecurringInvoice $expense)
+    public function creating(RecurringInvoice $invoice)
     {
         if (!isRunningInConsoleOrSeeding()) {
-            $expense->added_by = user()->id;
+            $invoice->added_by = user()->id;
         }
     }
 

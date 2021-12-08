@@ -117,6 +117,7 @@ class ProposalController extends AccountBaseController
         $proposal->discount_type = $request->discount_type;
         $proposal->status = 'waiting';
         $proposal->signature_approval = ($request->require_signature) ? 1 : 0;
+        $proposal->description = ($request->description !== '<p><br></p>') ? $request->description : null;
         $proposal->save();
 
         $redirectUrl = urldecode($request->redirect_url);
@@ -263,6 +264,7 @@ class ProposalController extends AccountBaseController
         $proposal->discount = round($request->discount_value, 2);
         $proposal->discount_type = $request->discount_type;
         $proposal->signature_approval = ($request->require_signature) ? 1 : 0;
+        $proposal->description = ($request->description !== '<p><br></p>') ? $request->description : null;
         $proposal->save();
 
         // Delete and create new

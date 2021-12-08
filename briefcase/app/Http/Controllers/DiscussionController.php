@@ -52,7 +52,8 @@ class DiscussionController extends AccountBaseController
                 'discussion_id' => $discussion->id
             ]
         );
-        return Reply::success(__('messages.recordSaved'));
+
+        return Reply::successWithData(__('messages.recordSaved'), ['discussion_id' => $discussion->id]);
     }
 
     /**

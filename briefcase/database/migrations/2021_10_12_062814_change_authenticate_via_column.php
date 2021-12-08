@@ -28,6 +28,9 @@ class ChangeAuthenticateViaColumn extends Migration
      */
     public function down()
     {
+        Schema::table('users', function (Blueprint $table) {
+            $table->enum('two_fa_status', ['active', 'inactive'])->default('inactive');
+        });
 
     }
 

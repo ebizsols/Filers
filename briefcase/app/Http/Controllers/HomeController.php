@@ -143,7 +143,28 @@ class HomeController extends Controller
     {
         $this->invoiceID = $request->invoice_id;
         $this->countries = Country::get();
-        return view('public-stripe-payment.index', $this->data);
+        return view('public-payment.stripe.index', $this->data);
+    }
+
+    public function paystackModal(Request $request)
+    {
+        $this->id = $request->id;
+        $this->type = $request->type;
+        return view('public-payment.paystack.index', $this->data);
+    }
+
+    public function mollieModal(Request $request)
+    {
+        $this->id = $request->id;
+        $this->type = $request->type;
+        return view('public-payment.mollie.index', $this->data);
+    }
+
+    public function authorizeModal(Request $request)
+    {
+        $this->id = $request->id;
+        $this->type = $request->type;
+        return view('public-payment.authorize.index', $this->data);
     }
 
     public function saveStripeDetail(StoreStripeDetail $request)
@@ -203,7 +224,7 @@ class HomeController extends Controller
 
         $this->customerDetail = $customerDetail;
 
-        $view = view('public-stripe-payment.stripe-payment', $this->data)->render();
+        $view = view('public-payment.stripe.stripe-payment', $this->data)->render();
 
         return Reply::dataOnly(['view' => $view, 'intent' => $this->intent]);
     }

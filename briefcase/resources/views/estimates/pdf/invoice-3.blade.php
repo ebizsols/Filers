@@ -267,38 +267,38 @@
             font-size: 15px;
             font-weight: bold;
         }
-        #invoice-info {
+        .invoice-info {
             float: left;
             margin: 50px 40px 0 60px;
         }
-        #invoice-info > div > span {
+        .invoice-info > div > span {
             display: inline-block;
             min-width: 20px;
             min-height: 18px;
             margin-bottom: 3px;
         }
-        #invoice-info > div > span:first-child {
+        .invoice-info > div > span:first-child {
             color: black;
         }
-        #invoice-info > div > span:last-child {
+        .invoice-info > div > span:last-child {
             color: #aaa;
         }
-        #invoice-info:after {
+        .invoice-info:after {
             content: '';
             display: block;
             clear: both;
         }
 
-        #terms {
+        .terms {
             float: right;
             margin-top: 50px;
         }
-        #terms .notes {
+        .terms .notes {
             min-height: 30px;
             min-width: 50px;
             color: #B32C39;
         }
-        #terms .payment-info div {
+        .terms .payment-info div {
             margin-bottom: 3px;
             min-width: 20px;
         }
@@ -595,7 +595,7 @@
 
     <div class="clearfix"></div>
     <br>
-    <section id="invoice-info">
+    <section class="invoice-info">
         <div>
             <span>@lang('app.menu.issues') @lang('app.date'):</span> <span>{{ $estimate->issue_date ? $estimate->issue_date->format($global->date_format) : '--' }}</span>
         </div>
@@ -610,16 +610,28 @@
 
     </section>
 
-    <section id="terms">
-
+    <section class="terms">
         <div class="notes">
             @if(!is_null($estimate->note))
                 <br> {!! nl2br($estimate->note) !!}
             @endif
             <br>{!! nl2br($invoiceSetting->invoice_terms) !!}
         </div>
-
     </section>
+
+    @if (isset($taxes) && invoice_setting()->tax_calculation_msg == 1 && $estimate->discount > 0)
+    <div class="clearfix"></div>
+    <br>
+    <section class="invoice-info">
+        <p class="text-dark-grey">
+            @if (invoice_setting()->calculate_tax == 'after_discount')
+                @lang('messages.calculateTaxAfterDiscount')
+            @else
+                @lang('messages.calculateTaxBeforeDiscount')
+            @endif
+        </p>
+    </section>
+    @endif
 
     <div class="clearfix"></div>
     <br>

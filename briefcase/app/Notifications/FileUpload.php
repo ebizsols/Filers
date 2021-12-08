@@ -58,7 +58,7 @@ class FileUpload extends Notification implements ShouldQueue
      */
     public function toMail($notifiable)
     {
-        $url = url('/');
+        $url = route('projects.show', [$this->project->id, 'tab' => 'files']);
 
         return (new MailMessage)
             ->subject(__('email.fileUpload.subject') .' '. $this->project->project_name . ' - ' . config('app.name'))

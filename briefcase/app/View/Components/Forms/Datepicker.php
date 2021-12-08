@@ -20,7 +20,7 @@ class Datepicker extends Component
      *
      * @return void
      */
-    public function __construct($fieldLabel, $fieldRequired = false, $fieldPlaceholder, $fieldValue = null, $fieldName, $fieldId, $fieldHelp = null, $custom = false)
+    public function __construct($fieldLabel, $fieldPlaceholder, $fieldName, $fieldId, $fieldRequired = false, $fieldValue = null, $fieldHelp = null, $custom = false)
     {
         $this->fieldLabel = $fieldLabel;
         $this->fieldRequired = $fieldRequired;

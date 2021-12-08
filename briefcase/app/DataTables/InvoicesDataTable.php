@@ -316,11 +316,13 @@ class InvoicesDataTable extends BaseDataTable
                     $q->withTrashed();
                     $q->select('id', 'project_name', 'client_id');
                 },
-                'currency:id,currency_symbol,currency_code', 'project.client', 'client', 'payment', 'estimate', 'clientdetails'
+                'currency:id,currency_symbol,currency_code', 'project.client', 'client', 'payment', 'estimate', 'project.clientdetails'
             ]
         )
-            ->with('client', 'client.session', 'client.clientDetails', 'payment')
+            ->with('client', 'client.session', 'client.clientdetails', 'payment', 'clientdetails')
             ->select('invoices.id', 'invoices.due_amount', 'invoices.project_id', 'invoices.client_id', 'invoices.invoice_number', 'invoices.currency_id', 'invoices.total', 'invoices.status', 'invoices.issue_date', 'invoices.credit_note', 'invoices.show_shipping_address', 'invoices.send_status', 'invoices.invoice_recurring_id', 'invoices.added_by', 'invoices.hash');
+
+
 
 
         if ($request->startDate !== null && $request->startDate != 'null' && $request->startDate != '') {
@@ -345,6 +347,8 @@ class InvoicesDataTable extends BaseDataTable
             else{
                 $model = $model->where('invoices.status', '=', $request->status);
             }
+
+            $model = $model->where('invoices.credit_note', 0);
         }
 
         if (request('amount') == 'pending') {
@@ -426,15 +430,15 @@ class InvoicesDataTable extends BaseDataTable
     protected function getColumns()
     {
         return [
-            __('app.id') => ['data' => 'id', 'name' => 'id', 'visible' => false],
-            __('app.invoice') . '#' => ['data' => 'invoice_number', 'name' => 'invoice_number', 'exportable' => false],
-            __('app.invoiceNumber') . '#' => ['data' => 'invoice', 'name' => 'invoice_number', 'visible' => false],
-            __('app.project')  => ['data' => 'project_name', 'name' => 'project.project_name'],
-            __('app.client') => ['data' => 'name', 'name' => 'project.client.name', 'exportable' => false],
-            __('app.customers')  => ['data' => 'client_name', 'name' => 'project.client.name', 'visible' => false],
-            __('modules.invoices.total') => ['data' => 'total', 'name' => 'total', 'class' => 'text-right'],
-            __('modules.invoices.invoiceDate') => ['data' => 'issue_date', 'name' => 'issue_date'],
-            __('app.status') => ['data' => 'status', 'name' => 'status', 'width' => '10%'],
+            __('app.id') => ['data' => 'id', 'name' => 'id', 'visible' => false, 'title' => __('app.id')],
+            __('app.invoice') . '#' => ['data' => 'invoice_number', 'name' => 'invoice_number', 'exportable' => false, 'title' => __('app.invoice')],
+            __('app.invoiceNumber') . '#' => ['data' => 'invoice', 'name' => 'invoice_number', 'visible' => false, 'title' => __('app.invoiceNumber')],
+            __('app.project')  => ['data' => 'project_name', 'name' => 'project.project_name', 'title' => __('app.project')],
+            __('app.client') => ['data' => 'name', 'name' => 'project.client.name', 'exportable' => false, 'title' => __('app.client')],
+            __('app.customers')  => ['data' => 'client_name', 'name' => 'project.client.name', 'visible' => false, 'title' => __('app.customers')],
+            __('modules.invoices.total') => ['data' => 'total', 'name' => 'total', 'class' => 'text-right', 'title' => __('modules.invoices.total')],
+            __('modules.invoices.invoiceDate') => ['data' => 'issue_date', 'name' => 'issue_date', 'title' => __('modules.invoices.invoiceDate')],
+            __('app.status') => ['data' => 'status', 'name' => 'status', 'width' => '10%', 'title' => __('app.status')],
             Column::computed('action', __('app.action'))
                 ->exportable(false)
                 ->printable(false)

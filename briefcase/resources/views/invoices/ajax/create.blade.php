@@ -207,6 +207,22 @@ $addProductPermission = user()->permission('add_product');
                 </div>
             </div>
             <!-- SHIPPING ADDRESS END -->
+
+            <div class="col-md-4">
+                <div class="form-group c-inv-select mb-4">
+                    <x-forms.label fieldId="company_address_id" :fieldLabel="__('modules.invoices.generatedBy')">
+                    </x-forms.label>
+                    <div class="select-others height-35 rounded">
+                        <select class="form-control select-picker" data-live-search="true" data-size="8"
+                            name="company_address_id" id="company_address_id">
+                            @foreach ($companyAddresses as $item)
+                                <option {{ $item->is_default ? 'selected' : '' }} value="{{ $item->id }}">
+                                    {{ $item->address }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+            </div>
         </div>
         <!-- CLIENT, PROJECT, GST, BILLING, SHIPPING ADDRESS END -->
 
@@ -783,7 +799,8 @@ $addProductPermission = user()->permission('add_product');
         $(document).on('click', '#add-item', function() {
 
             var i = $(document).find('.item_name').length;
-            var item = ` <div class="d-flex px-4 py-3 c-inv-desc item-row">
+            var item =
+                ` <div class="d-flex px-4 py-3 c-inv-desc item-row">
                 <div class="c-inv-desc-table w-100 d-lg-flex d-md-flex d-block">
                 <table width="100%">
                 <tbody>

@@ -632,9 +632,21 @@
                 <div>{!! nl2br($estimate->note) !!}</div>
             @endif
             <div>{!! nl2br($invoiceSetting->invoice_terms) !!}</div>
-
         </section>
+
+        @if (isset($taxes) && invoice_setting()->tax_calculation_msg == 1 && $estimate->discount > 0)
         <div class="clearfix"></div>
+        <hr>
+        <section>
+            <p class="text-dark-grey">
+                @if (invoice_setting()->calculate_tax == 'after_discount')
+                    @lang('messages.calculateTaxAfterDiscount')
+                @else
+                    @lang('messages.calculateTaxBeforeDiscount')
+                @endif
+            </p>
+        </section>
+        @endif
 
     </div>
 

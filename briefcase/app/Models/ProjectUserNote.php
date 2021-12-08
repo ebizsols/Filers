@@ -10,6 +10,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $id
  * @property int $user_id
  * @property int $project_note_id
+ * @property int|null $client_id
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\ProjectMember[] $members
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @method static \Illuminate\Database\Eloquent\Builder|ProjectUserNote newModelQuery()

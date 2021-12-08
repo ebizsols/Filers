@@ -64,7 +64,7 @@
                  @if (!in_array('client', user_roles()) && ($sidebarUserPermissions['add_employees'] == 4 || $sidebarUserPermissions['add_employees'] == 1))
                     <a class="dropdown-item d-flex justify-content-between align-items-center f-15 text-dark invite-member"
                         href="javascript:;">
-                        @lang('app.inviteMember') {{ ucwords($companyName) }}
+                        <span>@lang('app.inviteMember') {{ ucwords($companyName) }}</span>
                         <i class="side-icon bi bi-person-plus"></i>
                     </a>
                  @endif

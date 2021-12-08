@@ -19,6 +19,7 @@
     <meta name="msapplication-TileColor" content="#ffffff">
     <meta name="msapplication-TileImage" content="{{ $global->favicon_url }}">
     <meta name="theme-color" content="#ffffff">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ $global->favicon_url }}">
 
     @isset($activeSettingMenu)
         <style>
@@ -175,6 +176,11 @@
                                     <td height="30" colspan="2"></td>
                                 </tr>
                             </table>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    {!! $proposal->description !!}
+                                </div>
+                            </div>
                             <table width="100%" class="inv-desc d-none d-lg-table d-md-table">
                                 <tr>
                                     <td colspan="2">
@@ -449,7 +455,7 @@
     <!-- BODY WRAPPER END -->
 
     <div id="signature-modal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-dialog d-flex justify-content-center align-items-center modal-xl">
+        <div class="modal-dialog d-flex justify-content-center align-items-center modal-lg">
             <div class="modal-content">
                 @include('proposals.ajax.accept-proposal')
             </div>

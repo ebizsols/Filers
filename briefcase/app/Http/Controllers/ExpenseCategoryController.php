@@ -37,7 +37,7 @@ class ExpenseCategoryController extends AccountBaseController
 
         $roles = $request->role;
 
-        if(count($roles) > 0) // If selected role id.
+        if($request->role && count($roles) > 0) // If selected role id.
         {
             ExpensesCategoryRole::where('expenses_category_id', $category->id)->delete();
 
@@ -98,6 +98,7 @@ class ExpenseCategoryController extends AccountBaseController
 
             $categories = $categories->join('expenses_category_roles', 'expenses_category_roles.expenses_category_id', 'expenses_category.id')
                 ->join('roles', 'expenses_category_roles.role_id', 'roles.id')
+                ->select('expenses_category.*')
                 ->where('expenses_category_roles.role_id', $userRoleID[0]->role_id);
         }
 

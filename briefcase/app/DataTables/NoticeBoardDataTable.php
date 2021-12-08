@@ -184,9 +184,9 @@ class NoticeBoardDataTable extends BaseDataTable
                 'visible' => !in_array('client', user_roles())
             ],
             '#' => ['data' => 'DT_RowIndex', 'orderable' => false, 'searchable' => false, 'visible' => false],
-            __('modules.notices.notice')  => ['data' => 'heading', 'name' => 'heading'],
-            __('app.date') => ['data' => 'created_at', 'name' => 'created_at'],
-            __('app.to') => ['data' => 'to', 'name' => 'to'],
+            __('modules.notices.notice')  => ['data' => 'heading', 'name' => 'heading', 'title' => __('modules.notices.notice')],
+            __('app.date') => ['data' => 'created_at', 'name' => 'created_at', 'title' => __('app.date')],
+            __('app.to') => ['data' => 'to', 'name' => 'to', 'title' => __('app.to')],
             Column::computed('action', __('app.action'))
                 ->exportable(false)
                 ->printable(false)

@@ -38,6 +38,11 @@ class AddColumnTypeInvoiceItemsTable extends Migration
             $table->dropColumn(['type']);
         });
 
+        Schema::table('invoices', function (Blueprint $table) {
+            $table->float('discount')->after('sub_total');
+            $table->float('tax_percent')->nullable();
+        });
+
     }
 
 }

@@ -165,13 +165,13 @@ class AttendanceReportDataTable extends BaseDataTable
     {
         return [
             '#' => ['data' => 'DT_RowIndex', 'orderable' => false, 'searchable' => false, 'visible' => false],
-            __('app.employee')  => ['data' => 'name', 'name' => 'users.name', 'exportable' => false],
-            __('app.name') => ['data' => 'employee_name', 'name' => 'users.name', 'visible' => false],
-            __('modules.attendance.present') => ['data' => 'present_days', 'name' => 'present_days'],
-            __('modules.attendance.absent') => ['data' => 'absent_days', 'name' => 'absent_days'],
-            __('modules.attendance.hoursClocked') => ['data' => 'hours_clocked', 'name' => 'hours_clocked'],
-            __('app.days') . ' ' . __('modules.attendance.late') => ['data' => 'late_day_count', 'name' => 'late_day_count'],
-            __('modules.attendance.halfDay') => ['data' => 'half_day_count', 'name' => 'half_day_count'],
+            __('app.employee')  => ['data' => 'name', 'name' => 'users.name', 'exportable' => false, 'title' => __('modules.projects.projectName')],
+            __('app.name') => ['data' => 'employee_name', 'name' => 'users.name', 'visible' => false, 'title' => __('modules.projects.projectName')],
+            __('modules.attendance.present') => ['data' => 'present_days', 'name' => 'present_days', 'title' => __('modules.projects.projectName')],
+            __('modules.attendance.absent') => ['data' => 'absent_days', 'name' => 'absent_days', 'title' => __('modules.projects.projectName')],
+            __('modules.attendance.hoursClocked') => ['data' => 'hours_clocked', 'name' => 'hours_clocked', 'title' => __('modules.projects.projectName')],
+            __('app.days') . ' ' . __('modules.attendance.late') => ['data' => 'late_day_count', 'name' => 'late_day_count', 'title' => __('modules.projects.projectName')],
+            __('modules.attendance.halfDay') => ['data' => 'half_day_count', 'name' => 'half_day_count', 'title' => __('modules.projects.projectName')],
         ];
     }
 

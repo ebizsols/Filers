@@ -89,10 +89,12 @@ class PermissionRole extends BaseModel
             'edit_task_notes' => 'added',
             'delete_task_notes' => 'added',
 
+            'add_timelogs' => 'added',
+            'edit_timelogs' => 'added',
             'view_timelogs' => 'both',
             'view_project_timelogs' => 'all',
 
-            'add_tickets' => 'all',
+            'add_tickets' => 'added',
             'view_tickets' => 'both',
             'edit_tickets' => 'both',
             'delete_tickets' => 'added',
@@ -101,8 +103,8 @@ class PermissionRole extends BaseModel
 
             'view_notice' => 'owned',
 
+            'add_leave' => 'added',
             'view_leave' => 'both',
-            'edit_leave' => 'added',
             'view_leaves_taken' => 'all',
             'approve_or_reject_leaves' => 'none',
 
@@ -160,7 +162,7 @@ class PermissionRole extends BaseModel
             'view_timelogs' => 'owned',
             'view_project_timelogs' => 'all',
 
-            'add_tickets' => 'all',
+            'add_tickets' => 'added',
             'view_tickets' => 'both',
             'edit_tickets' => 'added',
             'delete_tickets' => 'added',

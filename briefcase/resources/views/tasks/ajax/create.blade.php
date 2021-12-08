@@ -116,18 +116,16 @@ $addTaskPermission = user()->permission('add_tasks');
                                 </x-forms.input-group>
                             </div>
                         @elseif ($addTaskPermission == 'added')
-                            <div class="col-lg-6 col-md-6">
-                                <input type="hidden" name="user_id[]" value="{{ user()->id }}">
-                                <x-forms.text :fieldLabel="__('modules.tasks.assignTo')" fieldName="user_name"
-                                    fieldRequired="true" fieldId="selectAssignee" fieldReadOnly="true"
-                                    :fieldPlaceholder="__('placeholders.name')" :fieldValue="user()->name" />
-                            </div>
+                            <input type="hidden" name="user_id[]" value="{{ user()->id }}">
+                            <x-forms.text :fieldLabel="__('modules.tasks.assignTo')" fieldName="user_name"
+                                fieldRequired="true" fieldId="selectAssignee" fieldReadOnly="true"
+                                :fieldPlaceholder="__('placeholders.name')" :fieldValue="user()->name" />
                         @endif
                     </div>
 
                     <div class="col-md-12">
                         <div class="form-group my-3">
-                            <x-forms.label fieldId="descriptionn" :fieldLabel="__('app.description')">
+                            <x-forms.label fieldId="description" :fieldLabel="__('app.description')">
                             </x-forms.label>
                             <div id="description"></div>
                             <textarea name="description" id="description-text" class="d-none"></textarea>
@@ -460,19 +458,19 @@ $addTaskPermission = user()->permission('add_tasks');
                 addRemoveLinks: true,
                 parallelUploads: 10,
                 acceptedFiles: dropzoneFileAllow,
-                init: function() {
+                init: function () {
                     taskDropzone = this;
                 }
             });
-            taskDropzone.on('sending', function(file, xhr, formData) {
+            taskDropzone.on('sending', function (file, xhr, formData) {
                 var ids = $('#taskID').val();
                 formData.append('task_id', ids);
                 $.easyBlockUI();
             });
-            taskDropzone.on('uploadprogress', function() {
+            taskDropzone.on('uploadprogress', function () {
                 $.easyBlockUI();
             });
-            taskDropzone.on('completemultiple', function() {
+            taskDropzone.on('completemultiple', function () {
                 window.location.href = "{{ route('tasks.index') }}"
             });
         }
@@ -489,33 +487,8 @@ $addTaskPermission = user()->permission('add_tasks');
             }
         });
 
-        var quill = new Quill('#description', {
-            modules: {
-                toolbar: [
-                    [{
-                        header: [1, 2, 3, 4, 5, false]
-                    }],
-                    [{
-                        'list': 'ordered'
-                    }, {
-                        'list': 'bullet'
-                    }],
-                    ['bold', 'italic', 'underline', 'strike'],
-                    ['image', 'code-block', 'link'],
-                    [{
-                        'direction': 'rtl'
-                    }],
-                    ['clean']
-                ],
-                clipboard: {
-                    matchVisual: false
-                },
-                "emoji-toolbar": true,
-                "emoji-textarea": true,
-                "emoji-shortname": true,
-            },
-            theme: 'snow'
-        });
+        quillImageLoad('#description');
+
 
         const dp1 = datepicker('#task_start_date', {
             position: 'bl',
@@ -540,12 +513,12 @@ $addTaskPermission = user()->permission('add_tasks');
             ...datepickerConfig
         });
 
-        $('#save-task-data-form').on('change', '#project_id', function() {
-            var id = $(this).val();
+        $('#save-task-data-form').on('change', '#project_id', function () {
+            let id = $(this).val();
             if (id == '') {
                 id = 0;
             }
-            var url = "{{ route('milestones.by_project', ':id') }}";
+            let url = "{{ route('milestones.by_project', ':id') }}";
             url = url.replace(':id', id);
 
             $.easyAjax({
@@ -553,7 +526,7 @@ $addTaskPermission = user()->permission('add_tasks');
                 container: '#save-task-data-form',
                 type: "GET",
                 blockUI: true,
-                success: function(response) {
+                success: function (response) {
                     if (response.status == 'success') {
                         $('#milestone_id').html(response.data);
                         $('#milestone_id').selectpicker('refresh');
@@ -562,12 +535,12 @@ $addTaskPermission = user()->permission('add_tasks');
             });
         });
 
-        $('#save-task-data-form').on('change', '#project_id', function() {
-            var id = $(this).val();
-            if (id == '') {
+        $('#save-task-data-form').on('change', '#project_id', function () {
+            let id = $(this).val();
+            if (id === '') {
                 id = 0;
             }
-            var url = "{{ route('projects.members', ':id') }}";
+            let url = "{{ route('projects.members', ':id') }}";
             url = url.replace(':id', id);
             $.easyAjax({
                 url: url,
@@ -575,15 +548,15 @@ $addTaskPermission = user()->permission('add_tasks');
                 container: '#save-task-data-form',
                 blockUI: true,
                 redirect: true,
-                success: function(data) {
+                success: function (data) {
                     $('#selectAssignee').html(data.data);
                     $('#selectAssignee').selectpicker('refresh');
                 }
             })
         });
 
-        $('#save-task-form').click(function() {
-            var note = document.getElementById('description').children[0].innerHTML;
+        $('#save-task-form').click(function () {
+            let note = document.getElementById('description').children[0].innerHTML;
             document.getElementById('description-text').value = note;
 
             const url = "{{ route('tasks.store') }}";
@@ -596,14 +569,13 @@ $addTaskPermission = user()->permission('add_tasks');
                 blockUI: true,
                 buttonSelector: "#save-task-form",
                 data: $('#save-task-data-form').serialize(),
-                success: function(response) {
-                    if (response.status == 'success') {
-                        if(taskDropzone.getQueuedFiles().length > 0){
+                success: function (response) {
+                    if (response.status === 'success') {
+                        if (taskDropzone.getQueuedFiles().length > 0) {
                             taskID = response.taskID;
                             $('#taskID').val(response.taskID);
                             taskDropzone.processQueue();
-                        }
-                        else{
+                        } else {
                             window.location.href = response.redirectUrl;
                         }
                     }
@@ -611,55 +583,55 @@ $addTaskPermission = user()->permission('add_tasks');
             });
         });
 
-        $('#assign-self').click(function() {
+        $('#assign-self').click(function () {
             $('#selectAssignee').val('{{ $user->id }}');
             $('#selectAssignee').selectpicker('refresh');
         });
 
-        $('#without_duedate').click(function() {
+        $('#without_duedate').click(function () {
             $('.dueDateBox').toggle();
         });
 
-        $('#create_task_category').click(function() {
+        $('#create_task_category').click(function () {
             const url = "{{ route('taskCategory.create') }}";
             $(MODAL_LG + ' ' + MODAL_HEADING).html('...');
             $.ajaxModal(MODAL_LG, url);
         });
 
-        $('#department-setting').click(function() {
+        $('#department-setting').click(function () {
             const url = "{{ route('departments.create') }}";
             $(MODAL_LG + ' ' + MODAL_HEADING).html('...');
             $.ajaxModal(MODAL_LG, url);
         });
 
-        $('#client_view_task').change(function() {
+        $('#client_view_task').change(function () {
             $('#clientNotification').toggleClass('d-none');
         });
 
-        $('#set_time_estimate').change(function() {
+        $('#set_time_estimate').change(function () {
             $('#set-time-estimate-fields').toggleClass('d-none');
         });
 
-        $('#repeat-task').change(function() {
+        $('#repeat-task').change(function () {
             $('#repeat-fields').toggleClass('d-none');
         });
 
-        $('#dependent-task').change(function() {
+        $('#dependent-task').change(function () {
             $('#dependent-fields').toggleClass('d-none');
         });
 
-        $('.toggle-other-details').click(function() {
+        $('.toggle-other-details').click(function () {
             $(this).find('svg').toggleClass('fa-chevron-down fa-chevron-up');
             $('#other-details').toggleClass('d-none');
         });
 
-        $('#createTaskLabel').click(function() {
+        $('#createTaskLabel').click(function () {
             const url = "{{ route('task-label.create') }}";
             $(MODAL_XL + ' ' + MODAL_HEADING).html('...');
             $.ajaxModal(MODAL_XL, url);
         });
 
-        $('#add-project').click(function() {
+        $('#add-project').click(function () {
             $(MODAL_XL).modal('show');
 
             const url = "{{ route('projects.create') }}";
@@ -668,7 +640,7 @@ $addTaskPermission = user()->permission('add_tasks');
                 url: url,
                 blockUI: true,
                 container: MODAL_XL,
-                success: function(response) {
+                success: function (response) {
                     if (response.status == "success") {
                         $(MODAL_XL + ' .modal-body').html(response.html);
                         $(MODAL_XL + ' .modal-title').html(response.title);
@@ -678,7 +650,7 @@ $addTaskPermission = user()->permission('add_tasks');
             });
         });
 
-        $('#add-employee').click(function() {
+        $('#add-employee').click(function () {
             $(MODAL_XL).modal('show');
 
             const url = "{{ route('employees.create') }}";
@@ -687,7 +659,7 @@ $addTaskPermission = user()->permission('add_tasks');
                 url: url,
                 blockUI: true,
                 container: MODAL_XL,
-                success: function(response) {
+                success: function (response) {
                     if (response.status == "success") {
                         $(MODAL_XL + ' .modal-body').html(response.html);
                         $(MODAL_XL + ' .modal-title').html(response.title);
@@ -700,11 +672,11 @@ $addTaskPermission = user()->permission('add_tasks');
         init(RIGHT_MODAL);
     });
 
-    function checkboxChange(parentClass, id){
-        var checkedData = '';
-        $('.'+parentClass).find("input[type= 'checkbox']:checked").each(function () {
-            checkedData = (checkedData !== '') ? checkedData+', '+$(this).val() : $(this).val();
+    function checkboxChange(parentClass, id) {
+        let checkedData = '';
+        $('.' + parentClass).find("input[type= 'checkbox']:checked").each(function () {
+            checkedData = (checkedData !== '') ? checkedData + ', ' + $(this).val() : $(this).val();
         });
-        $('#'+id).val(checkedData);
+        $('#' + id).val(checkedData);
     }
 </script>

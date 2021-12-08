@@ -12,7 +12,8 @@
                                     :fieldLabel="__('app.project')" search="true">
                                     <option value="">--</option>
                                     @foreach ($projects as $project)
-                                        <option value="{{ $project->id }}">
+                                        <option {{ request()->default_project == $project->id ? 'selected' : '' }}
+                                            value="{{ $project->id }}">
                                             {{ $project->project_name }}
                                         </option>
                                     @endforeach
@@ -34,8 +35,8 @@
 
                             @if ($addTimelogPermission == 'all')
                                 <div class="col-md-6 col-lg-4">
-                                    <x-forms.label class="mt-3" fieldId="user_id2" :fieldLabel="__('app.employee')"
-                                        fieldRequired="true">
+                                    <x-forms.label class="mt-3" fieldId="user_id2"
+                                        :fieldLabel="__('app.employee')" fieldRequired="true">
                                     </x-forms.label>
                                     <x-forms.input-group>
                                         <select class="form-control select-picker" name="user_id" id="user_id2"

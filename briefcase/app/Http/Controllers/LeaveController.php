@@ -190,12 +190,25 @@ class LeaveController extends AccountBaseController
     {
         $this->leave = Leave::findOrFail($id);
         $this->editPermission = user()->permission('edit_leave');
-        abort_403(!($this->editPermission == 'all' || ($this->editPermission == 'added' && $this->leave->added_by == user()->id)));
+        abort_403(!(
+            ($this->editPermission == 'all'
+            || ($this->editPermission == 'added' && $this->leave->added_by == user()->id)
+            || ($this->editPermission == 'owned' && $this->leave->user_id == user()->id)
+            || ($this->editPermission == 'both' && ($this->leave->user_id == user()->id || $this->leave->added_by == user()->id))
+            )
+        && ($this->leave->status == 'pending')));
 
         $this->employees = User::allEmployees();
         $this->leaveTypes = LeaveType::all();
 
         $this->pageTitle = $this->leave->user->name;
+
+        if ($this->editPermission == 'added') {
+            $this->defaultAssign = user();
+
+        } else if(isset(request()->default_assign)) {
+            $this->defaultAssign = User::findOrFail(request()->default_assign);
+        }
 
         if (request()->ajax()) {
             $html = view('leaves.ajax.edit', $this->data)->render();
@@ -218,7 +231,12 @@ class LeaveController extends AccountBaseController
     {
         $leave = Leave::findOrFail($id);
         $this->editPermission = user()->permission('edit_leave');
-        abort_403(!($this->editPermission == 'all' || ($this->editPermission == 'added' && $this->leave->added_by == user()->id)));
+
+        abort_403(!($this->editPermission == 'all'
+        || ($this->editPermission == 'added' && $leave->added_by == user()->id)
+        || ($this->editPermission == 'owned' && $leave->user_id == user()->id)
+        || ($this->editPermission == 'both' && ($leave->user_id == user()->id || $leave->added_by == user()->id))
+        ));
 
         $leave->user_id = $request->user_id;
         $leave->leave_type_id = $request->leave_type_id;
@@ -229,7 +247,10 @@ class LeaveController extends AccountBaseController
             $leave->reject_reason = $request->reject_reason;
         }
 
-        $leave->status = $request->status;
+        if ($request->has('status')) {
+            $leave->status = $request->status;
+        }
+
         $leave->save();
 
         return Reply::successWithData(__('messages.leaveAssignSuccess'), ['redirectUrl' => route('leaves.index')]);
@@ -245,7 +266,12 @@ class LeaveController extends AccountBaseController
     {
         $leave = Leave::findOrFail($id);
         $this->deletePermission = user()->permission('delete_leave');
-        abort_403(!($this->deletePermission == 'all' || ($this->deletePermission == 'added' && $leave->added_by == user()->id)));
+
+        abort_403(!($this->deletePermission == 'all'
+        || ($this->deletePermission == 'added' && $leave->added_by == user()->id)
+        || ($this->deletePermission == 'owned' && $leave->user_id == user()->id)
+        || ($this->deletePermission == 'both' && ($leave->user_id == user()->id || $leave->added_by == user()->id))
+        ));
 
         Leave::destroy($id);
         return Reply::successWithData(__('messages.leaveDeleteSuccess'), ['redirectUrl' => route('leaves.index')]);
@@ -297,6 +323,23 @@ class LeaveController extends AccountBaseController
             if ($request->searchText != '') {
                 $leavesList->where('users.name', 'like', '%' . $request->searchText . '%');
             }
+
+            if ($viewPermission == 'owned') {
+                $leavesList->where('leaves.user_id', '=', user()->id);
+            }
+    
+            if ($viewPermission == 'added') {
+                $leavesList->where('leaves.added_by', '=', user()->id);
+            }
+    
+            if ($viewPermission == 'both') {
+                $leavesList->where(function ($q) {
+                    $q->where('leaves.user_id', '=', user()->id);;
+    
+                    $q->orWhere('leaves.added_by', '=', user()->id);;
+                });
+            }
+    
 
             $leaves = $leavesList->get();
 
@@ -371,6 +414,26 @@ class LeaveController extends AccountBaseController
         $this->leaveAction = $request->leave_action;
         $this->leaveID = $request->leave_id;
         return view('leaves.reject.index', $this->data);
+    }
+
+    public function personalLeaves()
+    {
+        $this->pageTitle = __('modules.leaves.myLeaves');
+        
+        $this->employee = User::with(['employeeDetail', 'employeeDetail.designation', 'employeeDetail.department', 'leaveTypes', 'leaveTypes.leaveType', 'country', 'employee'])
+            ->withoutGlobalScope('active')
+            ->withCount('member', 'agents', 'tasks')
+            ->findOrFail(user()->id);
+
+        $this->leaveTypes = LeaveType::byUser(user()->id);
+        $this->leavesTakenByUser = Leave::byUserCount(user()->id);
+        $this->allowedLeaves = $this->employee->leaveTypes->sum('no_of_leaves');
+        $this->employeeLeavesQuota = $this->employee->leaveTypes;
+        $this->employeeLeavesQuotas = $this->employee->leaveTypes;
+        $this->view = 'leaves.ajax.personal';
+
+        return view('leaves.create', $this->data);
+
     }
 
 }

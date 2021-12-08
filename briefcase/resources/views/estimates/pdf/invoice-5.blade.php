@@ -394,6 +394,21 @@
             </tr>
             <!-- Table Row End -->
             <!-- Table Row Start -->
+            @if (isset($taxes) && invoice_setting()->tax_calculation_msg == 1 && $estimate->discount > 0)
+            <tr class="text-grey">
+                <td width="100%" class="f-14 line-height">
+                    <p class="text-dark-grey">
+                        @if (invoice_setting()->calculate_tax == 'after_discount')
+                            @lang('messages.calculateTaxAfterDiscount')
+                        @else
+                            @lang('messages.calculateTaxBeforeDiscount')
+                        @endif
+                    </p>
+                </td>
+            </tr>
+            @endif
+            <!-- Table Row End -->
+            <!-- Table Row Start -->
             <tr class="text-grey">
                 <td colspan="2" class="f-14 line-height">
                     @if ($estimate->sign)

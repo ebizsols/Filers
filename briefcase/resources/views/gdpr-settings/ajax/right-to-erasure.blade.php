@@ -37,16 +37,3 @@
     </x-setting-form-actions>
 </div>
 <!-- Buttons End -->
-
-<script>
-    $(body).on('click', '#save-right-to-erasure-data', function() {
-        $.easyAjax({
-            url: "{{route('gdpr_settings.update_general')}}",
-            container: '#editSettings',
-            type: "POST",
-            disableButton: true,
-            buttonSelector: "#save-right-to-erasure-data",
-            data: $('#editSettings').serialize(),
-        })
-    })
-</script>

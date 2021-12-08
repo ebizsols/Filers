@@ -38,7 +38,22 @@ class AlterAndAddPaymentGatewaysCredentials extends Migration
      */
     public function down()
     {
-        //
+        Schema::table('payment_gateway_credentials', function (Blueprint $table) {
+            $table->dropColumn('test_stripe_client_id');
+            $table->dropColumn('test_stripe_secret');
+            $table->dropColumn('test_razorpay_key');
+            $table->dropColumn('test_razorpay_secret');
+            $table->dropColumn('test_stripe_webhook_secret');
+            $table->dropColumn('stripe_mode');
+            $table->dropColumn('razorpay_mode');
+
+            /* Rename old column names */
+            $table->renameColumn('live_stripe_client_id', 'stripe_client_id');
+            $table->renameColumn('live_stripe_secret', 'stripe_secret');
+            $table->renameColumn('live_razorpay_key', 'razorpay_key');
+            $table->renameColumn('live_razorpay_secret', 'razorpay_secret');
+            $table->renameColumn('live_stripe_webhook_secret', 'stripe_webhook_secret');
+        });
     }
 
 }

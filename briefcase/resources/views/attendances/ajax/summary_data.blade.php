@@ -23,11 +23,14 @@ $managePermission = user()->permission('manage_attendance');
                 @foreach ($attendance as $key2 => $day)
                     @if ($key2 + 1 <= count($attendance))
                         <td class="px-2">
-                            @if ($day == 'Absent')
-                                <a href="javascript:;" @if ($addAttendancePermission == 'all' || $managePermission == 'all') class="edit-attendance" @endif
-                                    data-user-id="{{ $userId }}" data-attendance-date="{{ $key2 }}"><i
+                            @if ($day == 'Leave')
+                                <span data-toggle="tooltip" data-original-title="@lang('modules.attendance.leave')"><i
+                                        class="fa fa-plane-departure text-warning"></i></span>
+                            @elseif ($day == 'Absent')
+                                <a href="javascript:;" @if ($addAttendancePermission == 'all' || $managePermission == 'all') class="edit-attendance" @endif data-user-id="{{ $userId }}"
+                                    data-attendance-date="{{ $key2 }}"><i
                                         class="fa fa-times text-lightest"></i></a>
-                            @elseif($day == 'Holiday')
+                            @elseif ($day == 'Holiday')
                                 <a href="javascript:;" data-toggle="tooltip"
                                     data-original-title="{{ $holidayOccasions[$key2] }}"
                                     data-user-id="{{ $userId }}" data-attendance-date="{{ $key2 }}"><i

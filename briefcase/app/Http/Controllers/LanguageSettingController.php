@@ -82,7 +82,7 @@ class LanguageSettingController extends AccountBaseController
         }
 
         $setting->language_name = $request->language_name;
-        $setting->language_code = $request->language_code;
+        $setting->language_code = strtolower($request->language_code);
         $setting->status = $request->status;
         $setting->save();
 

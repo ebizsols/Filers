@@ -6,7 +6,6 @@ use App\Models\PaymentGatewayCredentials;
 use Illuminate\Http\Request;
 use Stripe\Exception\SignatureVerificationException;
 use Stripe\Stripe;
-use App\Models\ClientPayment;
 use App\Models\Invoice;
 use App\Models\InvoiceItems;
 use App\Models\Order;
@@ -58,7 +57,7 @@ class StripeWebhookController extends Controller
         // Do something with $event
         if ($payload['type'] == 'payment_intent.succeeded') {
 
-            $previousClientPayment = ClientPayment::where('payload_id', $intentId)
+            $previousClientPayment = Payment::where('payload_id', $intentId)
                 ->whereNull('event_id')
                 ->first();
 
@@ -197,7 +196,7 @@ class StripeWebhookController extends Controller
             $invoice->save();
         }
 
-        $payment = ClientPayment::where('payload_id', $intentId)->first();
+        $payment = Payment::where('payload_id', $intentId)->first();
         $payment->status = 'failed';
         $payment->payment_gateway_response = $errorMessage;
         $payment->save();

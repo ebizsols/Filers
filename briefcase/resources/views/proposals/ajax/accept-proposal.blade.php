@@ -19,7 +19,7 @@
             </div>
             <div class="col-sm-12 bg-grey p-4">
                 <x-forms.label fieldId="signature-pad" :fieldLabel="__('modules.estimates.signature')" />
-                <div class="signature_wrap wrapper bg-grey form-control">
+                <div class="signature_wrap border-0 wrapper bg-grey form-control">
                     <canvas id="signature-pad" class="signature-pad rounded" width=400 height=150></canvas>
                 </div>
             </div>

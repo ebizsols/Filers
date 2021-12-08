@@ -88,4 +88,9 @@ class Discussion extends Model
         return $this->belongsTo(Project::class, 'project_id');
     }
 
+    public function files()
+    {
+        return $this->hasMany(DiscussionFile::class, 'discussion_id');
+    }
+
 }

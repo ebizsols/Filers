@@ -2,7 +2,7 @@
 
 namespace App\Events;
 
-use App\Models\Invoice;
+use App\Models\Payment;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
@@ -11,11 +11,11 @@ class InvoicePaymentReceivedEvent
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $paymentInvoice;
+    public $payment;
 
-    public function __construct(Invoice $paymentInvoice)
+    public function __construct(Payment $payment)
     {
-        $this->paymentInvoice = $paymentInvoice;
+        $this->payment = $payment;
     }
 
 }

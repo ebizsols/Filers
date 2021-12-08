@@ -292,30 +292,7 @@ namespace App\Models{
  * @property int|null $last_updated_by
  * @property-read mixed $icon
  * @property-read \App\Models\Invoice|null $invoice
- * @method static \Illuminate\Database\Eloquent\Builder|ClientPayment newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|ClientPayment newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|ClientPayment query()
- * @method static \Illuminate\Database\Eloquent\Builder|ClientPayment whereAddedBy($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ClientPayment whereAmount($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ClientPayment whereBill($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ClientPayment whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ClientPayment whereCurrencyId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ClientPayment whereCustomerId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ClientPayment whereEventId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ClientPayment whereGateway($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ClientPayment whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ClientPayment whereInvoiceId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ClientPayment whereLastUpdatedBy($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ClientPayment whereOfflineMethodId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ClientPayment wherePaidOn($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ClientPayment wherePlanId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ClientPayment whereProjectId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ClientPayment whereRemarks($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ClientPayment whereStatus($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ClientPayment whereTransactionId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ClientPayment whereUpdatedAt($value)
  */
-	class ClientPayment extends \Eloquent {}
 }
 
 namespace App\Models{

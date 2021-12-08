@@ -33,7 +33,7 @@ class CreateProjectTemplateSubTasksTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('project_template_sub_task');
+        Schema::dropIfExists('project_template_sub_tasks');
     }
 
 }

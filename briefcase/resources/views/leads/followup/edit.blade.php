@@ -47,7 +47,7 @@
 
     var dp1 = datepicker('#next_follow_up_date', {
         position: 'bl',
-        dateSelected: new Date("{{ $follow->next_follow_up_date }}"),
+        dateSelected: new Date("{{ str_replace('-', '/', $follow->next_follow_up_date) }}"),
         onSelect: (instance, date) => {
             if (typeof dp2.dateSelected !== 'undefined' && dp2.dateSelected.getTime() < date
                 .getTime()) {

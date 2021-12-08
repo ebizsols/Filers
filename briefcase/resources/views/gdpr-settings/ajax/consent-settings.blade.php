@@ -47,16 +47,3 @@
     </x-setting-form-actions>
 </div>
 <!-- Buttons End -->
-
-<script>
-    $(body).on('click', '#save-consent-data', function() {
-        $.easyAjax({
-            url: "{{route('gdpr_settings.update_general')}}",
-            container: '#editSettings',
-            type: "POST",
-            disableButton: true,
-            buttonSelector: "#save-consent-data",
-            data: $('#editSettings').serialize(),
-        })
-    })
-</script>

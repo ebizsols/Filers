@@ -401,7 +401,7 @@
 
             <br />
 
-            <span>{!! nl2br($global->address) !!}</span>
+            <span>{!! nl2br($invoice->address->address) !!}</span>
 
             <br />
 
@@ -409,8 +409,8 @@
 
             <br />
 
-            @if($invoiceSetting->show_gst == 'yes' && !is_null($invoiceSetting->gst_number))
-                <div>@lang('app.gstIn'): {{ $invoiceSetting->gst_number }}</div>
+            @if($invoiceSetting->show_gst == 'yes')
+                <div>{{ $invoice->address->tax_name }}: {{ $invoice->address->tax_number }}</div>
             @endif
         </div>
 
@@ -698,6 +698,16 @@
                 </div>
             </div>
         </div>
+    @endif
+
+    @if (isset($taxes) && invoice_setting()->tax_calculation_msg == 1 && $invoice->discount > 0)
+        <p class="text-dark-grey">
+            @if (invoice_setting()->calculate_tax == 'after_discount')
+                @lang('messages.calculateTaxAfterDiscount')
+            @else
+                @lang('messages.calculateTaxBeforeDiscount')
+            @endif
+        </p>
     @endif
 </div>
 </body>

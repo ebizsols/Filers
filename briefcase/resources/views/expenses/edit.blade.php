@@ -329,7 +329,7 @@
     <script>
         const dp1 = datepicker('#valid_till', {
             position: 'bl',
-            dateSelected: new Date("{{ $estimate->valid_till }}"),
+            dateSelected: new Date("{{ str_replace('-', '/', $estimate->valid_till) }}"),
             ...datepickerConfig
         });
 

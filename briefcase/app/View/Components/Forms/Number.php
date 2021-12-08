@@ -23,7 +23,7 @@ class Number extends Component
      *
      * @return void
      */
-    public function __construct($fieldLabel, $fieldRequired = false, $fieldValue = null, $fieldName, $fieldId, $fieldHelp = null, $minValue = 0, $maxValue = '', $popover = null, $fieldPlaceholder = null)
+    public function __construct($fieldLabel, $fieldName, $fieldId,  $fieldRequired = false, $fieldValue = null,$fieldHelp = null, $minValue = 0, $maxValue = '', $popover = null, $fieldPlaceholder = null)
     {
         $this->fieldLabel = $fieldLabel;
         $this->fieldRequired = $fieldRequired;

@@ -124,8 +124,8 @@
                         <div class="row">
                             <div class="col-lg-4">
                                 <x-forms.number class="mr-0 mr-lg-2 mr-md-2"
-                                    :fieldLabel="__('modules.events.repeatEvery')" fieldName="late_mark_duration"
-                                    fieldId="late_mark_duration" :fieldValue="$event->repeat_every"
+                                    :fieldLabel="__('modules.events.repeatEvery')" fieldName="repeat_count"
+                                    fieldId="repeat_count" :fieldValue="$event->repeat_every"
                                     fieldRequired="true" />
                             </div>
                             <div class="col-md-4 mt-2">
@@ -214,34 +214,11 @@
             }
         });
 
-        var quill = new Quill('#description', {
-            modules: {
-                toolbar: [
-                    [{
-                        header: [1, 2, 3, 4, 5, false]
-                    }],
-                    [{
-                        'list': 'ordered'
-                    }, {
-                        'list': 'bullet'
-                    }],
-                    ['bold', 'italic', 'underline', 'strike'],
-                    ['image', 'code-block', 'link'],
-                    [{
-                        'direction': 'rtl'
-                    }],
-                    ['clean']
-                ],
-                "emoji-toolbar": true,
-                "emoji-textarea": true,
-                "emoji-shortname": true,
-            },
-            theme: 'snow'
-        });
+        quillImageLoad('#description');
 
         const dp1 = datepicker('#start_date', {
             position: 'bl',
-            dateSelected: new Date("{{ $event->start_date_time }}"),
+            dateSelected: new Date("{{ str_replace('-', '/', $event->start_date_time) }}"),
             onSelect: (instance, date) => {
                 if (typeof dp2.dateSelected !== 'undefined' && dp2.dateSelected.getTime() < date
                     .getTime()) {
@@ -257,7 +234,7 @@
 
         const dp2 = datepicker('#end_date', {
             position: 'bl',
-            dateSelected: new Date("{{ $event->end_date_time }}"),
+            dateSelected: new Date("{{ str_replace('-', '/', $event->end_date_time) }}"),
             onSelect: (instance, date) => {
                 dp1.setMax(date);
             },

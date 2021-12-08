@@ -86,8 +86,17 @@ $addLeadPermission = user()->permission('add_lead');
                 </div>
             </div>
 
+            <div class="col-md-12 my-3">
+                <div class="form-group">
+                    <x-forms.label fieldId="description" :fieldLabel="__('app.description')">
+                    </x-forms.label>
+                    <div id="description"></div>
+                    <textarea name="description" id="description-text" class="d-none"></textarea>
+                </div>
+            </div>
+
             <!-- FREQUENCY START -->
-            <div class="col-md-6 col-lg-3 mt-5">
+            <div class="col-md-6">
                 <x-forms.checkbox :fieldLabel="__('modules.proposal.requireSignature')" fieldName="require_signature"
                     fieldId="require_signature" fieldValue="true" checked="true" />
             </div>
@@ -441,9 +450,11 @@ $addLeadPermission = user()->permission('add_lead');
         const hsn_status = {{ $invoiceSetting->hsn_sac_code_show }};
         const dp1 = datepicker('#valid_till', {
             position: 'bl',
-            dateSelected: new Date("{{ \Carbon\Carbon::now()->addDays(30) }}"),
+            dateSelected: new Date("{{ str_replace('-', '/', now()->addDays(30)) }}"),
             ...datepickerConfig
         });
+
+        quillImageLoad('#description');
 
         $('#add-products').on('changed.bs.select', function(e, clickedIndex, isSelected, previousValue) {
             e.stopImmediatePropagation()
@@ -561,6 +572,9 @@ $addLeadPermission = user()->permission('add_lead');
         });
 
         $('.save-form').click(function() {
+            let note = document.getElementById('description').children[0].innerHTML;
+            document.getElementById('description-text').value = note;
+
             var type = $(this).data('type');
 
             if (KTUtil.isMobileDevice()) {

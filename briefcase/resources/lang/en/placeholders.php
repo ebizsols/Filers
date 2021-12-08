@@ -34,7 +34,7 @@ return array(
         'invoicePrefix' => 'Enter invoice prefix',
         'estimatePrefix' => 'Enter estimate prefix',
         'creditNotePrefix' => 'Enter credit note prefix',
-        'gstNumber' => 'Enter GST Number',
+        'gstNumber' => 'Enter Tax Number',
         'invoiceTerms' => 'Enter invoice terms',
         'description' => 'Enter Description (optional)',
         'note' => 'e.g. Thank you for your business',
@@ -96,6 +96,7 @@ return array(
         'liveStripePublishableKey' => 'e.g. sk_live_51GbndSLM4xBXnjBe1d6G5reXbGAc8a1qumQN0doumYbhb2tChV6qTCuFfvQyxEDInYho7jhQoR4MqNBWcafRYPCbXXXXXXXXX',
         'testRazorpayKey' => 'e.g. rzp_test_znKZOLXXT3XXEX',
         'liveRazorpayKey' => 'e.g. rzp_live_znKZOLn4TXXXXX',
+        'paystackKey' => 'e.g. pk_live_XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX',
     ),
     'renterPassword' => 'Please enter your password'
 );

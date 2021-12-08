@@ -19,7 +19,7 @@ class DatabaseSeeder extends Seeder
         // Set Seeding to true check if data is seeding.
         // This is required to stop notification in installation
         config(['app.seeding' => true]);
-        
+
         Artisan::call('key:generate');
 
         $this->call(RolesTableSeeder::class);
@@ -28,6 +28,7 @@ class DatabaseSeeder extends Seeder
         $this->call(EmailSettingSeeder::class);
         $this->call(SmtpSettingsSeeder::class);
         $this->call(ThemeSettingsTableSeeder::class);
+        $this->call(CompanyAddressSeeder::class);
 
         if (!App::environment('codecanyon')) {
             $this->call(UsersTableSeeder::class);
@@ -47,6 +48,7 @@ class DatabaseSeeder extends Seeder
             $this->call(ContractTypeTableSeeder::class);
             $this->call(ContractTableSeeder::class);
             $this->call(LeadsTableSeeder::class);
+            $this->call(MessageSeeder::class);
         }
 
         $this->call(EmployeePermissionSeeder::class);

@@ -31,7 +31,7 @@
             <div class="select-status">
                 <select class="form-control select-picker" name="status" id="status" data-live-search="true" data-size="8">
                     <option value="not finished">@lang('modules.projects.hideFinishedProjects')</option>
-                    <option value="all">@lang('app.all')</option>
+                    <option {{ request('status') == 'all' ? 'selected' : '' }} value="all">@lang('app.all')</option>
                     <option {{ request('status') == 'overdue' ? 'selected' : '' }} value="overdue">@lang('app.overdue')
                     </option>
                     <option value="not started">@lang('app.notStarted')</option>

@@ -212,13 +212,13 @@ class OrdersDataTable extends BaseDataTable
     protected function getColumns()
     {
         return [
-            __('app.id') => ['data' => 'id', 'name' => 'id', 'visible' => false],
-            __('app.order') . '#' => ['data' => 'order_number', 'name' => 'order_number', 'exportable' => false],
-            __('app.client_name') => ['data' => 'client_name', 'name' => 'project.client.name', 'visible' => false],
-            __('app.client') => ['data' => 'name', 'name' => 'project.client.name', 'visible' => !in_array('client', user_roles()), 'exportable' => false],
-            __('modules.invoices.total') => ['data' => 'total', 'name' => 'total', 'class' => 'text-right'],
-            __('modules.orders.orderDate') => ['data' => 'order_date', 'name' => 'order_date'],
-            __('app.status') => ['data' => 'status', 'name' => 'status', 'width' => '10%'],
+            __('app.id') => ['data' => 'id', 'name' => 'id', 'visible' => false, 'title' => __('app.id')],
+            __('app.order') . '#' => ['data' => 'order_number', 'name' => 'order_number', 'exportable' => false, 'title' => __('app.order') . '#'],
+            __('app.client_name') => ['data' => 'client_name', 'name' => 'project.client.name', 'visible' => false, 'title' => __('app.client_name')],
+            __('app.client') => ['data' => 'name', 'name' => 'project.client.name', 'visible' => !in_array('client', user_roles()), 'exportable' => false, 'title' => __('app.client')],
+            __('modules.invoices.total') => ['data' => 'total', 'name' => 'total', 'class' => 'text-right', 'title' => __('modules.invoices.total')],
+            __('modules.orders.orderDate') => ['data' => 'order_date', 'name' => 'order_date', 'title' => __('modules.orders.orderDate')],
+            __('app.status') => ['data' => 'status', 'name' => 'status', 'width' => '10%', 'title' => __('app.status')],
             Column::computed('action', __('app.action'))
                 ->exportable(false)
                 ->printable(false)

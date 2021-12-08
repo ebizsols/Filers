@@ -7,7 +7,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <link rel="icon" type="image/png" sizes="16x16" href="{{ $global->favicon_url }}">
-    <link rel="manifest" href="{{ $global->favicon_url }}">
     <meta name="msapplication-TileImage" content="{{ $global->favicon_url }}">
 
     <!-- Font Awesome Icons -->
@@ -37,19 +36,21 @@
     <meta name="msapplication-TileColor" content="#ffffff">
     <meta name="msapplication-TileImage" content="{{ $global->favicon_url }}">
     <meta name="theme-color" content="#ffffff">
-
+    <meta name="csrf-token" content="{{ csrf_token() }}" />
     @isset($activeSettingMenu)
         <style>
             .preloader-container {
                 margin-left: 510px;
                 width: calc(100% - 510px)
             }
-            .blur-code{
+
+            .blur-code {
                 filter: blur(3px);
 
             }
-            .purchase-code{
-                transition:filter .2s ease-out;
+
+            .purchase-code {
+                transition: filter .2s ease-out;
                 margin-right: 4px;
             }
 
@@ -99,15 +100,33 @@
                     appId: "{{ $pushSetting->onesignal_app_id }}",
                     autoRegister: false,
                     notifyButton: {
-                        enable: false,
+                        enable: true,
+                        showCredit: false,
+                        theme: "inverse",
+                        size: "small",
+                        position: '{{ user()->rtl ? 'bottom-left' : 'bottom-right' }}',
+                        text: {
+                            'tip.state.unsubscribed': "@lang('app.onesignal.tip.state.unsubscribed')",
+                            'tip.state.subscribed': "@lang('app.onesignal.tip.state.subscribed')",
+                            'tip.state.blocked': "@lang('app.onesignal.tip.state.blocked')",
+                            'message.prenotify': "@lang('app.onesignal.message.prenotify')",
+                            'message.action.subscribed': "@lang('app.onesignal.message.action.subscribed')",
+                            'message.action.resubscribed': "@lang('app.onesignal.message.action.resubscribed')",
+                            'message.action.unsubscribed': "@lang('app.onesignal.message.action.unsubscribed')",
+                            'dialog.main.title': "@lang('app.onesignal.dialog.main.title')",
+                            'dialog.main.button.subscribe': "@lang('app.onesignal.dialog.main.button.subscribe')",
+                            'dialog.main.button.unsubscribe': "@lang('app.onesignal.dialog.main.button.unsubscribe')",
+                            'dialog.blocked.title': "@lang('app.onesignal.dialog.blocked.title')",
+                            'dialog.blocked.message': "@lang('app.onesignal.dialog.blocked.message')"
+                        }
                     },
                     promptOptions: {
                         /* actionMessage limited to 90 characters */
-                        actionMessage: "We'd like to show you notifications for the latest news and updates.",
+                        actionMessage: "@lang('app.onesignal.actionMessage')",
                         /* acceptButtonText limited to 15 characters */
-                        acceptButtonText: "ALLOW",
+                        acceptButtonText: "@lang('app.onesignal.acceptButtonText')",
                         /* cancelButtonText limited to 15 characters */
-                        cancelButtonText: "NO THANKS"
+                        cancelButtonText: "@lang('app.onesignal.cancelButtonText')"
                     }
                 });
                 OneSignal.on('subscriptionChange', function(isSubscribed) {
@@ -230,7 +249,7 @@
                             aria-hidden="true">×</span></button>
                 </div>
                 <div class="modal-body">
-                    Some content
+                    Loading...
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn-cancel rounded mr-3" data-dismiss="modal">Close</button>
@@ -250,7 +269,7 @@
                             aria-hidden="true">×</span></button>
                 </div>
                 <div class="modal-body">
-                    Some content
+                    Loading...
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn-cancel rounded mr-3" data-dismiss="modal">Close</button>
@@ -270,7 +289,7 @@
                             aria-hidden="true">×</span></button>
                 </div>
                 <div class="modal-body bg-grey">
-                    Some content
+                    Loading...
                 </div>
 
             </div>
@@ -362,7 +381,7 @@
         };
 
         const dropzoneFileAllow =
-            "image/*,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/docx,application/pdf,text/plain,application/msword,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/zip,.xlsx";
+            "{{ $global->allowed_file_types }}";
     </script>
 
     <!-- Scripts -->
@@ -420,10 +439,105 @@
             $('#reset-filters').removeClass('d-none');
         }
 
-        $('body').on('click', '.show-hide-purchase-code', function () {
+        $('body').on('click', '.show-hide-purchase-code', function() {
             $('> .icon', this).toggleClass('fa-eye-slash fa-eye');
             $(this).siblings('span').toggleClass('blur-code ');
         });
+        Dropzone.prototype.defaultOptions.dictDefaultMessage = "{{ __('modules.projectTemplate.dropFile') }}";
+    </script>
+
+    <script>
+        let quillArray = {};
+
+        function quillImageLoad(ID){
+            quillArray[ID] = new Quill(ID, {
+                modules: {
+                    toolbar: [
+                        [{
+                            header: [1, 2, 3, 4, 5, false]
+                        }],
+                        [{
+                            'list': 'ordered'
+                        }, {
+                            'list': 'bullet'
+                        }],
+                        ['bold', 'italic', 'underline', 'strike'],
+                        ['image', 'code-block', 'link'],
+                        [{
+                            'direction': 'rtl'
+                        }],
+                        ['clean']
+                    ],
+                    clipboard: {
+                        matchVisual: false
+                    },
+                    "emoji-toolbar": true,
+                    "emoji-textarea": true,
+                    "emoji-shortname": true,
+                },
+                theme: 'snow'
+            });
+            $.each(quillArray, function (key,quill) {
+                quill.getModule('toolbar').addHandler('image', selectLocalImage);
+            });
+
+        }
+        /**
+         * Step1. select local image
+         *
+         */
+        function selectLocalImage() {
+            const input = document.createElement('input');
+            input.setAttribute('type', 'file');
+            input.click();
+
+            // Listen upload local image and save to server
+            input.onchange = () => {
+                const file = input.files[0];
+
+                // file type is only image.
+                if (/^image\//.test(file.type)) {
+                    saveToServer(file);
+                } else {
+                    console.warn('You could only upload images.');
+                }
+            };
+        }
+
+        /**
+         * Step2. save to server
+         *
+         * @param {File} file
+         */
+        function saveToServer(file) {
+            const fd = new FormData();
+            fd.append('image', file);
+            $.ajax({
+                type: 'POST',
+                url: "{{route('image.store')}}",
+                dataType: "json",
+                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                data: fd,
+                contentType: false,
+                processData: false,
+                success: function (response) {
+                    insertToEditor(response)
+                },
+            });
+        }
+
+        function insertToEditor(url) {
+            // push image url to rich editor.
+            $.each(quillArray, function (key, quill) {
+                try {
+                    let range = quill.getSelection();
+                    quill.insertEmbed(range.index, 'image', url);
+                } catch (err) {
+                }
+            });
+
+        }
+
 
     </script>
 

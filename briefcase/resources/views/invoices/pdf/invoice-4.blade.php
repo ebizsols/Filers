@@ -450,7 +450,7 @@
                     {{ ucwords($global->company_name) }}
                 </div>
                 <br>
-                <span>{!! nl2br($global->address) !!}</span>
+                <span>{!! nl2br($invoice->address->address) !!}</span>
                 <br>
                 <span>{{ $global->company_phone }}</span>
 
@@ -758,6 +758,19 @@
             </div>
         </div>
     </div>
+@endif
+
+@if (isset($taxes) && invoice_setting()->tax_calculation_msg == 1 && $invoice->discount > 0)
+    <div class="clearfix"></div>
+    <section>
+        <div>
+            @if (invoice_setting()->calculate_tax == 'after_discount')
+                @lang('messages.calculateTaxAfterDiscount')
+            @else
+                @lang('messages.calculateTaxBeforeDiscount')
+            @endif
+        </div>
+    </section>
 @endif
 </body>
 </html>

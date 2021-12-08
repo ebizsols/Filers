@@ -49,13 +49,13 @@ class NewContract extends Notification implements ShouldQueue
      */
     public function toMail($notifiable)
     {
-        $url = route('front.contract.show', md5($this->contract->id));
-
+        $url = route('front.contract.show', $this->contract->hash);
+        
         return (new MailMessage)
             ->subject(__('email.newContract.subject'))
             ->greeting(__('email.hello') . ' ' . ucwords($notifiable->name) . ',')
             ->line(__('email.newContract.text'))
-            ->action(__('app.view') . ' ' . __('app.contract'), $url);
+            ->action(__('app.view') . ' ' . __('app.menu.contract'), $url);
     }
 
     /**

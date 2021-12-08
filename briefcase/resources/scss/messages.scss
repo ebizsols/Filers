@@ -22,7 +22,7 @@
         .msg-header-right{
             max-width: 100%;
             padding: 0px 1.25rem;
-        }   
+        }
     }
 
     .input-group{
@@ -35,7 +35,7 @@
         }
 
         input{
-           line-height: 1.8; 
+           line-height: 1.8;
         }
     }
 
@@ -91,11 +91,13 @@
 
     .msg-content-right{
         max-width: 100%;
-        margin-left: 392px;
+        // margin-left: 392px;
+        width: 100%;
+        height: auto;
 
         @include media-breakpoint-down(md){
             margin-left: 0;
-            display: none; 
+            display: none;
             position: fixed;
             top: 62px;
             left: 0;
@@ -111,7 +113,7 @@
         }
 
         .chat-box{
-            height: calc(100vh - 280px);
+            height: calc(100vh - 330px);
 
             @include media-breakpoint-down(md){
                 height: calc(100vh - 273px);
@@ -123,8 +125,8 @@
             }
 
             .card{
-            
-             
+
+
 
                 &:hover{
                     background-color: #e8eef3;
@@ -147,11 +149,11 @@
 
         .custom-file{
             width: 75%;
-           
+
             label{
                 padding-left: 0px;
             }
-           
+
         }
 
         .attach-send{
@@ -166,9 +168,9 @@
 
 .scroll {
   position: relative;
-  overflow: hidden; 
+  overflow: hidden;
 }
-  
+
 .scroll.ps > .ps__rail-y {
     height: 0px !important;
     display: none !important;
@@ -183,8 +185,8 @@
         margin: 0px 9px;
         background-color: #fff;
     }
-}    
-  
+}
+
 
 
 

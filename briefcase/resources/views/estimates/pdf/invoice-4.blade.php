@@ -358,22 +358,22 @@
             clear: both;
         }
 
-        #terms {
+        .terms {
             float: left;
             margin-top: 60px !important;
         }
-        #terms > span {
+        .terms > span {
             font-weight: bold;
             display: inline-block;
             min-width: 20px;
             text-transform: uppercase;
         }
-        #terms > div {
+        .terms > div {
             min-height: 50px;
             min-width: 50px;
         }
 
-        #terms .notes {
+        .terms .notes {
             min-height: 30px;
             min-width: 50px;
         }
@@ -673,16 +673,28 @@
         <div class="clearfix"></div>
         <p>&nbsp;</p>
 
-        <section id="terms">
-
+        <section class="terms">
             <div class="notes">
                 @if(!is_null($estimate->note))
                     <br> {!! nl2br($estimate->note) !!}
                 @endif
                 <br>{!! nl2br($invoiceSetting->invoice_terms) !!}
             </div>
-
         </section>
+
+        @if (isset($taxes) && invoice_setting()->tax_calculation_msg == 1 && $estimate->discount > 0)
+        <div class="clearfix"></div>
+        <br>
+        <section class="terms">
+            <div class="notes">
+                @if (invoice_setting()->calculate_tax == 'after_discount')
+                    @lang('messages.calculateTaxAfterDiscount')
+                @else
+                    @lang('messages.calculateTaxBeforeDiscount')
+                @endif
+            </div>
+        </section>
+        @endif
 
     </div>
     </div>

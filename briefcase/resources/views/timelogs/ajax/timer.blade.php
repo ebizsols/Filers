@@ -8,6 +8,7 @@ $addTaskPermission = user()->permission('add_tasks');
 </div>
 <div class="modal-body">
     <x-form id="startTimerForm">
+        <input type="hidden" name="user_id[]" value="{{ user()->id }}">
         <div class="row justify-content-between">
             <div class="col" id="task_div">
                 <x-forms.select fieldId="timer_task_id" fieldName="task_id" :fieldLabel="__('app.task')"

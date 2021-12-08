@@ -108,8 +108,8 @@
 
     $('.delete-label').click(function() {
 
-        var id = $(this).data('cat-id');
-        var url = "{{ route('taskCategory.destroy', ':id') }}";
+        var id = $(this).data('label-id');
+        var url = "{{ route('task-label.destroy', ':id') }}";
         url = url.replace(':id', id);
 
         var token = "{{ csrf_token() }}";
@@ -144,7 +144,7 @@
                         if (response.status == 'success') {
                             $('#task_labels').html(response.data);
                             $('#task_labels').selectpicker('refresh');
-                            $(MODAL_LG).modal('hide');
+                            $(MODAL_XL).modal('hide');
                         }
                     }
                 });
@@ -188,7 +188,7 @@
                 container: '#row-' + id,
                 type: "POST",
                 data: {
-                    'category_name': value,
+                    'label_name': value,
                     '_token': token,
                     '_method': 'PUT'
                 },

@@ -134,7 +134,7 @@
 
         const dp1 = datepicker('#start_date', {
             position: 'bl',
-            dateSelected: new Date("{{ $timeLog->start_time }}"),
+            dateSelected: new Date("{{ str_replace('-', '/', $timeLog->start_time) }}"),
             onSelect: (instance, date) => {
                 if (typeof dp2.dateSelected !== 'undefined' && dp2.dateSelected.getTime() < date
                     .getTime()) {
@@ -151,7 +151,7 @@
 
         const dp2 = datepicker('#end_date', {
             position: 'bl',
-            dateSelected: new Date("{{ $timeLog->end_time }}"),
+            dateSelected: new Date("{{ str_replace('-', '/', $timeLog->end_time) }}"),
             onSelect: (instance, date) => {
                 dp1.setMax(date);
                 calculateTime();

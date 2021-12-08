@@ -51,7 +51,7 @@
                            </td>
                            <td class="text-right">
                                {{-- If payment done from payment gateway, then payment cannot be removed.  --}}
-                               @if (is_null($payment->transaction_id) && is_null($payment->payload_id) )
+                               @if (is_null($payment->transaction_id) && is_null($payment->payload_id) && !$invoice->credit_note)
                                     <x-forms.button-secondary
                                         onclick="deleteAppliedCredit({{ $payment->invoice_id }}, {{ $payment->id }})"
                                         icon="trash">

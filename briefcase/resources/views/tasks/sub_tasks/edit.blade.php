@@ -70,7 +70,7 @@
 
         datepicker('#edit_task_due_date', {
             position: 'bl',
-            dateSelected: new Date("{{ ($subTask->due_date ? $subTask->due_date : now($global->timezone)) }}"),
+            dateSelected: new Date("{{ ($subTask->due_date ? str_replace('-', '/', $subTask->due_date) : str_replace('-', '/', now($global->timezone))) }}"),
             ...datepickerConfig
         });
 

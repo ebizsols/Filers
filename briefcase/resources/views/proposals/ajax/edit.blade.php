@@ -99,9 +99,19 @@ $addProductPermission = user()->permission('add_product');
                 <x-forms.label fieldId="" fieldLabel="&nbsp;">
                 </x-forms.label>
                 <x-forms.checkbox :fieldLabel="__('modules.proposal.requireSignature')" fieldName="require_signature"
-                    fieldId="require_signature" fieldValue="true" checked="true" />
+                    fieldId="require_signature" fieldValue="true" :checked="$proposal->signature_approval" />
             </div>
             <!-- FREQUENCY END -->
+
+            <div class="col-md-12 my-3">
+                <div class="form-group">
+                    <x-forms.label fieldId="description" :fieldLabel="__('app.description')">
+                    </x-forms.label>
+                    <div id="description">{!! $proposal->description !!}</div>
+                    <textarea name="description" id="description-text" class="d-none"></textarea>
+                </div>
+            </div>
+
         </div>
 
         <hr class="m-0 border-top-grey">
@@ -404,37 +414,40 @@ $addProductPermission = user()->permission('add_product');
         <!-- NOTE AND TERMS AND CONDITIONS END -->
 
         <!-- CANCEL SAVE SEND START -->
-        <div class="px-lg-4 px-md-4 px-3 py-3 c-inv-btns">
+        <x-form-actions class="c-inv-btns">
+            <div class="c-inv-btns">
 
-            <x-forms.button-cancel :link="route('invoices.index')" class="border-0 mr-3">@lang('app.cancel')
-            </x-forms.button-cancel>
+                <div class="d-flex">
 
-            <div class="d-flex">
+                    <div class="inv-action dropup mr-3">
+                        <button class="btn-primary dropdown-toggle" type="button" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false">
+                            @lang('app.save')
+                            <span><i class="fa fa-chevron-down f-15 text-white"></i></span>
+                        </button>
+                        <!-- DROPDOWN - INFORMATION -->
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuBtn" tabindex="0">
+                            <li>
+                                <a class="dropdown-item f-14 text-dark save-form" href="javascript:;" data-type="save">
+                                    <i class="fa fa-save f-w-500 mr-2 f-11"></i> @lang('app.save')
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item f-14 text-dark save-form" href="javascript:void(0);"
+                                    data-type="send">
+                                    <i class="fa fa-paper-plane f-w-500  mr-2 f-12"></i> @lang('app.saveSend')
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
 
-                <div class="inv-action dropup">
-                    <button class="btn-primary dropdown-toggle" type="button" data-toggle="dropdown"
-                        aria-haspopup="true" aria-expanded="false">
-                        @lang('app.save')
-                        <span><i class="fa fa-chevron-down f-15 text-white"></i></span>
-                    </button>
-                    <!-- DROPDOWN - INFORMATION -->
-                    <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuBtn" tabindex="0">
-                        <li>
-                            <a class="dropdown-item f-14 text-dark save-form" href="javascript:;" data-type="save">
-                                <i class="fa fa-save f-w-500 mr-2 f-11"></i> @lang('app.save')
-                            </a>
-                        </li>
-                        <li>
-                            <a class="dropdown-item f-14 text-dark save-form" href="javascript:void(0);"
-                                data-type="send">
-                                <i class="fa fa-paper-plane f-w-500  mr-2 f-12"></i> @lang('app.saveSend')
-                            </a>
-                        </li>
-                    </ul>
                 </div>
 
+                <x-forms.button-cancel :link="route('invoices.index')" class="border-0">@lang('app.cancel')
+                </x-forms.button-cancel>
+
             </div>
-        </div>
+        </x-form-actions>
         <!-- CANCEL SAVE SEND END -->
 
     </x-form>
@@ -446,10 +459,11 @@ $addProductPermission = user()->permission('add_product');
     $(document).ready(function() {
         const hsn_status = {{ $invoiceSetting->hsn_sac_code_show }};
         const defaultClient = "{{ request('default_client') }}";
+        quillImageLoad('#description');
 
         const dp1 = datepicker('#valid_till', {
             position: 'bl',
-            dateSelected: new Date("{{ $proposal->valid_till }}"),
+            dateSelected: new Date("{{ str_replace('-', '/', $proposal->valid_till) }}"),
             ...datepickerConfig
         });
 
@@ -569,6 +583,9 @@ $addProductPermission = user()->permission('add_product');
         });
 
         $('.save-form').click(function() {
+            let note = document.getElementById('description').children[0].innerHTML;
+            document.getElementById('description-text').value = note;
+
             var type = $(this).data('type');
 
             if (KTUtil.isMobileDevice()) {

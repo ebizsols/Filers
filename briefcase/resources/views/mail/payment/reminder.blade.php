@@ -1,5 +1,5 @@
 @component('mail::message')
-# Payment Reminder
+# @lang('email.paymentReminder.subject')
 
 @lang('email.paymentReminder.subject')
 

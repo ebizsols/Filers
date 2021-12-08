@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\ClientPayment;
 use App\Models\Invoice;
 use App\Models\InvoiceItems;
 use App\Models\Order;
 use App\Models\OrderItems;
+use App\Models\Payment as ModelsPayment;
 use App\Models\PaymentGatewayCredentials;
 use Carbon\Carbon;
 use Exception;
@@ -196,7 +196,7 @@ class PaypalController extends Controller
 
         /* make invoice payment here */
         /** @phpstan-ignore-next-line */
-        $this->savePayment($paymentType, $invoice, $payment->getId());
+        $this->savePayment($paymentType, $payment->getId(), $invoice);
 
         if (isset($redirect_url)) {
             /** redirect to paypal **/
@@ -220,7 +220,7 @@ class PaypalController extends Controller
 
         $payment_gateway_response = ['code' => $exception->getCode(), 'message' => $exception->getMessage()];
 
-        $payment = new ClientPayment();
+        $payment = new ModelsPayment();
         $payment->status = 'failed';
         $payment->payment_gateway_response = $payment_gateway_response;
 
@@ -235,14 +235,14 @@ class PaypalController extends Controller
         $payment->save();
     }
 
-    public function savePayment($type, $invoice=null, $transactionId)
+    public function savePayment($type, $transactionId, $invoice=null)
     {
         $currencyId = $invoice->currency_id;
         $total = $invoice->total;
         $projectId = ($type == 'invoice') ? $invoice->project_id : null;
 
         // Save details in database and redirect to paypal
-        $clientPayment = new ClientPayment();
+        $clientPayment = new ModelsPayment();
         $clientPayment->currency_id = $currencyId;
         $clientPayment->amount = $total;
         $clientPayment->transaction_id = $transactionId;
@@ -308,7 +308,7 @@ class PaypalController extends Controller
             $id = $enc_invoice_id;
         }
 
-        $clientPayment = ClientPayment::where('transaction_id', $payment_id)->first();
+        $clientPayment = ModelsPayment::where('transaction_id', $payment_id)->first();
         /** Clear the session payment ID **/
         Session::forget('paypal_payment_id');
 
@@ -371,7 +371,7 @@ class PaypalController extends Controller
             $redirectRoute = 'front.invoice';
         }
 
-        $clientPayment = ClientPayment::where('plan_id', $payment_id)->first();
+        $clientPayment = ModelsPayment::where('plan_id', $payment_id)->first();
         /** clear the session payment ID **/
         Session::forget('paypal_payment_id');
 

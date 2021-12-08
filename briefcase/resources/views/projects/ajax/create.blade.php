@@ -3,6 +3,7 @@ $addProjectCategoryPermission = user()->permission('manage_project_category');
 $addDepartmentPermission = user()->permission('add_department');
 $addEmployeePermission = user()->permission('add_employees');
 $addProjectFilePermission = user()->permission('add_project_files');
+$addPublicProjectPermission = user()->permission('create_public_project');
 @endphp
 
 <link rel="stylesheet" href="{{ asset('vendor/css/dropzone.min.css') }}">
@@ -124,7 +125,18 @@ $addProjectFilePermission = user()->permission('add_project_files');
                         </div>
                     </div>
 
-                    <div class="col-md-12">
+                    @if ($addPublicProjectPermission == 'all')
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <div class="d-flex mt-2">
+                                    <x-forms.checkbox fieldId="is_public"
+                                        :fieldLabel="__('modules.projects.createPublicProject')" fieldName="public" />
+                                </div>
+                            </div>
+                        </div>
+                    @endif
+
+                    <div class="col-md-12" id="add_members">
                         <div class="form-group my-3">
                             <x-forms.label class="my-3" fieldId="selectEmployee" fieldRequired="true"
                                 :fieldLabel="__('modules.projects.addMemberTitle')">
@@ -139,7 +151,7 @@ $addProjectFilePermission = user()->permission('add_project_files');
                                     data-content="<span class='badge badge-pill badge-light border'>
                                         <div class='d-inline-block mr-1'><img class='taskEmployeeImg rounded-circle'
                                                 src='{{ $item->image_url }}'></div>
-                                        {{ ucfirst($item->name) }}{{ (user() && user()->id == $item->id) ? '<span class="ml-2 badge badge-secondary">' . __('app.itsYou') . '</span>' : '' }}
+                                        {{ ucfirst($item->name) }}{{ user() && user()->id == $item->id ? '<span class="ml-2 badge badge-secondary">' . __('app.itsYou') . '</span>' : '' }}
                                     </span>"
                                     value="{{ $item->id }}">{{ ucwords($item->name) }}</option>
                                     @endforeach
@@ -399,55 +411,8 @@ $addProjectFilePermission = user()->permission('add_project_files');
             }
         });
 
-        var quill = new Quill('#project_summary', {
-            modules: {
-                toolbar: [
-                    [{
-                        header: [1, 2, 3, 4, 5, false]
-                    }],
-                    [{
-                        'list': 'ordered'
-                    }, {
-                        'list': 'bullet'
-                    }],
-                    ['bold', 'italic', 'underline', 'strike'],
-                    ['image', 'code-block', 'link'],
-                    [{
-                        'direction': 'rtl'
-                    }],
-                    ['clean']
-                ],
-                "emoji-toolbar": true,
-                "emoji-textarea": true,
-                "emoji-shortname": true,
-            },
-            theme: 'snow'
-        });
-
-        var quill2 = new Quill('#notes', {
-            modules: {
-                toolbar: [
-                    [{
-                        header: [1, 2, 3, 4, 5, false]
-                    }],
-                    [{
-                        'list': 'ordered'
-                    }, {
-                        'list': 'bullet'
-                    }],
-                    ['bold', 'italic', 'underline', 'strike'],
-                    ['image', 'code-block', 'link'],
-                    [{
-                        'direction': 'rtl'
-                    }],
-                    ['clean']
-                ],
-                "emoji-toolbar": true,
-                "emoji-textarea": true,
-                "emoji-shortname": true,
-            },
-            theme: 'snow'
-        });
+        quillImageLoad('#project_summary');
+        quillImageLoad('#notes');
 
         const dp1 = datepicker('#start_date', {
             position: 'bl',
@@ -497,7 +462,7 @@ $addProjectFilePermission = user()->permission('add_project_files');
                         myDropzone.getQueuedFiles().length > 0) {
                         $('#projectID').val(response.projectID);
                         myDropzone.processQueue();
-                    } else {
+                    } else if (typeof response.redirectUrl !== 'undefined') {
                         window.location.href = response.redirectUrl;
                     }
                 }
@@ -518,6 +483,10 @@ $addProjectFilePermission = user()->permission('add_project_files');
 
         $('#client_view_task').change(function() {
             $('#clientNotification').toggleClass('d-none');
+        });
+
+        $('#is_public').change(function() {
+            $('#add_members').toggleClass('d-none');
         });
 
         $('.toggle-project-other-details').click(function() {

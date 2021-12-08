@@ -385,7 +385,7 @@ $addDepartmentPermission = user()->permission('add_department');
         datepicker('#joining_date', {
             position: 'bl',
             dateSelected: new Date(
-                "{{ $employee->employeeDetail->joining_date ? $employee->employeeDetail->joining_date : now() }}"
+                "{{ $employee->employeeDetail->joining_date ? str_replace('-', '/', $employee->employeeDetail->joining_date) : str_replace('-', '/', now()) }}"
             ),
             ...datepickerConfig
         });
@@ -438,7 +438,7 @@ $addDepartmentPermission = user()->permission('add_department');
             datepicker('#last_date', {
                 position: 'bl',
                 @if ($employee->employeeDetail->last_date)
-                    dateSelected: new Date("{{ $employee->employeeDetail->last_date }}"),
+                    dateSelected: new Date("{{ str_replace('-', '/', $employee->employeeDetail->last_date) }}"),
                 @endif
                 ...datepickerConfig
             });

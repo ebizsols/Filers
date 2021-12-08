@@ -82,4 +82,5 @@ return array (
       'rule-name' => 'custom-message',
     ),
   ),
+  'givenDataInvalid' => 'The given data was invalid.',
 );

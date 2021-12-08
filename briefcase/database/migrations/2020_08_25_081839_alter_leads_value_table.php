@@ -34,8 +34,8 @@ class AlterLeadsValueTable extends Migration
     public function down()
     {
         Schema::table('leads', function (Blueprint $table) {
-            $table->dropForeign('currency_id');
-            $table->dropColumn('due_amount');
+            $table->dropForeign(['currency_id']);
+            $table->dropColumn('value');
             $table->dropColumn('currency_id');
         });
     }

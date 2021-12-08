@@ -47,7 +47,7 @@
 
         const dp3 = datepicker('#renew_start_date', {
             position: 'bl',
-            dateSelected: new Date("{{ $renew->start_date }}"),
+            dateSelected: new Date("{{ str_replace('-', '/', $renew->start_date) }}"),
             onSelect: (instance, date) => {
                 if (typeof dp4.dateSelected !== 'undefined' && dp4.dateSelected.getTime() < date
                     .getTime()) {
@@ -63,7 +63,7 @@
 
         const dp4 = datepicker('#renew_end_date', {
             position: 'bl',
-            dateSelected: new Date("{{ $renew->end_date ? $renew->end_date : now() }}"),
+            dateSelected: new Date("{{ $renew->end_date ? str_replace('-', '/', $renew->end_date) : str_replace('-', '/', now()) }}"),
             onSelect: (instance, date) => {
                 dp3.setMax(date);
             },

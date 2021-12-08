@@ -199,27 +199,37 @@ $projectBudgetPermission = user()->permission('view_project_budget');
                     <div class="col-sm-12">
                         <h4 class="f-18 f-w-500 mb-4">@lang('app.statistics')</h4>
                     </div>
-                    <div class="col">
-                        <x-cards.widget :title="__('modules.projects.projectBudget')"
-                            :value="(!is_null($project->project_budget) ? currency_formatter($project->project_budget, $project->currency->currency_symbol) : '0')"
-                            icon="coins" />
-                    </div>
+                    @if ($projectBudgetPermission == 'all')
+                        <div class="col">
+                            <x-cards.widget :title="__('modules.projects.projectBudget')"
+                                :value="((!is_null($project->project_budget) && $project->currency) ? currency_formatter($project->project_budget, $project->currency->currency_symbol) : '0')"
+                                icon="coins" />
+                        </div>
+                    @endif
 
-                    <div class="col">
-                        <x-cards.widget :title="__('app.earnings')"
-                            :value="currency_formatter($earnings, $project->currency->currency_symbol)" icon="coins" />
-                    </div>
+                    @if ($viewPaymentPermission == 'all')
+                        <div class="col">
+                            <x-cards.widget :title="__('app.earnings')"
+                                :value="(!is_null($project->currency) ? currency_formatter($earnings, $project->currency->currency_symbol) : currency_formatter($earnings))"
+                                icon="coins" />
+                        </div>
+                    @endif
                 </div>
                 <div class="row">
-                    <div class="col">
-                        <x-cards.widget :title="__('modules.projects.hoursLogged')" :value="$hoursLogged"
-                            icon="clock" />
-                    </div>
+                    @if ($viewProjectTimelogPermission == 'all')
+                        <div class="col">
+                            <x-cards.widget :title="__('modules.projects.hoursLogged')" :value="$hoursLogged"
+                                icon="clock" />
+                        </div>
+                    @endif
 
-                    <div class="col">
-                        <x-cards.widget :title="__('modules.projects.expenses_total')"
-                            :value="currency_formatter($expenses, $project->currency->currency_symbol)" icon="coins" />
-                    </div>
+                    @if ($viewExpensePermission == 'all')
+                        <div class="col">
+                            <x-cards.widget :title="__('modules.projects.expenses_total')"
+                                :value="(!is_null($project->currency) ? currency_formatter($expenses, $project->currency->currency_symbol) : currency_formatter($expenses))"
+                                icon="coins" />
+                        </div>
+                    @endif
                 </div>
             </div>
             <!-- BUDGET VS SPENT END -->

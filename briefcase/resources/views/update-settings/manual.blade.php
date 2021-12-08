@@ -187,7 +187,7 @@
             var uploadFile = "{{ route('update-settings.store') }}?_token={{ csrf_token() }}";
             var myDrop = new Dropzone("#file-upload-dropzone", {
                 url: uploadFile,
-                acceptedFiles: 'application/zip',
+                acceptedFiles: 'application/zip,application/x-zip-compressed, application/x-compressed, multipart/x-zip',
                 addRemoveLinks: true
             });
             myDrop.on("complete", function(file) {

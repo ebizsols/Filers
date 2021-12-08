@@ -15,12 +15,15 @@ class SmtpConfigProvider extends ServiceProvider
     {
         try {
             $smtpSetting = DB::table('smtp_settings')->first();
+            $settings = DB::table('organisation_settings')->first();
 
-            if ($smtpSetting) {
-                $settings = DB::table('organisation_settings')->first();
+            if ($smtpSetting && $settings) {
 
                 if (!in_array(config('app.env'), ['demo', 'development'])) {
-                    Config::set('mail.default', $smtpSetting->mail_driver);
+
+                    $driver = ($smtpSetting->mail_driver != 'mail') ? $smtpSetting->mail_driver : 'sendmail';
+
+                    Config::set('mail.default', $driver);
                     Config::set('mail.mailers.smtp.host', $smtpSetting->mail_host);
                     Config::set('mail.mailers.smtp.port', $smtpSetting->mail_port);
                     Config::set('mail.mailers.smtp.username', $smtpSetting->mail_username);
@@ -46,6 +49,8 @@ class SmtpConfigProvider extends ServiceProvider
                 if ($pushSetting) {
                     Config::set('services.onesignal.app_id', $pushSetting->onesignal_app_id);
                     Config::set('services.onesignal.rest_api_key', $pushSetting->onesignal_rest_api_key);
+                    Config::set('onesignal.app_id', $pushSetting->onesignal_app_id);
+                    Config::set('onesignal.rest_api_key', $pushSetting->onesignal_rest_api_key);
                 }
             }
         } catch (\Exception $e) {

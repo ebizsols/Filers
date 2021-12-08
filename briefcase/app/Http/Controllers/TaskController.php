@@ -19,6 +19,7 @@ use App\Models\User;
 use App\Traits\ProjectProgress;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class TaskController extends AccountBaseController
 {
@@ -181,7 +182,12 @@ class TaskController extends AccountBaseController
         $this->project = request('project_id') ? Project::with('membersMany')->findOrFail(request('project_id')) : null;
 
         if (!is_null($this->project)) {
-            $this->employees = $this->project->membersMany;
+            if ($this->project->public) {
+                $this->employees = User::allEmployees();
+
+            } else {
+                $this->employees = $this->project->membersMany;
+            }
 
         } else {
             $this->employees = User::allEmployees();
@@ -208,7 +214,7 @@ class TaskController extends AccountBaseController
         $this->addPermission = user()->permission('add_tasks');
         abort_403(!in_array($this->addPermission, ['all', 'added']));
 
-        // DB::beginTransaction();
+        DB::beginTransaction();
         $ganttTaskArray = [];
         $gantTaskLinkArray = [];
         $taskBoardColumn = TaskboardColumn::where('slug', 'incomplete')->first();
@@ -286,96 +292,20 @@ class TaskController extends AccountBaseController
         }
 
         // Add repeated task
-        if ($request->has('repeat') && $request->repeat == 'yes') {
+        if ($request->has('repeat')) {
             $repeatCount = $request->repeat_count;
             $repeatType = $request->repeat_type;
             $repeatCycles = $request->repeat_cycles;
-            $startDate = Carbon::createFromFormat($this->global->date_format, $request->start_date)->format('Y-m-d');
-            $dueDate  = ($request->has('without_duedate')) ? null : Carbon::createFromFormat($this->global->date_format, $request->due_date)->format('Y-m-d');
 
+            $task->repeat = 1;
+            $task->repeat_count = $repeatCount;
+            $task->repeat_type = $repeatType;
+            $task->repeat_cycles = $repeatCycles;
 
-            for ($i = 1; $i < $repeatCycles; $i++) {
-                $repeatStartDate = Carbon::createFromFormat('Y-m-d', $startDate);
-                $repeatDueDate = (!is_null($dueDate)) ? Carbon::createFromFormat('Y-m-d', $dueDate) : null;
-
-                if ($repeatType == 'day') {
-                    $repeatStartDate = $repeatStartDate->addDays($repeatCount);
-                    $repeatDueDate = (!is_null($repeatDueDate)) ? $repeatDueDate->addDays($repeatCount) : null;
-                }
-                else if ($repeatType == 'week') {
-                    $repeatStartDate = $repeatStartDate->addWeeks($repeatCount);
-                    $repeatDueDate = (!is_null($repeatDueDate)) ? $repeatDueDate->addWeeks($repeatCount) : null;
-                }
-                else if ($repeatType == 'month') {
-                    $repeatStartDate = $repeatStartDate->addMonths($repeatCount);
-                    $repeatDueDate = (!is_null($repeatDueDate)) ? $repeatDueDate->addMonths($repeatCount) : null;
-                }
-                else if ($repeatType == 'year') {
-                    $repeatStartDate = $repeatStartDate->addYears($repeatCount);
-                    $repeatDueDate = (!is_null($repeatDueDate)) ? $repeatDueDate->addYears($repeatCount) : null;
-                }
-
-                $newTask = new Task();
-                $newTask->heading = $request->heading;
-
-                if ($request->description != '') {
-                    $newTask->description = $request->description;
-                }
-
-                $newTask->start_date = $repeatStartDate->format('Y-m-d');
-                $newTask->due_date = (!is_null($repeatDueDate)) ? $repeatDueDate->format('Y-m-d') : null;
-
-                if ($request->project_id != 'all') {
-                    $newTask->project_id = $request->project_id;
-                }
-
-                $newTask->task_category_id = $request->category_id;
-                $newTask->priority = $request->priority;
-                $newTask->board_column_id = $taskBoardColumn->id;
-                $newTask->recurring_task_id = $task->id;
-                $newTask->dependent_task_id = $request->has('dependent') && $request->dependent == 'yes' && $request->has('dependent_task_id') && $request->dependent_task_id != '' ? $request->dependent_task_id : null;
-
-                if ($request->board_column_id) {
-                    $newTask->board_column_id = $request->board_column_id;
-                }
-
-                $newTask->is_private = $request->has('is_private') && $request->is_private == 'true' ? 1 : 0;
-                $newTask->billable = $request->has('billable') && $request->billable == 'true' ? 1 : 0;
-                $newTask->estimate_hours = $request->estimate_hours;
-                $newTask->estimate_minutes = $request->estimate_minutes;
-
-                $newTask->save();
-                $newTask->labels()->sync($request->task_labels);
-
-                // For gantt chart
-                if (!is_null($newTask->due_date) && $request->page_name && $request->page_name == 'ganttChart') {
-                    $parentGanttId = $request->parent_gantt_id;
-                    $taskDuration = $newTask->due_date->diffInDays($newTask->start_date); /* @phpstan-ignore-line */
-                    $taskDuration = $taskDuration + 1;
-
-                    $ganttTaskArray[] = [
-                        'id' => $newTask->id,
-                        'text' => $newTask->heading,
-                        'start_date' => $newTask->start_date->format('Y-m-d'), /* @phpstan-ignore-line */
-                        'duration' => $taskDuration,
-                        'parent' => $parentGanttId,
-                        'taskid' => $newTask->id
-                    ];
-
-                    $gantTaskLinkArray[] = [
-                        'id' => 'link_' . $newTask->id,
-                        'source' => $parentGanttId,
-                        'target' => $newTask->id,
-                        'type' => 1
-                    ];
-                }
-
-                $startDate = $newTask->start_date->format('Y-m-d'); /* @phpstan-ignore-line */
-                $dueDate = (!is_null($newTask->due_date)) ? $newTask->due_date->format('Y-m-d') : null; /* @phpstan-ignore-line */
-            }
+            $task->save();
         }
 
-        // DB::commit();
+        DB::commit();
 
         if ($request->page_name && $request->page_name == 'ganttChart') {
 
@@ -406,7 +336,7 @@ class TaskController extends AccountBaseController
     public function edit($id)
     {
         $editTaskPermission = user()->permission('edit_tasks');
-        $this->task = Task::with('users', 'label')->findOrFail($id)->withCustomFields();
+        $this->task = Task::with('users', 'label', 'project')->findOrFail($id)->withCustomFields();
         $this->taskUsers = $taskUsers = $this->task->users->pluck('id')->toArray();
 
         abort_403(!($editTaskPermission == 'all'
@@ -422,7 +352,6 @@ class TaskController extends AccountBaseController
         $this->pageTitle = __('app.update') . ' ' . __('app.task');
         $this->labelIds = $this->task->label->pluck('label_id')->toArray();
         $this->projects = Project::allProjects();
-        $this->employees = User::allEmployees();
         $this->categories = TaskCategory::all();
         $this->taskLabels = TaskLabelList::all();
         $this->taskboardColumns = TaskboardColumn::orderBy('priority', 'asc')->get();
@@ -434,6 +363,17 @@ class TaskController extends AccountBaseController
         }
         else {
             $this->allTasks = [];
+        }
+
+        if ($this->task->project_id) {
+            if ($this->task->project->public) {
+                $this->employees = User::allEmployees();
+    
+            } else {
+                $this->employees = $this->task->project->membersMany;
+            }
+        } else {
+            $this->employees = User::allEmployees();
         }
 
         if (request()->ajax()) {
@@ -544,14 +484,11 @@ class TaskController extends AccountBaseController
         $this->taskUsers = $taskUsers = $this->task->users->pluck('id')->toArray();
 
         $viewTaskPermission = user()->permission('view_tasks');
-        $viewProjectTaskPermission = user()->permission('view_project_tasks');
         abort_403(!(
             $viewTaskPermission == 'all'
             || ($viewTaskPermission == 'added' && $this->task->added_by == user()->id)
             || ($viewTaskPermission == 'owned' && in_array(user()->id, $taskUsers))
             || ($viewTaskPermission == 'both' && (in_array(user()->id, $taskUsers) || $this->task->added_by == user()->id))
-            || $viewProjectTaskPermission == 'all'
-            || ($viewProjectTaskPermission == 'owned' && $this->task->project->client_id == user()->id)
         ));
 
 
@@ -585,8 +522,8 @@ class TaskController extends AccountBaseController
         case 'sub_task':
             $this->tab = 'tasks.ajax.sub_tasks';
                 break;
-        case 'file':
-            $this->tab = 'tasks.ajax.files';
+        case 'comments':
+            $this->tab = 'tasks.ajax.comments';
                 break;
         case 'notes':
             $this->tab = 'tasks.ajax.notes';
@@ -598,8 +535,8 @@ class TaskController extends AccountBaseController
             $this->tab = 'tasks.ajax.timelogs';
                 break;
         default:
-            $this->tab = 'tasks.ajax.comments';
-                break;
+            $this->tab = 'tasks.ajax.files';
+            break;
         }
 
         if (request()->ajax()) {

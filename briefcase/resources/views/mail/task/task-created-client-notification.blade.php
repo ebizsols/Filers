@@ -1,5 +1,5 @@
 @component('mail::message')
-# New Task
+# @lang('modules.tasks.newTask')
 
 @lang('email.newTask.subject')
 

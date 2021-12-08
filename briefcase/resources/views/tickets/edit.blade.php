@@ -202,46 +202,42 @@ $manageChannelPermission = user()->permission('manage_ticket_channel');
                 <div class="ticket-reply-back flex-row justify-content-start px-lg-4 px-md-4 px-3 py-3 c-inv-btns bg-white border-top-grey border-right-grey d-none"
                     id="reply-section-action-2">
 
-                    @if (
-                    $editTicketPermission == 'all' 
-                    || ($editTicketPermission == 'owned' && $ticket->agent_id == user()->id)
-                    || ($editTicketPermission == 'both' && $ticket->agent_id == user()->id)
-                    )
-                    <div class="inv-action dropup mr-3">
-                        <button class="btn-primary dropdown-toggle" type="button" data-toggle="dropdown"
-                            aria-haspopup="true" aria-expanded="false">
-                            @lang('app.submit')
-                            <span><i class="fa fa-chevron-up f-15 text-white"></i></span>
-                        </button>
-                        <!-- DROPDOWN - INFORMATION -->
-                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuBtn" tabindex="0">
-                            <li>
-                                <a class="dropdown-item f-14 text-dark submit-ticket" href="javascript:;"
-                                    data-status="open">
-                                    <x-status color="red" :value="__('modules.tickets.submitOpen')" />
-                                </a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item f-14 text-dark submit-ticket" href="javascript:;"
-                                    data-status="pending">
-                                    <x-status color="yellow" :value="__('modules.tickets.submitPending')" />
-                                </a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item f-14 text-dark submit-ticket" href="javascript:;"
-                                    data-status="resolved">
-                                    <x-status color="dark-green" :value="__('modules.tickets.submitResolved')" />
-                                </a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item f-14 text-dark submit-ticket" href="javascript:;"
-                                    data-status="closed">
-                                    <x-status color="blue" :value="__('modules.tickets.submitClosed')" />
-                                </a>
-                            </li>
+                    @if ($editTicketPermission == 'all' || ($editTicketPermission == 'owned' && $ticket->agent_id == user()->id) || ($editTicketPermission == 'both' && $ticket->agent_id == user()->id))
+                        <div class="inv-action dropup mr-3">
+                            <button class="btn-primary dropdown-toggle" type="button" data-toggle="dropdown"
+                                aria-haspopup="true" aria-expanded="false">
+                                @lang('app.submit')
+                                <span><i class="fa fa-chevron-up f-15 text-white"></i></span>
+                            </button>
+                            <!-- DROPDOWN - INFORMATION -->
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuBtn" tabindex="0">
+                                <li>
+                                    <a class="dropdown-item f-14 text-dark submit-ticket" href="javascript:;"
+                                        data-status="open">
+                                        <x-status color="red" :value="__('modules.tickets.submitOpen')" />
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item f-14 text-dark submit-ticket" href="javascript:;"
+                                        data-status="pending">
+                                        <x-status color="yellow" :value="__('modules.tickets.submitPending')" />
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item f-14 text-dark submit-ticket" href="javascript:;"
+                                        data-status="resolved">
+                                        <x-status color="dark-green" :value="__('modules.tickets.submitResolved')" />
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item f-14 text-dark submit-ticket" href="javascript:;"
+                                        data-status="closed">
+                                        <x-status color="blue" :value="__('modules.tickets.submitClosed')" />
+                                    </a>
+                                </li>
 
-                        </ul>
-                    </div>
+                            </ul>
+                        </div>
                     @else
                         <x-forms.button-primary icon="check" data-status="open" class="submit-ticket mr-3">
                             @lang('app.submit')
@@ -529,6 +525,10 @@ $manageChannelPermission = user()->permission('manage_ticket_channel');
     <script src="{{ asset('vendor/jquery/tagify.min.js') }}"></script>
 
     <script>
+        $(document).ready(function() {
+            quillImageLoad('#description');
+        });
+
         $('.reply-button').click(function() {
             $('#reply-section-action').toggleClass('d-none d-flex');
             $('#reply-section-action-2').toggleClass('d-none flex-row');
@@ -553,32 +553,7 @@ $manageChannelPermission = user()->permission('manage_ticket_channel');
             // init Tagify script on the above inputs
             tagify = new Tagify(input);
 
-        var quill = new Quill('#description', {
-            modules: {
-                toolbar: [
-                    [{
-                        header: [1, 2, 3, 4, 5, false]
-                    }],
-                    [{
-                        'list': 'ordered'
-                    }, {
-                        'list': 'bullet'
-                    }],
-                    ['bold', 'italic', 'underline', 'strike'],
-                    ['image', 'code-block', 'link'],
-                    [{
-                        'direction': 'rtl'
-                    }],
-                    ['clean']
-                ],
-                "emoji-toolbar": true,
-                "emoji-textarea": true,
-                "emoji-shortname": true,
-            },
-            theme: 'snow'
-        });
-
-        Dropzone.autoDiscover = false;
+            Dropzone.autoDiscover = false;
         //Dropzone class
         taskDropzone = new Dropzone("div#task-file-upload-dropzone", {
             dictDefaultMessage: "{{ __('app.dragDrop') }}",
@@ -695,7 +670,7 @@ $manageChannelPermission = user()->permission('manage_ticket_channel');
                 },
                 success: function(response) {
                     if (response.status == "success") {
-                        quill.insertText(0, response.replyText);
+                        quill.clipboard.dangerouslyPasteHTML(0, response.replyText);
                     }
                 }
             })

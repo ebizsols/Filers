@@ -258,12 +258,12 @@ class   TicketDataTable extends BaseDataTable
                 'searchable' => false,
                 'visible' => !in_array('client', user_roles())
             ],
-            __('modules.tickets.ticket') . ' #' => ['data' => 'id', 'name' => 'id'],
-            __('modules.tickets.ticketSubject')  => ['data' => 'subject', 'name' => 'subject'],
-            __('app.name') => ['data' => 'name', 'name' => 'user_id', 'visible' => false],
-            __('modules.tickets.requesterName') => ['data' => 'user_id', 'name' => 'user_id', 'visible' => !in_array('client', user_roles()), 'exportable' => false],
-            __('modules.tickets.requestedOn') => ['data' => 'created_at', 'name' => 'created_at'],
-            __('app.others') => ['data' => 'others', 'name' => 'others', 'sortable' => false],
+            __('modules.tickets.ticket') . ' #' => ['data' => 'id', 'name' => 'id', 'title' => __('modules.tickets.ticket') . ' #'],
+            __('modules.tickets.ticketSubject')  => ['data' => 'subject', 'name' => 'subject', 'title' => __('modules.tickets.ticketSubjectk')],
+            __('app.name') => ['data' => 'name', 'name' => 'user_id', 'visible' => false, 'title' => __('app.name')],
+            __('modules.tickets.requesterName') => ['data' => 'user_id', 'name' => 'user_id', 'visible' => !in_array('client', user_roles()), 'exportable' => false, 'title' => __('modules.tickets.requesterName')],
+            __('modules.tickets.requestedOn') => ['data' => 'created_at', 'name' => 'created_at', 'title' => __('modules.tickets.requestedOn')],
+            __('app.others') => ['data' => 'others', 'name' => 'others', 'sortable' => false, 'title' => __('app.others')],
             Column::computed('action', __('app.action'))
                 ->exportable(false)
                 ->printable(false)

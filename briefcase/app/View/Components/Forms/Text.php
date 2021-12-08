@@ -22,7 +22,7 @@ class Text extends Component
      *
      * @return void
      */
-    public function __construct($fieldLabel, $fieldRequired = false, $fieldPlaceholder = null, $fieldValue = null, $fieldName, $fieldId, $fieldHelp = null, $fieldReadOnly = false, $popover = null)
+    public function __construct($fieldLabel, $fieldName, $fieldId, $fieldRequired = false, $fieldPlaceholder = null, $fieldValue = null, $fieldHelp = null, $fieldReadOnly = false, $popover = null)
     {
         $this->fieldLabel = $fieldLabel;
         $this->fieldRequired = $fieldRequired;

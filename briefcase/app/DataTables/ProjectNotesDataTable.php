@@ -148,8 +148,8 @@ class ProjectNotesDataTable extends BaseDataTable
                 'searchable' => false
             ],
             '#' => ['data' => 'DT_RowIndex', 'orderable' => false, 'searchable' => false, 'visible' => false],
-            __('modules.client.noteTitle') => ['data' => 'note_title', 'name' => 'title'],
-            __('modules.client.noteType') => ['data' => 'note_type', 'name' => 'type'],
+            __('modules.client.noteTitle') => ['data' => 'note_title', 'name' => 'title', 'title' => __('modules.client.noteTitle')],
+            __('modules.client.noteType') => ['data' => 'note_type', 'name' => 'type', 'title' => __('modules.client.noteType')],
             Column::computed('action', __('app.action'))
                 ->exportable(false)
                 ->printable(false)

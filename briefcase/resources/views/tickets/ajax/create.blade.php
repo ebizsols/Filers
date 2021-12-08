@@ -16,47 +16,54 @@ $manageChannelPermission = user()->permission('manage_ticket_channel');
                     @lang('modules.tickets.ticketDetail')</h4>
                 <div class="row p-20">
                     @if (!in_array('client', user_roles()))
-                        <div class="col-md-4">
-                            <div class="form-group my-3">
-                                <x-forms.label fieldId="requester-client"
-                                    :fieldLabel="__('modules.tickets.requester')" />
-                                <div class="d-flex">
-                                    <x-forms.radio fieldId="requester-client" :fieldLabel="__('app.client')"
-                                        fieldName="requester_type" fieldValue="client" checked="true">
-                                    </x-forms.radio>
-                                    <x-forms.radio fieldId="requester-employee" :fieldLabel="__('app.employee')"
-                                        fieldValue="employee" fieldName="requester_type"></x-forms.radio>
+                        @if ($addPermission == 'all')
+                            <div class="col-md-4">
+                                <div class="form-group my-3">
+                                    <x-forms.label fieldId="requester-client"
+                                        :fieldLabel="__('modules.tickets.requester')" />
+                                    <div class="d-flex">
+                                        <x-forms.radio fieldId="requester-client" :fieldLabel="__('app.client')"
+                                            fieldName="requester_type" fieldValue="client" checked="true">
+                                        </x-forms.radio>
+                                        <x-forms.radio fieldId="requester-employee" :fieldLabel="__('app.employee')"
+                                            fieldValue="employee" fieldName="requester_type"></x-forms.radio>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <div class="col-md-4" id="client-requester">
-                            <x-forms.select fieldId="client_id" :fieldLabel="__('modules.tickets.requesterName')" fieldName="client_id" search="true" alignRight="true" fieldRequired="true">
-                                <option value="">--</option>
-                                @foreach ($clients as $client)
-                                    <option
-                                        data-content="<div class='d-inline-block mr-1'><img class='taskEmployeeImg rounded-circle' src='{{ $client->image_url }}' ></div> {{ ucfirst($client->name) }}"
-                                        value="{{ $client->id }}">{{ ucwords($client->name) }}</option>
-                                @endforeach
-                            </x-forms.select>
-                        </div>
-
-                        <div class="col-md-4 d-none" id="employee-requester">
-                            <x-forms.label class="my-3" fieldId="user_id"
-                                :fieldLabel="__('modules.tickets.requesterName')">
-                            </x-forms.label>
-                            <x-forms.input-group>
-                                <select class="form-control select-picker" name="user_id" id="user_id"
-                                    data-live-search="true" data-size="8">
+                            <div class="col-md-4" id="client-requester">
+                                <x-forms.select fieldId="client_id" :fieldLabel="__('modules.tickets.requesterName')"
+                                    fieldName="client_id" search="true" alignRight="true" fieldRequired="true">
                                     <option value="">--</option>
-                                    @foreach ($employees as $employee)
+                                    @foreach ($clients as $client)
                                         <option
-                                            data-content="<div class='d-inline-block mr-1'><img class='taskEmployeeImg rounded-circle' src='{{ $employee->image_url }}' ></div> {{ ucfirst($employee->name) }}"
-                                            value="{{ $employee->id }}">{{ ucwords($employee->name) }}</option>
+                                            data-content="<div class='d-inline-block mr-1'><img class='taskEmployeeImg rounded-circle' src='{{ $client->image_url }}' ></div> {{ ucfirst($client->name) }}"
+                                            value="{{ $client->id }}">{{ ucwords($client->name) }}</option>
                                     @endforeach
-                                </select>
-                            </x-forms.input-group>
-                        </div>
+                                </x-forms.select>
+                            </div>
+                            
+                            <div class="col-md-4 d-none" id="employee-requester">
+                                <x-forms.label class="my-3" fieldId="user_id"
+                                    :fieldLabel="__('modules.tickets.requesterName')">
+                                </x-forms.label>
+                                <x-forms.input-group>
+                                    <select class="form-control select-picker" name="user_id" id="user_id"
+                                        data-live-search="true" data-size="8">
+                                        <option value="">--</option>
+                                        @foreach ($employees as $employee)
+                                            <option
+                                                data-content="<div class='d-inline-block mr-1'><img class='taskEmployeeImg rounded-circle' src='{{ $employee->image_url }}' ></div> {{ ucfirst($employee->name) }}"
+                                                value="{{ $employee->id }}">{{ ucwords($employee->name) }}</option>
+                                        @endforeach
+                                    </select>
+                                </x-forms.input-group>
+                            </div>
+    
+                        @else
+                            <input type="hidden" name="requester_type" value="employee">
+                            <input type="hidden" name="user_id" value="{{ user()->id }}">
+                        @endif
                     @else
                         <input type="hidden" name="requester_type" value="client">
                         <input type="hidden" name="client_id" value="{{ user()->id }}">
@@ -255,30 +262,7 @@ $manageChannelPermission = user()->permission('manage_ticket_channel');
             // init Tagify script on the above inputs
             tagify = new Tagify(input);
 
-        var quill = new Quill('#description', {
-            modules: {
-                toolbar: [
-                    [{
-                        header: [1, 2, 3, 4, 5, false]
-                    }],
-                    [{
-                        'list': 'ordered'
-                    }, {
-                        'list': 'bullet'
-                    }],
-                    ['bold', 'italic', 'underline', 'strike'],
-                    ['image', 'code-block', 'link'],
-                    [{
-                        'direction': 'rtl'
-                    }],
-                    ['clean']
-                ],
-                "emoji-toolbar": true,
-                "emoji-textarea": true,
-                "emoji-shortname": true,
-            },
-            theme: 'snow'
-        });
+        quillImageLoad('#description');
 
         $("input[name=requester_type]").click(function() {
             $('#client-requester, #employee-requester').toggleClass('d-none');

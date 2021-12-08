@@ -23,16 +23,3 @@
     </x-setting-form-actions>
 </div>
 <!-- Buttons End -->
-
-<script>
-    $(body).on('click', '#save-right-to-data-portability', function() {
-        $.easyAjax({
-            url: "{{route('gdpr_settings.update_general')}}",
-            container: '#editSettings',
-            type: "POST",
-            disableButton: true,
-            buttonSelector: "#save-right-to-data-portability",
-            data: $('#editSettings').serialize(),
-        })
-    })
-</script>

@@ -91,29 +91,44 @@ class ExpensesDataTable extends BaseDataTable
                 ]);
             })
             ->editColumn('status', function ($row) {
-                $status = '<select class="form-control select-picker change-expense-status" data-expense-id="' . $row->id . '">';
-                $status .= '<option ';
+                if ($this->editExpensePermission == 'all') {
+                    $status = '<select class="form-control select-picker change-expense-status" data-expense-id="' . $row->id . '">';
+                    $status .= '<option ';
 
-                if ($row->status == 'pending') {
-                    $status .= 'selected';
+                    if ($row->status == 'pending') {
+                        $status .= 'selected';
+                    }
+
+                    $status .= ' value="pending" data-content="<i class=\'fa fa-circle mr-2 text-yellow\'></i> ' .  __('app.pending') . '">' . __('app.pending')  . '</option>';
+                    $status .= '<option ';
+
+                    if ($row->status == 'approved') {
+                        $status .= 'selected';
+                    }
+
+                    $status .= ' value="approved" data-content="<i class=\'fa fa-circle mr-2 text-light-green\'></i> ' .  __('app.approved') . '"' . __('app.approved')  . '</option>';
+                    $status .= '<option ';
+
+                    if ($row->status == 'rejected') {
+                        $status .= 'selected';
+                    }
+
+                    $status .= ' value="rejected" data-content="<i class=\'fa fa-circle mr-2 text-red\'></i> ' .  __('app.rejected') . '">' . __('app.rejected')  . '</option>';
+                    $status .= '</select>';
+
+                } else {
+                    if ($row->status == 'approved') {
+                        $class = 'text-light-green';
+                        $status = __('app.approved');
+                        
+                    } else {
+                        $class = 'text-red';
+                        $status = __('app.rejected');
+                    }
+    
+                    $status = '<i class="fa fa-circle mr-1 ' . $class . ' f-10"></i> ' . $status;
                 }
 
-                $status .= ' value="pending">' . __('app.pending')  . '</option>';
-                $status .= '<option ';
-
-                if ($row->status == 'approved') {
-                    $status .= 'selected';
-                }
-
-                $status .= ' value="approved">' . __('app.approved')  . '</option>';
-                $status .= '<option ';
-
-                if ($row->status == 'rejected') {
-                    $status .= 'selected';
-                }
-
-                $status .= ' value="rejected">' . __('app.rejected')  . '</option>';
-                $status .= '</select>';
                 return $status;
             })
             ->addColumn('status_export', function ($row) {
@@ -263,14 +278,14 @@ class ExpensesDataTable extends BaseDataTable
                 'searchable' => false
             ],
             '#' => ['data' => 'DT_RowIndex', 'orderable' => false, 'searchable' => false, 'visible' => false],
-            __('modules.expenses.itemName')  => ['data' => 'item_name', 'name' => 'item_name'],
-            __('app.price') => ['data' => 'price', 'name' => 'price'],
-            __('app.menu.employees') => ['data' => 'user_id', 'name' => 'user_id', 'exportable' => false],
-            __('app.employee') => ['data' => 'employee_name', 'name' => 'user_id', 'visible' => false],
-            __('modules.expenses.purchaseFrom') => ['data' => 'purchase_from', 'name' => 'purchase_from'],
-            __('modules.expenses.purchaseDate') => ['data' => 'purchase_date', 'name' => 'purchase_date'],
-            __('app.status') => ['data' => 'status', 'name' => 'status', 'exportable' => false],
-            __('app.expense').' '.__('app.status') => ['data' => 'status_export', 'name' => 'status', 'visible' => false],
+            __('modules.expenses.itemName')  => ['data' => 'item_name', 'name' => 'item_name', 'title' => __('modules.expenses.itemName')],
+            __('app.price') => ['data' => 'price', 'name' => 'price', 'title' => __('app.price')],
+            __('app.menu.employees') => ['data' => 'user_id', 'name' => 'user_id', 'exportable' => false, 'title' => __('app.menu.employees')],
+            __('app.employee') => ['data' => 'employee_name', 'name' => 'user_id', 'visible' => false, 'title' => __('app.employee')],
+            __('modules.expenses.purchaseFrom') => ['data' => 'purchase_from', 'name' => 'purchase_from', 'title' => __('modules.expenses.purchaseFrom')],
+            __('modules.expenses.purchaseDate') => ['data' => 'purchase_date', 'name' => 'purchase_date', 'title' => __('modules.expenses.purchaseDate')],
+            __('app.status') => ['data' => 'status', 'name' => 'status', 'exportable' => false, 'title' => __('app.status')],
+            __('app.expense').' '.__('app.status') => ['data' => 'status_export', 'name' => 'status', 'visible' => false, 'title' => __('app.expense')],
             Column::computed('action', __('app.action'))
                 ->exportable(false)
                 ->printable(false)

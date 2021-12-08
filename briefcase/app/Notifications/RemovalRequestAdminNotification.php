@@ -37,8 +37,8 @@ class RemovalRequestAdminNotification extends Notification implements ShouldQueu
     public function toMail($notifiable)
     {
         return (new MailMessage)
-            ->subject(__('email.removalRequestAdmin.subject').' '.config('app.name').'!')
-            ->greeting(__('email.hello').' '.ucwords($notifiable->name).'!')
+            ->subject(__('email.removalRequestAdmin.subject').' '.config('app.name').__('!'))
+            ->greeting(__('email.hello').' '.ucwords($notifiable->name).__('!'))
             ->line(__('email.removalRequestAdmin.text'));
     }
 

@@ -112,7 +112,7 @@ class Invoice extends BaseModel
 
     protected $dates = ['issue_date', 'due_date'];
     protected $appends = ['total_amount', 'issue_on', 'original_invoice_number'];
-    protected $with = ['currency'];
+    protected $with = ['currency', 'address'];
 
     protected static function boot()
     {
@@ -168,6 +168,11 @@ class Invoice extends BaseModel
     public function estimate()
     {
         return $this->belongsTo(Estimate::class, 'estimate_id');
+    }
+
+    public function address()
+    {
+        return $this->belongsTo(CompanyAddress::class, 'company_address_id');
     }
 
     public function scopePending($query)

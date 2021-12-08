@@ -114,7 +114,7 @@ class Expense extends BaseModel
     {
 
         if (!is_null($this->price) && !is_null($this->currency_id)) {
-            return $this->currency->currency_symbol . $this->price;
+            return currency_formatter($this->price, $this->currency->currency_symbol);
         }
 
         return '';

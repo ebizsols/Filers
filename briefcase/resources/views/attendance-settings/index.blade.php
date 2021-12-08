@@ -24,7 +24,7 @@
                             <x-forms.text :fieldLabel="__('modules.attendance.officeStartTime')"
                                 :fieldPlaceholder="__('placeholders.hours')" fieldName="office_start_time"
                                 fieldId="office_start_time"
-                                :fieldValue="\Carbon\Carbon::createFromFormat('H:i:s', $attendanceSetting->office_start_time)->format('h:i A')"
+                                :fieldValue="\Carbon\Carbon::createFromFormat('H:i:s', $attendanceSetting->office_start_time)->format($global->time_format)"
                                 fieldRequired="true" />
                         </div>
                     </div>
@@ -34,7 +34,7 @@
                             <x-forms.text :fieldLabel="__('modules.attendance.officeEndTime')"
                                 :fieldPlaceholder="__('placeholders.hours')" fieldName="office_end_time"
                                 fieldId="office_end_time"
-                                :fieldValue="\Carbon\Carbon::createFromFormat('H:i:s', $attendanceSetting->office_end_time)->format('h:i A')"
+                                :fieldValue="\Carbon\Carbon::createFromFormat('H:i:s', $attendanceSetting->office_end_time)->format($global->time_format)"
                                 fieldRequired="true" />
                         </div>
                     </div>
@@ -44,7 +44,7 @@
                             <x-forms.text :fieldLabel="__('modules.attendance.halfDayMarkTime')"
                                 :fieldPlaceholder="__('placeholders.hours')" fieldName="halfday_mark_time"
                                 fieldId="halfday_mark_time"
-                                :fieldValue="$attendanceSetting->halfday_mark_time ? \Carbon\Carbon::createFromFormat('H:i:s', $attendanceSetting->halfday_mark_time)->format('h:i A') : '01:00'" />
+                                :fieldValue="$attendanceSetting->halfday_mark_time ? \Carbon\Carbon::createFromFormat('H:i:s', $attendanceSetting->halfday_mark_time)->format($global->time_format) : '11:00'" />
                         </div>
                     </div>
 
@@ -80,16 +80,16 @@
                                     fieldName="radius" fieldId="radius" :fieldValue="$attendanceSetting->radius" />
                             </div>
 
-                            <div class="col-lg-12">
+                            <div class="col-lg-12 mb-1">
                                 <x-forms.checkbox :fieldLabel="__('modules.attendance.checkForIp')" fieldName="ip_check"
                                     fieldId="ip_check" fieldValue="yes" fieldRequired="true"
                                     :checked="$attendanceSetting->ip_check == 'yes'" />
                             </div>
 
                             <div class="col-lg-12 @if ($attendanceSetting->ip_check == 'no') d-none @endif " id="ipBox">
-                                <div id="addMoreBox1" class="row clearfix">
+                                <div id="addMoreBox1" class="row">
                                     @forelse($ipAddresses as $index => $ipAddress)
-                                        <div class="col-md-5" style="margin-left: 5px;">
+                                        <div class="col-md-5">
                                             <div class="form-group" id="occasionBox">
                                                 <input class="form-control height-35 f-14" type="text"
                                                     value="{{ $ipAddress }}" name="ip[{{ $index }}]"
@@ -98,7 +98,7 @@
                                             </div>
                                         </div>
                                     @empty
-                                        <div class="col-md-5" style="margin-left: 5px;">
+                                        <div class="col-md-5">
                                             <div class="form-group" id="occasionBox">
                                                 <x-forms.text fieldLabel=""
                                                     :fieldPlaceholder="__('modules.attendance.ipAddress')"
@@ -183,14 +183,6 @@
                         <x-forms.button-cancel :link="url()->previous()" class="border-0">@lang('app.cancel')
                         </x-forms.button-cancel>
                     </x-setting-form-actions>
-                    {{-- <div class="d-flex d-lg-none d-md-none p-4">
-                        <div class="d-flex w-100">
-                            <x-forms.button-primary class="mr-3 w-100" icon="check">@lang('app.save')
-                            </x-forms.button-primary>
-                        </div>
-                        <x-forms.button-cancel :link="url()->previous()" class="w-100">@lang('app.cancel')
-                        </x-forms.button-cancel>
-                    </div> --}}
                 </div>
                 <!-- Buttons End -->
             </x-slot>
@@ -257,7 +249,7 @@
             $('#plusButton').click(function() {
                 $i = $i + 1;
                 var indexs = $i + 1;
-                $(`<div id="addMoreBox${indexs}" class="row clearfix"><div class="col-md-5 "style="margin-left:5px;"><div class="form-group"><input class="form-control height-35 f-14" name="ip[${$i}]" type="text" value="" placeholder="@lang('modules.attendance.ipAddress')"/></div></div><div class="col-md-1"><div class="task_view mt-1"> <a href="javascript:;" onclick="removeBox(${indexs})" class="delete-agents task_view_more d-flex align-items-center justify-content-center dropdown-toggle" > <i class="fa fa-trash icons mr-2"></i> @lang('app.delete')</a> </div></div></div>`).insertBefore($insertBefore);
+                $(`<div id="addMoreBox${indexs}" class="row clearfix"><div class="col-md-5"><div class="form-group"><input class="form-control height-35 f-14" name="ip[${$i}]" type="text" value="" placeholder="@lang('modules.attendance.ipAddress')"/></div></div><div class="col-md-1"><div class="task_view mt-1"> <a href="javascript:;" data-ip-index="${indexs}" class="delete-ip-field task_view_more d-flex align-items-center justify-content-center dropdown-toggle" > <i class="fa fa-trash icons mr-2"></i> @lang('app.delete')</a> </div></div></div>`).insertBefore($insertBefore);
             });
 
             // Remove fields
@@ -270,5 +262,10 @@
         $('#alert_after_status').click(function() {
             $('.alert_after_box').toggleClass('d-none');
         })
+
+        $('#ipBox').on('click', '.delete-ip-field', function () {
+            var ipIndex = $(this).data('ip-index');
+            $('#addMoreBox' + ipIndex).remove();
+        });
     </script>
 @endpush

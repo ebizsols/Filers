@@ -24,6 +24,11 @@ class TicketObserver
         if (!isRunningInConsoleOrSeeding()) {
             $userID = (!is_null(user())) ? user()->id : $ticket->user_id;
             $ticket->added_by = $userID;
+
+            if ($ticket->isDirty('status') && $ticket->status == 'closed') {
+                $ticket->close_date = now(global_setting()->timezone)->format('Y-m-d');
+            }
+ 
         }
     }
 
@@ -35,6 +40,15 @@ class TicketObserver
 
             if($ticket->requester){
                 event(new TicketRequesterEvent($ticket, $ticket->requester));
+            }
+        }
+    }
+
+    public function updating(Ticket $ticket)
+    {
+        if (!isRunningInConsoleOrSeeding()) {
+            if ($ticket->isDirty('status') && $ticket->status == 'closed') {
+                $ticket->close_date = now(global_setting()->timezone)->format('Y-m-d');
             }
         }
     }

@@ -51,9 +51,9 @@ class InvoiceSettingController extends AccountBaseController
         $setting->template              = $request->template;
         $setting->due_after             = $request->due_after;
         $setting->invoice_terms         = $request->invoice_terms;
-        $setting->gst_number            = $request->gst_number;
         $setting->show_gst              = $request->has('show_gst') ? 'yes' : 'no';
         $setting->hsn_sac_code_show     = $request->has('hsn_sac_code_show') ? 1 : 0;
+        $setting->tax_calculation_msg   = $request->has('show_tax_calculation_msg') ? 1 : 0;
         $setting->send_reminder         = $request->send_reminder;
         $setting->locale                = $request->locale;
 

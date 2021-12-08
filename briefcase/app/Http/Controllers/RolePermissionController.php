@@ -26,6 +26,7 @@ class RolePermissionController extends AccountBaseController
     {
         $this->roles = Role::withCount('roleuser')
             ->where('name', '<>', 'admin')
+            ->where('name', '!=', 'Super Admin')
             ->orderBy('id', 'asc')
             ->get();
 
@@ -41,7 +42,7 @@ class RolePermissionController extends AccountBaseController
 
     public function create()
     {
-        $this->roles = Role::all();
+        $this->roles = Role::where('name', '!=', 'Super Admin')->get();
         return view('role-permissions.ajax.create', $this->data);
     }
 

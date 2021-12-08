@@ -22,7 +22,7 @@
             <p class="mb-0 pr-3 f-14 text-dark-grey d-flex align-items-center">@lang('app.status')</p>
             <div class="select-status">
                 <select class="form-control select-picker" name="status" id="ticket-status">
-                    <option value="all">@lang('app.all')</option>
+                    <option {{ request('status') == 'all' ? 'selected' : '' }} value="all">@lang('app.all')</option>
                     <option {{ request('status') == 'open' ? 'selected' : '' }} value="open">
                         @lang('modules.tickets.totalOpenTickets')</option>
                     <option {{ request('status') == 'pending' ? 'selected' : '' }} value="pending">
@@ -77,6 +77,8 @@
                                         @foreach ($group->enabledAgents as $agent)
                                             <option
                                                 data-content="<div class='d-inline-block mr-1'><img class='taskEmployeeImg rounded-circle' src='{{ $agent->user->image_url }}' ></div> {{ ucfirst($agent->user->name) }}"
+                                                {{ request('agent') == $agent->user->id ? 'selected' : '' }}
+                                                {{ (request('agent') == 'me' && $agent->user->id == user()->id ) ? 'selected' : '' }}
                                                 value="{{ $agent->user->id }}">{{ ucwords($agent->user->name) }}
                                             </option>
                                         @endforeach

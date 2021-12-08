@@ -53,8 +53,8 @@ class EstimateDeclined extends Notification implements ShouldQueue
         $url = url('/');
 
         return (new MailMessage)
-            ->subject(__('email.estimateDeclined.subject').' - '.config('app.name').'!')
-            ->greeting(__('email.hello').' '.ucwords($notifiable->name).'!')
+            ->subject(__('email.estimateDeclined.subject').' - '.config('app.name').__('!'))
+            ->greeting(__('email.hello').' '.ucwords($notifiable->name).__('!'))
             ->line(__('email.estimateDeclined.text'))
             ->action(__('email.estimateDeclined.loginDashboard'), $url)
             ->line(__('email.thankyouNote'));

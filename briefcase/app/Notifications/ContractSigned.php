@@ -62,7 +62,7 @@ class ContractSigned extends Notification implements ShouldQueue
 
         return (new MailMessage)
             ->subject(__('email.contractSign.subject'))
-            ->greeting(__('email.hello').' '.ucwords($notifiable->name).'!')
+            ->greeting(__('email.hello').' '.ucwords($notifiable->name).__('!'))
             ->line(new HtmlString(__('email.contractSign.text', ['contract' => '<strong>'.$this->contract->subject.'</strong>','client' => '<strong>'.$this->contract->client->name.'</strong>'])))
             ->line(__('email.thankyouNote'))
             ->attachData($pdf->output(), $filename . '.pdf');

@@ -26,12 +26,13 @@
             </x-slot>
 
             <div class="col-lg-12 col-md-12 ntfcn-tab-content-left w-100 p-4 ">
-                <h4 class="mb-3 f-21 font-weight-normal text-capitalize ">
+                <h4 class="f-21 font-weight-normal text-capitalize ">
                     @lang('modules.moduleSettings.step1')</h4>
                 <div class="row">
                     <div class="col-sm-12">
-                        <x-forms.file-multiple class="mr-0 mr-lg-2 mr-md-2"
-                            :fieldLabel="__('app.add') . ' ' .__('app.file') .' (Allowed File Type: Zip)'" fieldName="file"
+                        <x-forms.file-multiple
+                            class="mr-0 mr-lg-2 mr-md-2"
+                            :fieldLabel=" __('messages.downloadFilefromCodecanyon') " fieldName="file"
                             fieldId="file-upload-dropzone" />
                     </div>
                 </div>
@@ -109,7 +110,7 @@
             var uploadFile = "{{ route('update-settings.store') }}?_token={{ csrf_token() }}";
             var myDrop = new Dropzone("#file-upload-dropzone", {
                 url: uploadFile,
-                acceptedFiles: 'application/zip',
+                acceptedFiles: 'application/zip, application/x-zip-compressed, application/x-compressed, multipart/x-zip',
                 addRemoveLinks: true
             });
             myDrop.on("complete", function(file) {

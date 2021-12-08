@@ -94,12 +94,12 @@
                                 :popover="__('modules.themeSettings.authThemeInfo')">
                             </x-forms.label>
                             <div class="d-flex">
-                                <x-forms.radio fieldId="sidebar_dark_4" :fieldLabel="__('modules.themeSettings.dark')"
+                                <x-forms.radio fieldId="auth_theme_dark_4" :fieldLabel="__('modules.themeSettings.dark')"
                                     fieldName="auth_theme" fieldValue="dark" class="auth_theme"
                                     :checked="($global->auth_theme == 'dark')">
                                 </x-forms.radio>
 
-                                <x-forms.radio fieldId="sidebar_light_4" :fieldLabel="__('modules.themeSettings.light')"
+                                <x-forms.radio fieldId="auth_theme_light_4" :fieldLabel="__('modules.themeSettings.light')"
                                     fieldValue="light" fieldName="auth_theme" class="auth_theme"
                                     :checked="($global->auth_theme == 'light')">
                                 </x-forms.radio>

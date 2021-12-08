@@ -203,17 +203,19 @@ $changeStatusPermission = user()->permission('change_status');
                 <div class="s-b-inner s-b-notifications bg-white b-shadow-4 rounded">
 
                     <x-tab-section class="task-tabs">
-                        <x-tab-item class="ajax-tab"
-                            :active="(request('view') === 'comments' || !request('view'))"
-                            :link="route('tasks.show', $task->id).'?view=comments'">
-                            @lang('modules.tasks.comment')</x-tab-item>
+
+                        <x-tab-item class="ajax-tab" :active="(request('view') === 'file' || !request('view'))"
+                            :link="route('tasks.show', $task->id).'?view=file'">@lang('app.file')</x-tab-item>
 
                         <x-tab-item class="ajax-tab" :active="(request('view') === 'sub_task')"
                             :link="route('tasks.show', $task->id).'?view=sub_task'">
                             @lang('modules.tasks.subTask')</x-tab-item>
 
-                        <x-tab-item class="ajax-tab" :active="(request('view') === 'file')"
-                            :link="route('tasks.show', $task->id).'?view=file'">@lang('app.file')</x-tab-item>
+                        <x-tab-item class="ajax-tab"
+                            :active="(request('view') === 'comments')"
+                            :link="route('tasks.show', $task->id).'?view=comments'">
+                            @lang('modules.tasks.comment')</x-tab-item>
+
 
                         <x-tab-item class="ajax-tab" :active="(request('view') === 'time_logs')"
                             :link="route('tasks.show', $task->id).'?view=time_logs'">@lang('app.menu.timeLogs')

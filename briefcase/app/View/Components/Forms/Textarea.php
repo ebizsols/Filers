@@ -13,13 +13,14 @@ class Textarea extends Component
     public $fieldValue;
     public $fieldName;
     public $fieldId;
+    public $popover;
 
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct($fieldLabel, $fieldRequired = false, $fieldPlaceholder = null, $fieldValue = null, $fieldName, $fieldId)
+    public function __construct($fieldLabel, $fieldName, $fieldId, $fieldRequired = false, $fieldPlaceholder = null, $fieldValue = null, $popover = null)
     {
         $this->fieldLabel = $fieldLabel;
         $this->fieldRequired = $fieldRequired;
@@ -27,6 +28,7 @@ class Textarea extends Component
         $this->fieldValue = $fieldValue;
         $this->fieldName = $fieldName;
         $this->fieldId = $fieldId;
+        $this->popover = $popover;
     }
 
     /**

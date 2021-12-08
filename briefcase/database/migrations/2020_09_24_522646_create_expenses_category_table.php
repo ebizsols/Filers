@@ -33,12 +33,12 @@ class CreateExpensesCategoryTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('expenses_category');
-
         Schema::table('expenses', function (Blueprint $table) {
             $table->dropForeign(['category_id']);
             $table->dropColumn('category_id');
         });
+    
+        Schema::dropIfExists('expenses_category');
     }
 
 }

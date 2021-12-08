@@ -35,9 +35,9 @@ class TestSlack extends Notification implements ShouldQueue
     public function toMail($notifiable)
     {
         return (new MailMessage)
-            ->line('The introduction to the notification.')
-            ->action('Notification Action', url('/'))
-            ->line('Thank you for using our application!');
+            ->line(__('email.notificationIntro'))
+            ->action(__('email.notificationAction'), url('/'))
+            ->line(__('email.thankyouNote'));
     }
 
     /**

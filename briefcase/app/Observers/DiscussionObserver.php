@@ -18,12 +18,12 @@ class DiscussionObserver
 
     public function deleting(Discussion $discussion)
     {
-            $notifiData = ['App\Notifications\NewDiscussion','App\Notifications\NewDiscussionReply'];
+        $notifiData = ['App\Notifications\NewDiscussion','App\Notifications\NewDiscussionReply'];
 
-            Notification::whereIn('type', $notifiData)
-                ->whereNull('read_at')
-                ->where('data', 'like', '{"id":'.$discussion->id.',%')
-                ->delete();
+        Notification::whereIn('type', $notifiData)
+            ->whereNull('read_at')
+            ->where('data', 'like', '{"id":'.$discussion->id.',%')
+            ->delete();
     }
 
 }

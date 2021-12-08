@@ -54,6 +54,7 @@ class ProjectsDataTable extends BaseDataTable
 
                 if (
                     $this->editProjectsPermission == 'all'
+                    || $row->public
                     || ($this->editProjectsPermission == 'added' && user()->id == $row->added_by)
                     || ($this->editProjectsPermission == 'owned' && user()->id == $row->client_id && in_array('client', user_roles()))
                     || ($this->editProjectsPermission == 'owned' && in_array(user()->id, $memberIds) && in_array('employee', user_roles()))
@@ -108,6 +109,10 @@ class ProjectsDataTable extends BaseDataTable
                 return $action;
             })
             ->addColumn('members', function ($row) {
+                if ($row->public) {
+                    return '--';
+                }
+
                 $members = '';
 
                 if (count($row->members) > 0) {
@@ -149,7 +154,11 @@ class ProjectsDataTable extends BaseDataTable
                 $pin = '';
 
                 if (($row->pinned_project)) {
-                    $pin = '<span class="badge badge-success"><i class="fa fa-thumbtack"></i> ' . __('app.pinned') . '</span>';
+                    $pin .= '<span class="badge badge-secondary"><i class="fa fa-thumbtack"></i> ' . __('app.pinned') . '</span>';
+                }
+
+                if (($row->public)) {
+                    $pin = '<span class="badge badge-primary"><i class="fa fa-globe"></i> ' . __('app.public') . '</span>';
                 }
 
                 return '<div class="media align-items-center">
@@ -246,7 +255,7 @@ class ProjectsDataTable extends BaseDataTable
             ->leftJoin('users as client', 'projects.client_id', 'users.id')
             ->selectRaw('projects.id, projects.hash, projects.added_by, projects.project_name, projects.start_date, projects.deadline, projects.client_id,
               projects.completion_percent, projects.project_budget, projects.currency_id,
-              projects.status, users.name, client.name as client_name,
+              projects.status, users.name, client.name as client_name, projects.public,
            ( select count("id") from pinned where pinned.project_id = projects.id and pinned.user_id = ' . user()->id . ') as pinned_project');
 
 
@@ -296,17 +305,24 @@ class ProjectsDataTable extends BaseDataTable
         }
 
         if ($this->viewProjectPermission == 'added') {
-            $model->where('projects.added_by', user()->id);
+            $model->where(function ($query) {
+                return $query->where('projects.added_by', user()->id)
+                    ->orWhere('projects.public', 1);
+            });
         }
 
         if ($this->viewProjectPermission == 'owned' && in_array('employee', user_roles())) {
-            $model->where('project_members.user_id', user()->id);
+            $model->where(function ($query) {
+                return $query->where('project_members.user_id', user()->id)
+                    ->orWhere('projects.public', 1);
+            });
         }
 
         if ($this->viewProjectPermission == 'both' && in_array('employee', user_roles())) {
             $model->where(function ($query) {
                 return $query->where('projects.added_by', user()->id)
-                    ->orWhere('project_members.user_id', user()->id);
+                    ->orWhere('project_members.user_id', user()->id)
+                    ->orWhere('projects.public', 1);
             });
         }
 
@@ -369,17 +385,17 @@ class ProjectsDataTable extends BaseDataTable
                 'visible' => !in_array('client', user_roles())
             ],
             '#' => ['data' => 'DT_RowIndex', 'orderable' => false, 'searchable' => false, 'visible' => false],
-            __('app.id') => ['data' => 'id', 'name' => 'id'],
-            __('modules.projects.projectName') => ['data' => 'project_name', 'name' => 'project_name', 'exportable' => false],
-            __('app.project') => ['data' => 'project', 'name' => 'project_name', 'visible' => false],
-            __('modules.projects.members')  => ['data' => 'members', 'name' => 'members', 'exportable' => false, 'width' => '20%'],
-            __('modules.projects.projectMembers')  => ['data' => 'name', 'name' => 'name', 'visible' => false],
-            __('app.deadline') => ['data' => 'deadline', 'name' => 'deadline'],
-            __('app.client') => ['data' => 'client_id', 'name' => 'client_id', 'width' => '15%', 'exportable' => false],
-            __('app.customers')  => ['data' => 'client_name', 'name' => 'client_id', 'visible' => false],
-            __('app.progress') => ['data' => 'completion_percent', 'name' => 'completion_percent', 'exportable' => false],
-            __('app.completion') => ['data' => 'completion_export', 'name' => 'completion_export', 'visible' => false],
-            __('app.status') => ['data' => 'status', 'name' => 'status', 'width' => '16%'],
+            __('app.id') => ['data' => 'id', 'name' => 'id', 'title' => __('app.id')],
+            __('modules.projects.projectName') => ['data' => 'project_name', 'name' => 'project_name', 'exportable' => false, 'title' => __('modules.projects.projectName')],
+            __('app.project') => ['data' => 'project', 'name' => 'project_name', 'visible' => false, 'title' => __('app.project')],
+            __('modules.projects.members')  => ['data' => 'members', 'name' => 'members', 'exportable' => false, 'width' => '20%', 'title' => __('modules.projects.members')],
+            __('modules.projects.projectMembers')  => ['data' => 'name', 'name' => 'name', 'visible' => false, 'title' => __('modules.projects.projectMembers')],
+            __('app.deadline') => ['data' => 'deadline', 'name' => 'deadline', 'title' => __('app.deadline')],
+            __('app.client') => ['data' => 'client_id', 'name' => 'client_id', 'width' => '15%', 'exportable' => false, 'title' => __('app.client')],
+            __('app.customers')  => ['data' => 'client_name', 'name' => 'client_id', 'visible' => false, 'title' => __('app.customers')],
+            __('app.progress') => ['data' => 'completion_percent', 'name' => 'completion_percent', 'exportable' => false, 'title' => __('app.progress')],
+            __('app.completion') => ['data' => 'completion_export', 'name' => 'completion_export', 'visible' => false, 'title' => __('app.completion')],
+            __('app.status') => ['data' => 'status', 'name' => 'status', 'width' => '16%', 'title' => __('app.status')],
             Column::computed('action', __('app.action'))
                 ->exportable(false)
                 ->printable(false)

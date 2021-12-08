@@ -141,13 +141,13 @@ class LeaveReportDataTable extends BaseDataTable
     protected function getColumns()
     {
         return [
-            __('app.id') => ['data' => 'id', 'name' => 'id', 'visible' => false, 'exportable' => false],
+            __('app.id') => ['data' => 'id', 'name' => 'id', 'visible' => false, 'exportable' => false, 'title' => __('app.id')],
             '#' => ['data' => 'DT_RowIndex', 'orderable' => false, 'searchable' => false, 'visible' => false],
-            __('app.employee')  => ['data' => 'name', 'name' => 'users.name', 'exportable' => false],
-            __('app.name') => ['data' => 'employee_name', 'name' => 'users.name', 'visible' => false],
-            __('app.approved') => ['data' => 'approvedLeave', 'name' => 'approvedLeave', 'class' => 'text-center'],
-            __('app.pending') => ['data' => 'pendingLeave', 'name' => 'pendingLeave', 'class' => 'text-center'],
-            __('app.upcoming') => ['data' => 'upcomingLeave', 'name' => 'upcomingLeave', 'class' => 'text-center'],
+            __('app.employee')  => ['data' => 'name', 'name' => 'users.name', 'exportable' => false, 'title' => __('app.employee')],
+            __('app.name') => ['data' => 'employee_name', 'name' => 'users.name', 'visible' => false, 'title' => __('app.name')],
+            __('app.approved') => ['data' => 'approvedLeave', 'name' => 'approvedLeave', 'class' => 'text-center', 'title' => __('app.approved')],
+            __('app.pending') => ['data' => 'pendingLeave', 'name' => 'pendingLeave', 'class' => 'text-center', 'title' => __('app.pending')],
+            __('app.upcoming') => ['data' => 'upcomingLeave', 'name' => 'upcomingLeave', 'class' => 'text-center', 'title' => __('app.upcoming')],
             Column::computed('action', __('app.action'))
                 ->exportable(false)
                 ->printable(false)

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Observers\NewChatObserver;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Query\Builder as QueryBuilder;
 use Illuminate\Support\Facades\DB;
 
@@ -40,6 +41,8 @@ use Illuminate\Support\Facades\DB;
 class UserChat extends BaseModel
 {
 
+    use HasFactory;
+
     protected $table = 'users_chat';
 
     /**
@@ -73,7 +76,7 @@ class UserChat extends BaseModel
 
     public static function chatDetail($id, $userID)
     {
-        return UserChat::with('fromUser', 'toUser')->where(function ($q) use ($id, $userID) {
+        return UserChat::with('fromUser', 'toUser', 'files')->where(function ($q) use ($id, $userID) {
             $q->Where('user_id', $id)->Where('user_one', $userID)
                 ->orwhere(function ($q) use ($id, $userID) {
                     $q->Where('user_one', $id)
@@ -150,6 +153,11 @@ class UserChat extends BaseModel
                 WHERE (t1.user_one = ? OR t1.user_id = ?) '.$termCnd.'
                 ORDER BY t1.created_at DESC
             ', [$userID, $userID]);
+    }
+
+    public function files()
+    {
+        return $this->hasMany(UserchatFile::class, 'users_chat_id');
     }
 
 }

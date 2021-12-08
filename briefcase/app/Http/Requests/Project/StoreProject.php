@@ -25,16 +25,21 @@ class StoreProject extends CoreRequest
      */
     public function rules()
     {
+        $setting = global_setting();
+
         $rules = [
             'project_name' => 'required|max:150',
-            'start_date' => 'required',
+            'start_date' => 'required|date_format:"' . $setting->date_format . '"',
             'hours_allocated' => 'nullable|numeric',
             'client_id' => 'requiredIf:client_view_task,true',
-            'user_id.0' => 'required'
         ];
 
+        if (!request()->public) {
+            $rules['user_id.0'] = 'required';
+        }
+
         if (!$this->has('without_deadline')) {
-            $rules['deadline'] = 'required|date|after_or_equal:'.$this->start_date;
+            $rules['deadline'] = 'required|date_format:"' . $setting->date_format . '"|after_or_equal:start_date';
         }
 
         if ($this->project_budget != '') {

@@ -254,10 +254,11 @@ class ProjectController extends AccountBaseController
             }
 
             $project->project_budget = $request->project_budget;
-            $project->currency_id = $request->currency_id;
+            $project->currency_id = $request->currency_id != '' ? $request->currency_id : global_setting()->currency_id;
             $project->hours_allocated = $request->hours_allocated;
 
             $project->status = 'not started';
+            $project->public = $request->public ? 1 : 0;
 
             $project->save();
 
@@ -320,7 +321,7 @@ class ProjectController extends AccountBaseController
         } catch (\Swift_TransportException $e) {
             // Rollback Transaction
             DB::rollback();
-            return Reply::error('Please configure SMTP details to add employee. Visit Settings -> notification setting to set smtp', 'smtp_error');
+            return Reply::error('Please configure SMTP details to add project. Visit Settings -> notification setting to set smtp', 'smtp_error');
         } catch (\Exception $e) {
             // Rollback Transaction
             DB::rollback();
@@ -444,7 +445,7 @@ class ProjectController extends AccountBaseController
         }
 
         $project->project_budget = $request->project_budget;
-        $project->currency_id = $request->currency_id;
+        $project->currency_id = $request->currency_id != '' ? $request->currency_id : global_setting()->currency_id;
         $project->hours_allocated = $request->hours_allocated;
         $project->status = $request->status;
 
@@ -477,6 +478,11 @@ class ProjectController extends AccountBaseController
         $this->viewPermission = user()->permission('view_projects');
         $viewFilePermission = user()->permission('view_project_files');
         $viewMilestonePermission = user()->permission('view_project_milestones');
+        $this->viewPaymentPermission = user()->permission('view_project_payments');
+        $this->viewProjectTimelogPermission = user()->permission('view_project_timelogs');
+        $this->viewExpensePermission = user()->permission('view_project_expenses');
+        $this->viewRatingPermission = user()->permission('view_project_rating');
+        $this->viewBurndownChartPermission = user()->permission('view_project_burndown_chart');
 
         $this->project = Project::with(['client', 'members', 'members.user', 'members.user.session', 'members.user.employeeDetail.designation', 'milestones' => function ($q) use ($viewMilestonePermission) {
             if ($viewMilestonePermission == 'added') {
@@ -496,6 +502,7 @@ class ProjectController extends AccountBaseController
         $memberIds = $this->project->members->pluck('user_id')->toArray();
         abort_403(!(
             $this->viewPermission == 'all'
+            || $this->project->public
             || ($this->viewPermission == 'added' && user()->id == $this->project->added_by)
             || ($this->viewPermission == 'owned' && user()->id == $this->project->client_id && in_array('client', user_roles()))
             || ($this->viewPermission == 'owned' && in_array(user()->id, $memberIds) && in_array('employee', user_roles()))
@@ -503,7 +510,7 @@ class ProjectController extends AccountBaseController
             || ($this->viewPermission == 'both' && in_array(user()->id, $memberIds) && in_array('employee', user_roles()))
         ));
 
-        $this->pageTitle = $this->project->project_name;
+        $this->pageTitle = ucfirst($this->project->project_name);
 
         if (!empty($this->project->getCustomFieldGroupsWithFields())) {
             $this->fields = $this->project->getCustomFieldGroupsWithFields()->fields;
@@ -975,7 +982,7 @@ class ProjectController extends AccountBaseController
     public function burndownChart()
     {
         $viewPermission = user()->permission('view_project_burndown_chart');
-        abort_403(!in_array($viewPermission, ['all', 'added']));
+        abort_403(!in_array($viewPermission, ['all']));
 
         $tab = request('tab');
         ($tab == '') ? $this->activeTab = 'burndown-chart' : $this->activeTab = $tab;

@@ -93,7 +93,7 @@ class RegisterController extends Controller
         } catch (\Swift_TransportException $e) {
             // Rollback Transaction
             DB::rollback();
-            return Reply::error('Please configure SMTP details to add employee. Visit Settings -> notification setting to set smtp', 'smtp_error');
+            return Reply::error('Please configure SMTP details. Visit Settings -> notification setting to set smtp', 'smtp_error');
         } catch (\Exception $e) {
             // Rollback Transaction
             logger($e);

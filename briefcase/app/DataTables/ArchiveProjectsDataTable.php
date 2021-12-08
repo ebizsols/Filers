@@ -262,14 +262,14 @@ class ArchiveProjectsDataTable extends BaseDataTable
         return [
 
             '#' => ['data' => 'DT_RowIndex', 'orderable' => false, 'searchable' => false, 'visible' => false],
-            __('modules.projects.projectName') => ['data' => 'project_name', 'name' => 'project_name'],
-            __('modules.projects.members')  => ['data' => 'members', 'name' => 'members', 'exportable' => false, 'width' => '25%'],
-            __('modules.projects.projectMembers')  => ['data' => 'name', 'name' => 'name', 'visible' => false],
-            __('app.deadline') => ['data' => 'deadline', 'name' => 'deadline'],
-            __('app.client') => ['data' => 'client_id', 'name' => 'client_id'],
-            __('app.completions') => ['data' => 'completion_percent', 'name' => 'completion_percent', 'exportable' => false],
-            __('app.completion') => ['data' => 'completion_export', 'name' => 'completion_export', 'visible' => false],
-            __('app.status') => ['data' => 'status', 'name' => 'status'],
+            __('modules.projects.projectName') => ['data' => 'project_name', 'name' => 'project_name', 'title' => __('modules.projects.projectName')],
+            __('modules.projects.members')  => ['data' => 'members', 'name' => 'members', 'exportable' => false, 'width' => '25%', 'title' => __('modules.projects.members')],
+            __('modules.projects.projectMembers')  => ['data' => 'name', 'name' => 'name', 'visible' => false, 'title' => __('modules.projects.projectMembers')],
+            __('app.deadline') => ['data' => 'deadline', 'name' => 'deadline', 'title' => __('app.deadline')],
+            __('app.client') => ['data' => 'client_id', 'name' => 'client_id', 'title' => __('app.client')],
+            __('app.completions') => ['data' => 'completion_percent', 'name' => 'completion_percent', 'exportable' => false, 'title' => __('app.completions')],
+            __('app.completion') => ['data' => 'completion_export', 'name' => 'completion_export', 'visible' => false, 'title' => __('app.completion')],
+            __('app.status') => ['data' => 'status', 'name' => 'status', 'title' => __('app.status')],
             Column::computed('action', __('app.action'))
                 ->exportable(false)
                 ->printable(false)

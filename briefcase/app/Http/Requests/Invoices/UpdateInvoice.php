@@ -31,11 +31,14 @@ class UpdateInvoice extends CoreRequest
         $rules = [
             'invoice_number' => ['required', Rule::unique('invoices')->ignore($this->invoice)],
             'issue_date' => 'required',
-            'due_date' => 'required',
             'sub_total' => 'required',
             'total' => 'required',
             'currency_id' => 'required',
         ];
+
+        if ($this->has('due_date')) {
+            $rules['due_date'] = 'required|date|after_or_equal:'.$this->issue_date;
+        }
 
         if ($this->project_id == '') {
             $rules['client_id'] = 'required';

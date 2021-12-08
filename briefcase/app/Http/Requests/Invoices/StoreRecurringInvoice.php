@@ -28,11 +28,14 @@ class StoreRecurringInvoice extends CoreRequest
 
         $rules = [
             'issue_date' => 'required',
-            'due_date' => 'required',
             'sub_total' => 'required',
             'total' => 'required',
             'currency_id' => 'required',
         ];
+
+        if ($this->has('due_date')) {
+            $rules['due_date'] = 'required|date|after_or_equal:'.$this->issue_date;
+        }
 
         if ($this->show_shipping_address == 'on') {
             $rules['shipping_address'] = 'required';

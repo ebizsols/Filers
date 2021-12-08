@@ -53,8 +53,8 @@ class Controller extends BaseController
         $this->showInstall();
         $this->checkMigrateStatus();
         $this->global = global_setting();
-        $companyName = explode(' ', $this->global->company_name);
-        $this->companyName = $companyName[0];
+        $companyName = $this->global->company_name;
+        $this->companyName = $companyName;
 
         $this->taskBoardColumnLength = $this->global->taskboard_length;
 

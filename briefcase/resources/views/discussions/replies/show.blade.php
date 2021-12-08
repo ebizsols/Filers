@@ -65,11 +65,56 @@
                 </div>
                 <p class="card-text text-dark-grey text-justify">{!! $message->body !!}</p>
 
-
                 @if ($discussion->best_answer_id == $message->id)
                     <span class="badge badge-success">@lang('modules.discussions.bestReply')</span>
                 @endif
 
+                <!-- TICKET MESSAGE START -->
+                <div class="ticket-msg border-right-grey" data-menu-vertical="1" data-menu-scroll="1"
+                    data-menu-dropdown-timeout="500" id="ticketMsg">
+                    <div class="d-flex flex-wrap">
+                        @foreach ($discussion->files as $file)
+                            <x-file-card :fileName="$file->filename"
+                                :dateAdded="$file->created_at->diffForHumans()">
+                                @if ($file->icon == 'images')
+                                    <img src="{{ $file->file_url }}">
+                                @else
+                                    <i class="fa {{ $file->icon }} text-lightest"></i>
+                                @endif
+
+                                <x-slot name="action">
+                                    <div class="dropdown ml-auto file-action">
+                                        <button
+                                            class="btn btn-lg f-14 p-0 text-lightest text-capitalize rounded  dropdown-toggle"
+                                            type="button" data-toggle="dropdown" aria-haspopup="true"
+                                            aria-expanded="false">
+                                            <i class="fa fa-ellipsis-h"></i>
+                                        </button>
+
+                                        <div class="dropdown-menu dropdown-menu-right border-grey rounded b-shadow-4 p-0"
+                                            aria-labelledby="dropdownMenuLink" tabindex="0">
+                                            @if ($file->icon != 'images')
+                                                <a class="cursor-pointer d-block text-dark-grey f-13 pt-3 px-3 "
+                                                    target="_blank"
+                                                    href="{{ $file->file_url }}">@lang('app.view')</a>
+                                            @endif
+
+                                            <a class="cursor-pointer d-block text-dark-grey f-13 py-3 px-3 "
+                                                href="{{ route('discussion_file.download', md5($file->id)) }}">@lang('app.download')</a>
+
+                                            @if (user()->id == $user->id)
+                                                <a class="cursor-pointer d-block text-dark-grey f-13 pb-3 px-3 delete-file"
+                                                    data-row-id="{{ $file->id }}"
+                                                    href="javascript:;">@lang('app.delete')</a>
+                                            @endif
+                                        </div>
+                                    </div>
+                                </x-slot>
+                            </x-file-card>
+                        @endforeach
+                    </div>
+                </div>
+                <!-- TICKET MESSAGE END -->
 
             </div>
 
@@ -77,3 +122,51 @@
     </div><!-- card end -->
 
 @endforeach
+
+
+
+<script>
+    $('body').on('click', '.delete-file', function() {
+        var id = $(this).data('row-id');
+        var discussionFile = $(this);
+        Swal.fire({
+            title: "@lang('messages.sweetAlertTitle')",
+            text: "@lang('messages.recoverRecord')",
+            icon: 'warning',
+            showCancelButton: true,
+            focusConfirm: false,
+            confirmButtonText: "@lang('messages.confirmDelete')",
+            cancelButtonText: "@lang('app.cancel')",
+            customClass: {
+                confirmButton: 'btn btn-primary mr-3',
+                cancelButton: 'btn btn-secondary'
+            },
+            showClass: {
+                popup: 'swal2-noanimation',
+                backdrop: 'swal2-noanimation'
+            },
+            buttonsStyling: false
+        }).then((result) => {
+            if (result.isConfirmed) {
+                var url = "{{ route('discussion-files.destroy', ':id') }}";
+                url = url.replace(':id', id);
+
+                var token = "{{ csrf_token() }}";
+
+                $.easyAjax({
+                    type: 'POST',
+                    url: url,
+                    data: {
+                        '_token': token,
+                        '_method': 'DELETE'
+                    },
+                    success: function(response) {
+                        if (response.status == "success") {
+                            discussionFile.closest('.card').remove();
+                        }
+                    }
+                });
+            }
+        });
+    });
+</script>

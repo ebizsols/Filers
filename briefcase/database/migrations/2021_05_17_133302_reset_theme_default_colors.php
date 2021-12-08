@@ -50,7 +50,7 @@ class ResetThemeDefaultColors extends Migration
         Schema::table('theme_settings', function (Blueprint $table) {
             $table->dropColumn(['sidebar_theme']);
         });
-        
+
         Schema::table('organisation_settings', function (Blueprint $table) {
             $table->dropColumn(['auth_theme']);
             $table->dropColumn(['light_logo']);

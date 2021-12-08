@@ -19,6 +19,7 @@
     <meta name="msapplication-TileColor" content="#ffffff">
     <meta name="msapplication-TileImage" content="{{ $global->favicon_url }}">
     <meta name="theme-color" content="#ffffff">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ $global->favicon_url }}">
 
     @isset($activeSettingMenu)
         <style>
@@ -452,7 +453,7 @@
                             aria-hidden="true">×</span></button>
                 </div>
                 <div class="modal-body">
-                    Some content
+                    Loading...
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn-cancel rounded mr-3" data-dismiss="modal">Close</button>

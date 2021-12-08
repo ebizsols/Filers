@@ -17,13 +17,12 @@
         </div>
         <!-- DATE END -->
 
-
         <div class="select-box d-flex py-2 px-lg-2 px-md-2 px-0 border-right-grey border-right-grey-sm-0">
             <p class="mb-0 pr-3 f-14 text-dark-grey d-flex align-items-center">@lang('app.status')</p>
             <div class="select-status">
                 <select class="form-control select-picker" name="status" id="status" data-live-search="true" data-size="8">
                     <option value="not finished">@lang('modules.tasks.hideCompletedTask')</option>
-                    <option value="all">@lang('app.all')</option>
+                    <option {{ request('status') == 'all' ? 'selected' : '' }} value="all">@lang('app.all')</option>
                     @foreach ($taskBoardStatus as $status)
                         <option value="{{ $status->id }}">{{ ucwords($status->column_name) }}</option>
                     @endforeach
@@ -49,7 +48,7 @@
 
         <!-- RESET START -->
         <div class="select-box d-flex py-1 px-lg-2 px-md-2 px-0">
-            <x-forms.button-secondary class="btn-xs d-none" id="reset-filters" icon="times-circle">
+            <x-forms.button-secondary class="btn-xs {{ request('overdue') != 'yes' ? 'd-none' : '' }}" id="reset-filters" icon="times-circle">
                 @lang('app.clearFilters')
             </x-forms.button-secondary>
         </div>
@@ -57,6 +56,16 @@
 
         <!-- MORE FILTERS START -->
         <x-filters.more-filter-box>
+            <div class="more-filter-items">
+                <label class="f-14 text-dark-grey mb-12 text-capitalize" for="usr">@lang('app.dateFilterOn')</label>
+                <div class="select-filter mb-4">
+                    <select class="form-control select-picker" name="date_filter_on" id="date_filter_on">
+                        <option value="start_date">@lang('app.startDate')</option>
+                        <option value="due_date">@lang('app.dueDate')</option>
+                        <option value="completed_on">@lang('app.date') @lang('app.completed')</option>
+                    </select>
+                </div>
+            </div>
             <div class="more-filter-items">
                 <label class="f-14 text-dark-grey mb-12 text-capitalize" for="usr">@lang('modules.tickets.type')</label>
                 <div class="select-filter mb-4">
@@ -271,6 +280,8 @@ $addTaskPermission = user()->permission('add_tasks');
             if (!projectID) {
                 projectID = 0;
             }
+
+
             var clientID = $('#clientID').val();
             var assignedBY = $('#assignedBY').val();
             var assignedTo = $('#assignedTo').val();
@@ -279,17 +290,20 @@ $addTaskPermission = user()->permission('add_tasks');
             var category_id = $('#category_id').val();
             var billable = $('#billable_task').val();
             var pinned = $('#pinned').val();
+            var date_filter_on = $('#date_filter_on').val();
             var searchText = $('#search-text-field').val();
 
             data['clientID'] = clientID;
             data['assignedBY'] = assignedBY;
             data['assignedTo'] = assignedTo;
             data['status'] = status;
+            data['status'] = status;
             data['label'] = label;
             data['category_id'] = category_id;
             data['billable'] = billable;
             data['projectId'] = projectID;
             data['pinned'] = pinned;
+            data['date_filter_on'] = date_filter_on;
             data['startDate'] = startDate;
             data['endDate'] = endDate;
             data['searchText'] = searchText;
@@ -298,7 +312,7 @@ $addTaskPermission = user()->permission('add_tasks');
             window.LaravelDataTables["allTasks-table"].draw();
         }
 
-        $('#billable_task, #status, #search-text-field, #clientID, #category_id, #assignedBY, #assignedTo, #label, #project_id, #pinned')
+        $('#billable_task, #status, #search-text-field, #clientID, #category_id, #assignedBY, #assignedTo, #label, #project_id, #pinned, #date_filter_on')
             .on('change keyup',
                 function() {
                     if ($('#status').val() != "not finished") {
@@ -328,6 +342,9 @@ $addTaskPermission = user()->permission('add_tasks');
                     } else if ($('#pinned').val() != "all") {
                         $('#reset-filters').removeClass('d-none');
                         showTable();
+                    }  else if ($('#date_filter_on').val() != "start_date") {
+                        $('#reset-filters').removeClass('d-none');
+                        showTable();
                     } else if ($('#search-text-field').val() != "") {
                         $('#reset-filters').removeClass('d-none');
                         showTable();
@@ -355,6 +372,8 @@ $addTaskPermission = user()->permission('add_tasks');
             $('#filter-form')[0].reset();
 
             $('.filter-box #status').val('not finished');
+            $('.filter-box #date_filter_on').val('start_date');
+            $('.filter-box #assignedTo').val('all');
             $('.filter-box .select-picker').selectpicker("refresh");
             $('#reset-filters').addClass('d-none');
             showTable();
@@ -364,6 +383,8 @@ $addTaskPermission = user()->permission('add_tasks');
             $('#filter-form')[0].reset();
 
             $('.filter-box #status').val('not finished');
+            $('.filter-box #date_filter_on').val('start_date');
+            $('.filter-box #assignedTo').val('all');
             $('.filter-box .select-picker').selectpicker("refresh");
             $('#reset-filters').addClass('d-none');
             showTable();

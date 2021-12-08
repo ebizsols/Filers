@@ -19,7 +19,7 @@ class InvoicePaymentReceivedListener
 
     public function handle(InvoicePaymentReceivedEvent $event)
     {
-        Notification::send(User::allAdmins(), new InvoicePaymentReceived($event->paymentInvoice));
+        Notification::send(User::allAdmins(), new InvoicePaymentReceived($event->payment));
     }
 
 }

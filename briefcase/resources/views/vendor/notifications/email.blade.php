@@ -4,9 +4,9 @@
 # {{ $greeting }}
 @else
 @if ($level === 'error')
-# @lang('Whoops!')
+# @lang('email.whoops')@lang('!')
 @else
-# @lang('Hello!')
+# @lang('email.hello')@lang('!')
 @endif
 @endif
 
@@ -51,8 +51,7 @@
 @isset($actionText)
 @slot('subcopy')
 @lang(
-    "If you’re having trouble clicking the \":actionText\" button, copy and paste the URL below\n".
-    'into your web browser:',
+    'email.footer',
     [
         'actionText' => $actionText,
     ]

@@ -41,7 +41,7 @@
 
         const dp1 = datepicker('#date', {
             position: 'bl',
-            dateSelected: new Date("{{ $holiday->date }}"),
+            dateSelected: new Date("{{ str_replace('-', '/', $holiday->date) }}"),
             ...datepickerConfig
         });
 

@@ -39,6 +39,13 @@
       'OneSignal' => 'Berkayk\\OneSignal\\OneSignalFacade',
     ),
   ),
+  'billowapp/payfast' => 
+  array (
+    'providers' => 
+    array (
+      0 => 'Billow\\PayfastServiceProvider',
+    ),
+  ),
   'craftsys/msg91-laravel' => 
   array (
     'aliases' => 
@@ -243,6 +250,17 @@
       'Zoom' => 'MacsiDigital\\Zoom\\Facades\\Zoom',
     ),
   ),
+  'mollie/laravel-mollie' => 
+  array (
+    'providers' => 
+    array (
+      0 => 'Mollie\\Laravel\\MollieServiceProvider',
+    ),
+    'aliases' => 
+    array (
+      'Mollie' => 'Mollie\\Laravel\\Facades\\Mollie',
+    ),
+  ),
   'nesbot/carbon' => 
   array (
     'providers' => 
@@ -326,6 +344,17 @@
     'providers' => 
     array (
       0 => 'Tymon\\JWTAuth\\Providers\\LaravelServiceProvider',
+    ),
+  ),
+  'unicodeveloper/laravel-paystack' => 
+  array (
+    'providers' => 
+    array (
+      0 => 'Unicodeveloper\\Paystack\\PaystackServiceProvider',
+    ),
+    'aliases' => 
+    array (
+      'Paystack' => 'Unicodeveloper\\Paystack\\Facades\\Paystack',
     ),
   ),
   'yajra/laravel-datatables-buttons' => 

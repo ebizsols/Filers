@@ -14,31 +14,34 @@ $deleteLeavePermission = user()->permission('delete_leave');
                         </div>
                         <div class="col-md-2 col-2 text-right">
                             <div class="dropdown">
-                                <button
-                                    class="btn btn-lg f-14 px-2 py-1 text-dark-grey text-capitalize rounded  dropdown-toggle"
-                                    type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <i class="fa fa-ellipsis-h"></i>
-                                </button>
 
-                                <div class="dropdown-menu dropdown-menu-right border-grey rounded b-shadow-4 p-0"
-                                    aria-labelledby="dropdownMenuLink" tabindex="0">
-                                    
-                                    @if ($editLeavePermission == 'all'
-                                    || ($editLeavePermission == 'added' && user()->id == $leave->added_by)
-                                    || ($editLeavePermission == 'owned' && user()->id == $leave->user_id)
-                                    || ($editLeavePermission == 'both' && (user()->id == $leave->user_id || user()->id == $leave->added_by)))
-                                        <a class="dropdown-item openRightModal"
-                                        data-redirect-url="{{ url()->previous() }}"
-                                        href="{{ route('leaves.edit', $leave->id) }}">@lang('app.edit')</a>
-                                    @endif
+                                @if ($leave->status == 'pending')
+                                    <button
+                                        class="btn btn-lg f-14 px-2 py-1 text-dark-grey text-capitalize rounded  dropdown-toggle"
+                                        type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <i class="fa fa-ellipsis-h"></i>
+                                    </button>
+                                    <div class="dropdown-menu dropdown-menu-right border-grey rounded b-shadow-4 p-0"
+                                        aria-labelledby="dropdownMenuLink" tabindex="0">
+                                        
+                                            @if ($editLeavePermission == 'all'
+                                            || ($editLeavePermission == 'added' && user()->id == $leave->added_by)
+                                            || ($editLeavePermission == 'owned' && user()->id == $leave->user_id)
+                                            || ($editLeavePermission == 'both' && (user()->id == $leave->user_id || user()->id == $leave->added_by)))
+                                                <a class="dropdown-item openRightModal"
+                                                data-redirect-url="{{ url()->previous() }}"
+                                                href="{{ route('leaves.edit', $leave->id) }}">@lang('app.edit')</a>
+                                            @endif
 
-                                    @if ($deleteLeavePermission == 'all'
-                                    || ($deleteLeavePermission == 'added' && user()->id == $leave->added_by)
-                                    || ($deleteLeavePermission == 'owned' && user()->id == $leave->user_id)
-                                    || ($deleteLeavePermission == 'both' && (user()->id == $leave->user_id || user()->id == $leave->added_by)))
-                                        <a class="dropdown-item delete-leave">@lang('app.delete')</a>
-                                    @endif
-                                </div>
+                                            @if ($deleteLeavePermission == 'all'
+                                            || ($deleteLeavePermission == 'added' && user()->id == $leave->added_by)
+                                            || ($deleteLeavePermission == 'owned' && user()->id == $leave->user_id)
+                                            || ($deleteLeavePermission == 'both' && (user()->id == $leave->user_id || user()->id == $leave->added_by)))
+                                                <a class="dropdown-item delete-leave">@lang('app.delete')</a>
+                                            @endif
+
+                                    </div>
+                                @endif
                             </div>
                         </div>
                     </div>

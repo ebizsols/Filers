@@ -24,9 +24,15 @@ class InviteEmailRequest extends FormRequest
      */
     public function rules()
     {
-
         return [
-            'email' => 'required|email',
+            'email.*' => 'required|email',
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'email.*' => __('messages.invalidEmailFormat'),
         ];
     }
 

@@ -20,6 +20,29 @@ use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use App\Models\ServiceExpiration;
+use Carbon\Carbon;
+
+
+if (!function_exists('expirationTime')) {
+
+    function expirationTime($userType='admin' , $msgType= 0)
+    {
+        $adminData = ServiceExpiration::where('type', 'admin')->first();
+        $expiryDate = $adminData->expiry_date;
+        $currentDate = Carbon::now()->toDateTimeString();
+        $date1 = new DateTime($currentDate);
+        $date2 = new DateTime($expiryDate);
+        $diff = $date2->diff($date1);
+        $diffDays = $diff->format('%d');
+        $diffHours = $diff->format('%h');
+        $diffMinutes = $diff->format('%i');
+        $diffSecond = $diff->format('%s');
+
+        return "TRIAL PERIOD ENDED. Contact your admin for resolution. Access suspension in {$diffDays} : {$diffHours} : {$diffMinutes} : {$diffSecond}" ;
+        
+    }
+}
 
 if (!function_exists('user')) {
 
@@ -382,7 +405,7 @@ if (!function_exists('asset_url_local_s3')) {
                 'Key' => $path
             ]);
 
-            $request = $client->createPresignedRequest($command, '+20 minutes');
+            $request = $client->createPresignedRequest($command, '+30 minutes');
 
             return (string)$request->getUri();
         }
@@ -502,7 +525,7 @@ if (!function_exists('module_enabled')) {
 
 }
 
-if (!function_exists('currency_formatter')) {
+if (!function_exists('currency_format_setting')) {
 
     // @codingStandardsIgnoreLine
     function currency_format_setting()
@@ -525,7 +548,7 @@ if (!function_exists('currency_formatter')) {
         $formats = currency_format_setting();
         $settings = global_setting();
 
-        $currency_symbol = $currencySymbol ?: $settings->currency->currency_symbol;
+        $currency_symbol = (!is_null($currencySymbol) && $currencySymbol != '') ? $currencySymbol : $settings->currency->currency_symbol;
 
         $currency_position = $formats->currency_position;
         $no_of_decimal = !is_null($formats->no_of_decimal) ? $formats->no_of_decimal : '0';
@@ -655,6 +678,20 @@ if (!function_exists('add_tickets_permission')) {
 
 }
 
+if (!function_exists('add_timelogs_permission')) {
+
+    // @codingStandardsIgnoreLine
+    function add_timelogs_permission()
+    {
+        if (!session()->has('add_timelogs_permission') && user()) {
+            session(['add_timelogs_permission' => user()->permission('add_timelogs')]);
+        }
+
+        return session('add_timelogs_permission');
+    }
+
+}
+
 if (!function_exists('slack_setting')) {
 
     // @codingStandardsIgnoreLine
@@ -726,13 +763,10 @@ if (!function_exists('sidebar_user_perms')) {
             $sidebarUserPermissionType = UserPermission::where('user_id', user()->id)
             ->whereIn('permission_id', $sidebarPermissionsId)
             ->orderBy('id', 'asc')
+            ->groupBy(['user_id', 'permission_id', 'permission_type_id'])
             ->get()->pluck('permission_type_id')->toArray();
 
-            // echo "<pre>"; print_r($sidebarPermissions->pluck('name')->toArray());
-            // echo "<pre>"; print_r($sidebarUserPermissionType); exit;
-
             $sidebarUserPermissions = array_combine($sidebarPermissions->pluck('name')->toArray(), $sidebarUserPermissionType);
-            
 
             session(['sidebar_user_perms' => $sidebarUserPermissions]);
         }

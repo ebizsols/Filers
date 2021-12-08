@@ -22,14 +22,14 @@ class Select extends Component
      * @return void
      */
     public function __construct(
+        $fieldName,
+        $fieldId,
         $fieldRequired = false,
         $fieldLabel = null,
-        $fieldName,
         bool $multiple = false,
         bool $search = false,
         bool $alignRight = false,
-        $popover = null,
-        $fieldId
+        $popover = null
     )
     {
         $this->fieldName    = $fieldName;

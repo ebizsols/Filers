@@ -78,7 +78,7 @@ class CreateInvoiceRecurringTable extends Migration
      */
     public function down()
     {
-        Schema::table('invoice', function (Blueprint $table) {
+        Schema::table('invoices', function (Blueprint $table) {
             $table->dropForeign(['invoice_recurring_id']);
             $table->dropForeign(['created_by']);
             $table->dropColumn('invoice_recurring_id', 'created_by');

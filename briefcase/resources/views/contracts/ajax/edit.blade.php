@@ -205,7 +205,7 @@ $addClientPermission = user()->permission('add_clients');
     $(document).ready(function() {
         const dp1 = datepicker('#start_date', {
             position: 'bl',
-            dateSelected: new Date("{{ $contract->start_date }}"),
+            dateSelected: new Date("{{ str_replace('-', '/', $contract->start_date) }}"),
             onSelect: (instance, date) => {
                 if (typeof dp2.dateSelected !== 'undefined' && dp2.dateSelected.getTime() < date
                     .getTime()) {
@@ -221,7 +221,7 @@ $addClientPermission = user()->permission('add_clients');
 
         const dp2 = datepicker('#end_date', {
             position: 'bl',
-            dateSelected: new Date("{{ $contract->end_date ? $contract->end_date : now() }}"),
+            dateSelected: new Date("{{ $contract->end_date ? str_replace('-', '/', $contract->end_date) : str_replace('-', '/', now()) }}"),
             onSelect: (instance, date) => {
                 dp1.setMax(date);
             },
@@ -266,30 +266,7 @@ $addClientPermission = user()->permission('add_clients');
             })
         });
 
-        var quill = new Quill('#description', {
-            modules: {
-                toolbar: [
-                    [{
-                        header: [1, 2, 3, 4, 5, false]
-                    }],
-                    [{
-                        'list': 'ordered'
-                    }, {
-                        'list': 'bullet'
-                    }],
-                    ['bold', 'italic', 'underline', 'strike'],
-                    ['image', 'code-block', 'link'],
-                    [{
-                        'direction': 'rtl'
-                    }],
-                    ['clean']
-                ],
-                "emoji-toolbar": true,
-                "emoji-textarea": true,
-                "emoji-shortname": true,
-            },
-            theme: 'snow'
-        });
+        quillImageLoad('#description');
 
         $('#createContractType').click(function() {
             const url = "{{ route('contractTypes.create') }}";

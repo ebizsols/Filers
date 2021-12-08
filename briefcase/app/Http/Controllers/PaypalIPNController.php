@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\ClientPayment;
+use App\Models\Payment;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -19,12 +19,12 @@ class PaypalIPNController extends Controller
             $recurringPaymentId = $request->get('recurring_payment_id');
             $eventId = $request->get('ipn_track_id');
 
-            $event = ClientPayment::where('event_id', $eventId)->count();
+            $event = Payment::where('event_id', $eventId)->count();
 
             if ($event == 0) {
-                $payment = ClientPayment::where('transaction_id', $recurringPaymentId)->first();
+                $payment = Payment::where('transaction_id', $recurringPaymentId)->first();
 
-                $clientPayment = new ClientPayment();
+                $clientPayment = new Payment();
                 $clientPayment->invoice_id = $payment->invoice_id;
                 $clientPayment->amount = $payment->amount;
                 $clientPayment->gateway = 'Paypal';

@@ -34,7 +34,7 @@ class EmployeesDataTable extends BaseDataTable
     public function dataTable($query)
     {
 
-        $roles = Role::where('name', '<>', 'client')->get();
+        $roles = Role::where('name', '<>', 'client')->where('name', '!=', 'Super Admin')->get();
         return datatables()
             ->eloquent($query)
             ->addColumn('check', function ($row) {
@@ -166,7 +166,8 @@ class EmployeesDataTable extends BaseDataTable
             ->leftJoin('designations', 'employee_details.designation_id', '=', 'designations.id')
             ->join('roles', 'roles.id', '=', 'role_user.role_id')
             ->select('users.id', 'employee_details.added_by', 'users.name', 'users.email', 'users.created_at', 'roles.name as roleName', 'roles.id as roleId', 'users.image', 'users.status', DB::raw('(select user_roles.role_id from role_user as user_roles where user_roles.user_id = users.id ORDER BY user_roles.role_id DESC limit 1) as `current_role`'), DB::raw('(select roles.name from roles as roles where roles.id = current_role limit 1) as `current_role_name`'), 'designations.name as designation_name')
-            ->where('roles.name', '<>', 'client');
+            ->where('roles.name', '<>', 'client')
+            ->where('roles.name', '<>', 'Super Admin');
 
         if ($request->status != 'all' && $request->status != '') {
 
@@ -211,6 +212,17 @@ class EmployeesDataTable extends BaseDataTable
 
         if ($this->viewEmployeePermission == 'added') {
             $users = $users->where('employee_details.added_by', user()->id);
+        }
+
+        if ($this->viewEmployeePermission == 'owned') {
+            $users = $users->where('employee_details.user_id', user()->id);
+        }
+
+        if ($this->viewEmployeePermission == 'both') {
+            $users = $users->where(function ($q) {
+                $q->where('employee_details.user_id', user()->id);
+                $q->orWhere('employee_details.added_by', user()->id);
+            });
         }
 
         if ($request->startDate != '' && $request->endDate != '') {
@@ -283,13 +295,13 @@ class EmployeesDataTable extends BaseDataTable
                 'searchable' => false
             ],
             '#' => ['data' => 'DT_RowIndex', 'orderable' => false, 'searchable' => false, 'visible' => false],
-            __('app.id') => ['data' => 'id', 'name' => 'id'],
-            __('app.name') => ['data' => 'name', 'name' => 'name', 'exportable' => false],
-            __('app.employee') => ['data' => 'employee_name', 'name' => 'name', 'visible' => false],
-            __('app.email') => ['data' => 'email', 'name' => 'email'],
-            __('app.role') => ['data' => 'role', 'name' => 'role', 'width' => '20%', 'orderable' => false, 'exportable' => false],
-            __('modules.employees.role') => ['data' => 'current_role_name', 'name' => 'current_role_name', 'visible' => false],
-            __('app.status') => ['data' => 'status', 'name' => 'status'],
+            __('app.id') => ['data' => 'id', 'name' => 'id', 'title' => __('app.id')],
+            __('app.name') => ['data' => 'name', 'name' => 'name', 'exportable' => false, 'title' => __('app.name')],
+            __('app.employee') => ['data' => 'employee_name', 'name' => 'name', 'visible' => false, 'title' => __('app.employee')],
+            __('app.email') => ['data' => 'email', 'name' => 'email', 'title' => __('app.email')],
+            __('app.role') => ['data' => 'role', 'name' => 'role', 'width' => '20%', 'orderable' => false, 'exportable' => false, 'title' => __('app.role')],
+            __('modules.employees.role') => ['data' => 'current_role_name', 'name' => 'current_role_name', 'visible' => false, 'title' => __('modules.employees.role')],
+            __('app.status') => ['data' => 'status', 'name' => 'status', 'title' => __('app.status')],
             Column::computed('action', __('app.action'))
                 ->exportable(false)
                 ->printable(false)

@@ -201,7 +201,7 @@ class CreateTableMenu extends Migration
                     'menu_name' => 'invoices',
                     'module' => 'invoices',
                     'translate_name' => 'app.menu.invoices',
-                    'route' => 'admin.all-invoices.index',
+                    'route' => 'invoices.index',
                     'icon' => null,
                     'setting_menu' => 0,
                 ],
@@ -864,6 +864,7 @@ class CreateTableMenu extends Migration
      */
     public function down()
     {
+        Schema::dropIfExists('menu_settings');
         Schema::dropIfExists('menus');
     }
 

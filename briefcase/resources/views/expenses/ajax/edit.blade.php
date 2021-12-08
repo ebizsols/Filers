@@ -275,7 +275,7 @@ $addExpenseCategoryPermission = user()->permission('manage_expense_category');
 
         const dp1 = datepicker('#purchase_date', {
             position: 'bl',
-            dateSelected: new Date("{{ $expense->purchase_date }}"),
+            dateSelected: new Date("{{ str_replace('-', '/', $expense->purchase_date) }}"),
             ...datepickerConfig
         });
 

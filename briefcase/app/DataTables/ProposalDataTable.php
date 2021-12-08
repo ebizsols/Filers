@@ -206,12 +206,12 @@ class ProposalDataTable extends BaseDataTable
     {
         return [
             '#' => ['data' => 'DT_RowIndex', 'orderable' => false, 'searchable' => false, 'visible' => false],
-            __('app.id') => ['data' => 'id', 'name' => 'id'],
-            __('app.name')  => ['data' => 'client_name', 'name' => 'client_name'],
-            __('modules.invoices.total')  => ['data' => 'total', 'name' => 'total'],
-            __('app.date') => ['data' => 'created_at', 'name' => 'leads.created_at'],
-            __('modules.estimates.validTill') => ['data' => 'valid_till', 'name' => 'valid_till'],
-            __('app.status') => ['data' => 'status', 'name' => 'status'],
+            __('app.id') => ['data' => 'id', 'name' => 'id', 'title' => __('app.id')],
+            __('app.name')  => ['data' => 'client_name', 'name' => 'client_name', 'title' => __('app.name')],
+            __('modules.invoices.total')  => ['data' => 'total', 'name' => 'total', 'title' => __('modules.invoices.total')],
+            __('app.date') => ['data' => 'created_at', 'name' => 'leads.created_at', 'title' => __('app.date')],
+            __('modules.estimates.validTill') => ['data' => 'valid_till', 'name' => 'valid_till', 'title' => __('modules.estimates.validTill')],
+            __('app.status') => ['data' => 'status', 'name' => 'status', 'title' => __('app.status')],
             Column::computed('action', __('app.action'))
                 ->exportable(false)
                 ->printable(false)

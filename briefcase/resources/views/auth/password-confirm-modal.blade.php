@@ -75,7 +75,7 @@
     }
 
     function changeFortifyStatus(type) {
-        let url = "/user/two-factor-authentication";
+        let url = "{{ route('two-factor.enable') }}";
         let method =  (type) == 'disable' ? 'DELETE' : 'POST';
         let token = "{{ csrf_token() }}";
 

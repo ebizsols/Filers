@@ -21,7 +21,7 @@ class ToggleSwitch extends Component
      *
      * @return void
      */
-    public function __construct($fieldLabel, $fieldRequired = false, $fieldValue = null, $fieldName, $fieldId, $fieldHelp = null, $checked = false, $popover = null)
+    public function __construct($fieldLabel, $fieldName, $fieldId, $fieldRequired = false, $fieldValue = null, $fieldHelp = null, $checked = false, $popover = null)
     {
         $this->fieldLabel = $fieldLabel;
         $this->fieldRequired = $fieldRequired;

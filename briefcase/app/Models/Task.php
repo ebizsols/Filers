@@ -23,6 +23,8 @@ use Illuminate\Notifications\Notifiable;
  * @property \Illuminate\Support\Carbon|null $completed_on
  * @property int|null $created_by
  * @property int|null $recurring_task_id
+ * @property-read \Illuminate\Database\Eloquent\Collection|Task[] $recurrings
+ * @property-read int|null $recurrings_count
  * @property int|null $dependent_task_id
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
@@ -139,6 +141,11 @@ class Task extends BaseModel
         return $this->belongsToMany(User::class, 'task_users')->withoutGlobalScopes(['active'])->using(TaskUser::class);
     }
 
+    public function activeUsers()
+    {
+        return $this->belongsToMany(User::class, 'task_users')->using(TaskUser::class);
+    }
+
     public function labels()
     {
         return $this->belongsToMany(TaskLabelList::class, 'task_labels', 'task_id', 'label_id');
@@ -209,6 +216,11 @@ class Task extends BaseModel
     public function approvedTimeLogs()
     {
         return $this->hasMany(ProjectTimeLog::class, 'task_id')->where('project_time_logs.approved', 1)->orderBy('project_time_logs.start_time', 'desc');
+    }
+
+    public function recurrings()
+    {
+        return $this->hasMany(Task::class, 'recurring_task_id');
     }
 
     public function scopePending($query)
@@ -335,8 +347,9 @@ class Task extends BaseModel
     public static function timelogTasks($projectId = null)
     {
         $viewTaskPermission = user()->permission('view_tasks');
+        $addTimelogPermission = user()->permission('add_timelogs');
 
-        if ($viewTaskPermission != 'none') {
+        if ($viewTaskPermission != 'none' && $addTimelogPermission != 'none') {
             $tasks = Task::select('tasks.id', 'tasks.heading')
                 ->join('task_users', 'task_users.task_id', '=', 'tasks.id');
 
@@ -345,13 +358,17 @@ class Task extends BaseModel
             }
 
             if ($viewTaskPermission == 'both') {
-                $tasks->where(function ($query) {
-                    $query->where('tasks.added_by', user()->id)
-                        ->orWhere('task_users.user_id', user()->id);
+                $tasks->where(function ($query) use ($addTimelogPermission) {
+
+                    if ($addTimelogPermission == 'all') {
+                        $query->where('tasks.added_by', user()->id);
+                    }
+
+                    $query->orWhere('task_users.user_id', user()->id);
                 });
             }
 
-            if ($viewTaskPermission == 'added') {
+            if ($viewTaskPermission == 'added' && $addTimelogPermission == 'all') {
                 $tasks->where('tasks.added_by', user()->id);
             }
 

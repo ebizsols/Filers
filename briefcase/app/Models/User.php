@@ -47,6 +47,7 @@ use Trebol\Entrust\Traits\EntrustUserTrait;
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Ticket[] $agents
  * @property-read int|null $agents_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Attendance[] $attendance
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Leave[] $leaves
  * @property-read int|null $attendance_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\EventAttendee[] $attendee
  * @property-read int|null $attendee_count
@@ -175,8 +176,12 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
 
         $has_valid_avatar = true;
 
-        if (!preg_match('|200|', $headers[0])) {
-            $has_valid_avatar = false;
+        try{
+            if (!preg_match('|200|', $headers[0])) {
+                $has_valid_avatar = false;
+            }
+        }catch(\Exception $e){
+            $has_valid_avatar = true;
         }
 
         return $has_valid_avatar;
@@ -328,6 +333,11 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
     public function tickets()
     {
         return $this->hasMany(Ticket::class, 'user_id')->orderBy('id', 'desc');
+    }
+
+    public function leaves()
+    {
+        return $this->hasMany(Leave::class, 'user_id');
     }
 
     public function documents()

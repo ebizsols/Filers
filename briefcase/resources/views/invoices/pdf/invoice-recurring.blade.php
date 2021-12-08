@@ -343,8 +343,8 @@
                         <div>{!! nl2br($global->address) !!}</div>
                         <div>{{ $global->company_phone }}</div>
                     @endif
-                    @if($invoiceSetting->show_gst == 'yes' && !is_null($invoiceSetting->gst_number))
-                        <div>@lang('app.gstIn'): {{ $invoiceSetting->gst_number }}</div>
+                    @if($invoiceSetting->show_gst == 'yes')
+                        <div>{{ $invoice->address->tax_name }}: {{ $invoice->address->tax_number }}</div>
                     @endif
                 </div>
             </td>

@@ -49,7 +49,6 @@ class CreateCreditNoteTable extends Migration
     public function down()
     {
         Schema::dropIfExists('credit_notes');
-
     }
 
 }

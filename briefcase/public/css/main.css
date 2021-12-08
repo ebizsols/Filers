@@ -11103,6 +11103,12 @@ h3 {
   }
 }
 
+.invite-member span {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 /* ===== RESET CSS ====== */
 body {
   font-size: 14px;
@@ -17960,7 +17966,8 @@ table.dataTable {
 }
 .message_wrapper .msg-content-right {
   max-width: 100%;
-  margin-left: 392px;
+  width: 100%;
+  height: auto;
 }
 @media (max-width: 991.98px) {
   .message_wrapper .msg-content-right {
@@ -17980,7 +17987,7 @@ table.dataTable {
   border-bottom: 1px solid #e8eef3;
 }
 .message_wrapper .msg-content-right .chat-box {
-  height: calc(100vh - 280px);
+  height: calc(100vh - 330px);
 }
 @media (max-width: 991.98px) {
   .message_wrapper .msg-content-right .chat-box {
@@ -18522,7 +18529,7 @@ table.dataTable {
   padding: 11px 10px;
 }
 
-.c-inv-desc-table .item_name, .c-inv-desc-table .quantity, .c-inv-desc-table .cost_per_item {
+.c-inv-desc-table .item_name, .c-inv-desc-table .quantity, .c-inv-desc-table .cost_per_item, .hsn_sac_code {
   padding: 0.5rem !important;
   border: 1px solid #e7e9eb !important;
   border-radius: 0.25rem !important;
@@ -19025,7 +19032,7 @@ button {
   position: absolute;
   top: 100%;
   right: 0;
-  box-shadow: 0 0.3em 0.5em rgba(0, 0, 0, 0.3);
+  box-shadow: 0 0.1em 0.4em rgba(0, 0, 0, 0.12);
   -webkit-animation: nav-secondary 0.2s;
           animation: nav-secondary 0.2s;
   background-color: #fff;
@@ -19624,7 +19631,7 @@ body.dark-theme {
 body.dark-theme .border-0, body.dark-theme .settings-sidebar input, body.dark-theme .form-control.border-0, body.dark-theme .bootstrap-select > .dropdown-toggle {
   border: 0px !important;
 }
-body.dark-theme .bg-dark, body.dark-theme .qs-controls, body.dark-theme .dropdown-item:hover, body.dark-theme .dropdown-item:focus, body.dark-theme .task_view .task_view_more:hover, body.dark-theme .task_view .taskView:hover, body.dark-theme .project-menu.in, body.dark-theme .bg-amt-grey, body.dark-theme .e-d-tasks-projects-events .bg-grey, body.dark-theme .cal-info .bg-light-grey, body.dark-theme .inv-num-date .bg-light-grey, body.dark-theme .inv-detail .bg-light-grey, body.dark-theme .message_wrapper .msg-content-left .tablinks.active, body.dark-theme .message_wrapper .msg-content-left .card:hover, body.dark-theme .project-right .p-activity-heading span, body.dark-theme .settings-sidebar li.active, body.dark-theme .board-panel, body.dark-theme .w-task-board-panel .minimized, body.dark-theme .task-search .input-group-text, body.dark-theme .ticket-msg .card-horizontal.bg-white-shade, body.dark-theme .bg-white-shade.ticket-contact-owner, body.dark-theme .dark_place .input-group-text, body.dark-theme .login_section, body.dark-theme .daterangepicker .ranges li:hover, body.dark-theme .daterangepicker td.off.in-range, body.dark-theme .daterangepicker td.off.start-date, body.dark-theme .table .thead-light th, body.dark-theme .badge-light, body.dark-theme .datepicker .datepicker-switch:hover, body.dark-theme .datepicker .next:hover, body.dark-theme .datepicker .prev:hover, body.dark-theme .datepicker tfoot tr th:hover, body.dark-theme .datepicker table tr td.day:hover, body.dark-theme .datepicker table tr td.focused, body.dark-theme .tagify__tag > div, body.dark-theme .tagify__tag__removeBtn, body.dark-theme .fc-button.fc-button-primary.fc-button-active, body.dark-theme .fc-day-today, body.dark-theme .in-range.available, body.dark-theme .daterangepicker td.available:hover, body.dark-theme .daterangepicker th.available:hover, body.dark-theme .dropify-wrapper .dropify-preview, body.dark-theme .dropify-wrapper, body.dark-theme .bg-white-shade, body.dark-theme .input-group-text, body.dark-theme .progress, body.dark-theme .swal2-popup {
+body.dark-theme .bg-dark, body.dark-theme .qs-controls, body.dark-theme .dropdown-item:hover, body.dark-theme .dropdown-item:focus, body.dark-theme .task_view .task_view_more:hover, body.dark-theme .task_view .taskView:hover, body.dark-theme .project-menu.in, body.dark-theme .bg-amt-grey, body.dark-theme .e-d-tasks-projects-events .bg-grey, body.dark-theme .cal-info .bg-light-grey, body.dark-theme .inv-num-date .bg-light-grey, body.dark-theme .inv-detail .bg-light-grey, body.dark-theme .message_wrapper .msg-content-left .tablinks.active, body.dark-theme .message_wrapper .msg-content-left .card:hover, body.dark-theme .project-right .p-activity-heading span, body.dark-theme .settings-sidebar li.active, body.dark-theme .board-panel, body.dark-theme .w-task-board-panel .minimized, body.dark-theme .task-search .input-group-text, body.dark-theme .ticket-msg .card-horizontal.bg-white-shade, body.dark-theme .bg-white-shade.ticket-contact-owner, body.dark-theme .dark_place .input-group-text, body.dark-theme .login_section, body.dark-theme .daterangepicker .ranges li:hover, body.dark-theme .daterangepicker td.off.in-range, body.dark-theme .daterangepicker td.off.start-date, body.dark-theme .table .thead-light th, body.dark-theme .badge-light, body.dark-theme .datepicker .datepicker-switch:hover, body.dark-theme .datepicker .next:hover, body.dark-theme .datepicker .prev:hover, body.dark-theme .datepicker tfoot tr th:hover, body.dark-theme .datepicker table tr td.day:hover, body.dark-theme .datepicker table tr td.focused, body.dark-theme .tagify__tag > div, body.dark-theme .tagify__tag__removeBtn, body.dark-theme .fc-button.fc-button-primary.fc-button-active, body.dark-theme .fc-day-today, body.dark-theme .in-range.available, body.dark-theme .daterangepicker td.available:hover, body.dark-theme .daterangepicker th.available:hover, body.dark-theme .dropify-wrapper .dropify-preview, body.dark-theme .dropify-wrapper, body.dark-theme .bg-white-shade, body.dark-theme .input-group-text, body.dark-theme .progress, body.dark-theme .swal2-popup, body.dark-theme .main-sidebar {
   background-color: #29304C !important;
 }
 body.dark-theme .bg-white, body.dark-theme .card, body.dark-theme .form-control, body.dark-theme .qs-datepicker-container, body.dark-theme .qs-overlay, body.dark-theme .unpaid, body.dark-theme .custom-file-label, body.dark-theme .p-client-msg .btn-secondary, body.dark-theme .w-task-board-panel, body.dark-theme .b-p-header .b-p-badge, body.dark-theme .content-wrapper, body.dark-theme .admin-dashboard, body.dark-theme .page-title, body.dark-theme .main-container, body.dark-theme .settings-box, body.dark-theme .input-group .bootstrap-select.form-control .dropdown-toggle, body.dark-theme .bootstrap-select > .dropdown-toggle, body.dark-theme .bootstrap-timepicker-widget table td a:hover, body.dark-theme .btn-cancel, body.dark-theme .select-picker.role-permission-select, body.dark-theme .fc .fc-button-primary, body.dark-theme .daterangepicker td.off, body.dark-theme .dropzone, body.dark-theme textarea, body.dark-theme iframe .form-body, body.dark-theme .tabs .-secondary, body.dark-theme .set-btns {

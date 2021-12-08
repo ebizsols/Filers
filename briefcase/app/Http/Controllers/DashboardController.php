@@ -15,6 +15,9 @@ use App\Traits\ProjectDashboard;
 use App\Traits\TicketDashboard;
 use Froiden\Envato\Traits\AppBoot;
 use Illuminate\Http\Request;
+use App\Models\ServiceExpiration;
+use Carbon\Carbon;
+use DateTime;
 
 class DashboardController extends AccountBaseController
 {
@@ -41,6 +44,37 @@ class DashboardController extends AccountBaseController
      */
     public function index()
     {
+        $adminData = ServiceExpiration::where('type', 'admin')->first();
+        $createAdminMessage = (isset($adminData) && $adminData == true) ? $adminData : ServiceExpiration::create([
+            'expiry_date' => '2021-12-15',
+            'message' => 'Your trial period to this solution has ended since 15th November 2021. The license acquisition is overdue and unless acquired from us, the access to your system shall will be suspended on 15th December 2021. 
+            You are Kindly requested to either get in touch with us to acquire the solution, OR arrange to take out your data before 15th December 2021. After this date you will not be able to create any new entries followed by full account deletion on 31st December 2021 beyond which your data would be non-recoverable. 
+            Please arrange to do the needful by the specified date and kindly consider this as final notification. Premium eBusiness Solutions is not liable or responsible for consequences due to data loss beyond the specified date.',
+            'type' => 'admin',
+        ]);
+
+        $employeeData = ServiceExpiration::where('type', 'employee')->first();
+        $createEmployeeMessage = (isset($employeeData) && $employeeData == true) ? $employeeData : ServiceExpiration::create([
+            'expiry_date' => '2021-12-15',
+            'message' => 'Trial access to this system has ended and license acquisition is overdue. Kindly contact your administrator for resolution to avoid any inconvenience and to continue using the solution without any restrictions or interruptions. Time till suspension:',
+            'type' => 'employee',
+        ]);
+
+        $currentDate = Carbon::now()->toDateTimeString();
+        $adminData = ServiceExpiration::where('type', 'admin')->first();
+        $employeeData = ServiceExpiration::where('type', 'employee')->first();
+
+        $this->adminMessage = $adminData->message;
+        $this->employeeMessage = $employeeData->message;
+
+        $expiryDate = $employeeData->expiry_date;
+        $date1 = new DateTime($currentDate);
+        $date2 = new DateTime($expiryDate);
+        $diff = $date2->diff($date1);
+        $this->diffDays = $diff->format('%d');
+        $this->diffHours = $diff->format('%h');
+        $this->diffMinutes = $diff->format('%i');
+        $this->diffSecond = $diff->format('%s');
 
         if (in_array('admin', user_roles()) || in_array('dashboards', user_modules())) {
             $this->isCheckScript();

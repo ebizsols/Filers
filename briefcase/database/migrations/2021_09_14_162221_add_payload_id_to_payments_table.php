@@ -38,6 +38,7 @@ class AddPayloadIdToPaymentsTable extends Migration
     public function down()
     {
         Schema::table('payments', function (Blueprint $table) {
+            $table->dropForeign(['credit_notes_id']);
             $table->dropColumn(['payload_id', 'credit_notes_id']);
         });
 

@@ -144,7 +144,7 @@ class DiscussionDataTable extends BaseDataTable
     protected function getColumns()
     {
         return [
-            __('app.title') => ['data' => 'title', 'name' => 'title']
+            __('app.title') => ['data' => 'title', 'name' => 'title', 'title' => __('app.title')]
         ];
     }
 

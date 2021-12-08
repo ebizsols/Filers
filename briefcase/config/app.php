@@ -190,6 +190,7 @@ return [
         Illuminate\Hashing\HashServiceProvider::class,
         Illuminate\Mail\MailServiceProvider::class,
         \App\Providers\SmtpConfigProvider::class,
+        \App\Providers\PaymentGatewayConfigProvider::class,
         \App\Providers\SessionDriverConfigProvider::class,
         Illuminate\Notifications\NotificationServiceProvider::class,
         Illuminate\Pagination\PaginationServiceProvider::class,

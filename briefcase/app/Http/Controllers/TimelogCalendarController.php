@@ -28,6 +28,9 @@ class TimelogCalendarController extends AccountBaseController
      */
     public function index(Request $request)
     {
+        $viewPermission = $this->viewTimelogPermission;
+        abort_403(in_array($viewPermission, ['none']));
+        
         if (request('start') && request('end')) {
             $viewTimelogPermission = user()->permission('view_timelogs');
             $startDate = Carbon::parse(request('start'))->format('Y-m-d');
@@ -75,6 +78,28 @@ class TimelogCalendarController extends AccountBaseController
 
             if ($viewTimelogPermission == 'added') {
                 $timelogs = $timelogs->where('project_time_logs.added_by', user()->id);
+            }
+
+            if ($viewTimelogPermission == 'owned') {
+                $timelogs = $timelogs->where(function ($q) {
+                    $q->where('project_time_logs.user_id', '=', user()->id);
+    
+                    if (in_array('client', user_roles())) {
+                        $q->orWhere('projects.client_id', '=', user()->id);
+                    }
+                });
+            }
+
+            if ($viewTimelogPermission == 'both') {
+                $timelogs = $timelogs->where(function ($q) {
+                    $q->where('project_time_logs.user_id', '=', user()->id);
+
+                    $q->orWhere('project_time_logs.added_by', '=', user()->id);
+
+                    if (in_array('client', user_roles())) {
+                        $q->orWhere('projects.client_id', '=', user()->id);
+                    }
+                });
             }
 
             $timelogs = $timelogs->groupBy('start')

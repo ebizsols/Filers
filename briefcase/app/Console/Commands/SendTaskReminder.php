@@ -66,7 +66,21 @@ class SendTaskReminder extends Command
         }
 
         if ($this->global_setting->after_days > 0) {
-            $now->clone()->addDays($this->global_setting->after_days)->format('Y-m-d');
+            $afterDeadline = $now->clone()->addDays($this->global_setting->after_days)->format('Y-m-d');
+            $tasks = Task::select('id')->where('due_date', $afterDeadline)->where('board_column_id', '<>', $completedTaskColumn->id)->get();
+
+            foreach ($tasks as $key => $task) {
+                event(new TaskReminderEvent($task));
+            }
+        }
+
+        if ($this->global_setting->on_deadline) {
+            $onDeadline = $now->clone()->format('Y-m-d');
+            $tasks = Task::select('id')->where('due_date', $onDeadline)->where('board_column_id', '<>', $completedTaskColumn->id)->get();
+
+            foreach ($tasks as $key => $task) {
+                event(new TaskReminderEvent($task));
+            }
         }
 
     }

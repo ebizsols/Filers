@@ -44,6 +44,21 @@ class PaymentGatewayCredentialController extends AccountBaseController
         case 'razorpay':
             $this->view = 'payment-gateway-settings.ajax.razorpay';
                 break;
+        case 'paystack':
+            $this->view = 'payment-gateway-settings.ajax.paystack';
+                break;
+        case 'mollie':
+            $this->view = 'payment-gateway-settings.ajax.mollie';
+                break;
+        case 'payfast':
+            $this->view = 'payment-gateway-settings.ajax.payfast';
+                break;
+        case 'authorize':
+            $this->view = 'payment-gateway-settings.ajax.authorize';
+                break;
+        case 'square':
+            $this->view = 'payment-gateway-settings.ajax.square';
+                break;
         case 'offline':
             $this->view = 'payment-gateway-settings.ajax.offline';
                 break;
@@ -117,6 +132,51 @@ class PaymentGatewayCredentialController extends AccountBaseController
 
             $credential->razorpay_mode = $request->razorpay_mode;
             ($request->razorpay_status) ? $credential->razorpay_status = 'active' : $credential->razorpay_status = 'inactive';
+        }
+
+        if ($request->payment_method == 'paystack') {
+
+            $credential->paystack_key = $request->paystack_key;
+            $credential->paystack_secret = $request->paystack_secret;
+            $credential->paystack_merchant_email = $request->paystack_merchant_email;
+
+            ($request->paystack_status) ? $credential->paystack_status = 'active' : $credential->paystack_status = 'deactive';
+        }
+
+        if ($request->payment_method == 'mollie') {
+
+            $credential->mollie_api_key = $request->mollie_api_key;
+
+            ($request->mollie_status) ? $credential->mollie_status = 'active' : $credential->mollie_status = 'deactive';
+        }
+
+        if ($request->payment_method == 'payfast') {
+
+            $credential->payfast_merchant_id = $request->payfast_merchant_id;
+            $credential->payfast_merchant_key = $request->payfast_merchant_key;
+            $credential->payfast_passphrase = $request->payfast_passphrase;
+            $credential->payfast_mode = $request->payfast_mode;
+
+            ($request->payfast_status) ? $credential->payfast_status = 'active' : $credential->payfast_status = 'deactive';
+        }
+
+        if ($request->payment_method == 'authorize') {
+
+            $credential->authorize_api_login_id = $request->authorize_api_login_id;
+            $credential->authorize_transaction_key = $request->authorize_transaction_key;
+            $credential->authorize_environment = $request->authorize_environment;
+
+            $credential->authorize_status = $request->authorize_status ? 'active' : 'deactive';
+        }
+
+        if ($request->payment_method == 'square') {
+
+            $credential->square_application_id = $request->square_application_id;
+            $credential->square_access_token = $request->square_access_token;
+            $credential->square_location_id = $request->square_location_id;
+            $credential->square_environment = $request->square_environment;
+
+            $credential->square_status = $request->square_status ? 'active' : 'deactive';
         }
 
         $credential->save();

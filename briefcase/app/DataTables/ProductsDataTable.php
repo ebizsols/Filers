@@ -197,9 +197,9 @@ class ProductsDataTable extends BaseDataTable
                 'visible' => !in_array('client', user_roles())
             ],
             '#' => ['data' => 'DT_RowIndex', 'orderable' => false, 'searchable' => false, 'visible' => false],
-            __('app.menu.products') => ['data' => 'name', 'name' => 'name'],
-            __('app.price') . ' (' . __('app.inclusiveAllTaxes') . ')' => ['data' => 'price', 'name' => 'price'],
-            __('app.purchaseAllow') => ['data' => 'allow_purchase', 'name' => 'allow_purchase', 'visible' => !in_array('client', user_roles())],
+            __('app.menu.products') => ['data' => 'name', 'name' => 'name', 'title' => __('app.menu.products')],
+            __('app.price') . ' (' . __('app.inclusiveAllTaxes') . ')' => ['data' => 'price', 'name' => 'price', 'title' => __('app.price') . ' (' . __('app.inclusiveAllTaxes') . ')'],
+            __('app.purchaseAllow') => ['data' => 'allow_purchase', 'name' => 'allow_purchase', 'visible' => !in_array('client', user_roles()), 'title' => __('app.purchaseAllow')],
             Column::computed('action', __('app.action'))
                 ->exportable(false)
                 ->printable(false)

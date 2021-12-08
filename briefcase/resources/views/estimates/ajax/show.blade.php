@@ -262,6 +262,17 @@
                         </table>
                     </td>
                 </tr>
+                <tr>
+                    <td>
+                        <p class="text-dark-grey">
+                            @if (invoice_setting()->calculate_tax == 'after_discount')
+                                @lang('messages.calculateTaxAfterDiscount')
+                            @else
+                                @lang('messages.calculateTaxBeforeDiscount')
+                            @endif
+                        </p>
+                    </td>
+                </tr>
             </table>
         </div>
 
