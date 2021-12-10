@@ -1,7 +1,8 @@
 <style>
-    .notification{
+    .notification #badge {
         font-size: 12.5px !important;
     }
+
 </style>
 <!-- HEADER START -->
 <header class="main-header clearfix bg-white" id="header">
@@ -17,10 +18,11 @@
             </div>
         </div>
         @if (in_array('admin', user_roles()) || in_array('employee', user_roles()))
-        
-        <x-alert class="m-auto notification" type="danger">
-            @php echo  expirationTime(); @endphp<span class="badge badge-success"></span>
-        </x-alert>
+            @if (conditionalDate())
+                <x-alert class="m-auto notification" type="danger">
+                    @php echo conditionalDate() @endphp 
+                </x-alert>
+            @endif
         @endif
 
         @if (in_array('admin', user_roles()) && $checkListCompleted < $checkListTotal && App::environment('codecanyon'))
@@ -206,7 +208,7 @@
 <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
     @csrf
 </form>
-
+<script src="{{ asset('vendor/jquery/jquery.countdown.js') }}"></script>
 <script>
     $(document).ready(function() {
         var activeTimerCount = parseInt("{{ $activeTimerCount }}");
@@ -277,5 +279,10 @@
 
         });
 
+    });
+</script>
+<script type="text/javascript">
+    $('#getting-started').countdown("<?php echo globalDate(); ?>", function(event) {
+        $(this).html(event.strftime('%d %H:%M:%S'));
     });
 </script>

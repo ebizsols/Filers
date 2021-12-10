@@ -20,6 +20,15 @@ class RolePermissionController extends AccountBaseController
         parent::__construct();
         $this->pageTitle = 'app.menu.rolesPermission';
         $this->activeSettingMenu = 'role_permissions';
+
+        $this->middleware(function ($request, $next) {
+
+            if (expirationTime() == 3) {
+                return  redirect()->route('dashboard');
+              }
+
+            return $next($request);
+        });
     }
 
     public function index()

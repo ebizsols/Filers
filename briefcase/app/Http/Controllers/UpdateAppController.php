@@ -22,6 +22,16 @@ class UpdateAppController extends AccountBaseController
         $this->pageTitle = 'app.menu.updates';
         $this->pageIcon = 'ti-reload';
         $this->activeSettingMenu = 'update_settings';
+        
+
+        $this->middleware(function ($request, $next) {
+
+            if (!in_array('Super Admin', user_roles())) {
+                return  redirect()->route('dashboard');
+              }
+
+            return $next($request);
+        });
     }
 
     public function index()
@@ -29,7 +39,7 @@ class UpdateAppController extends AccountBaseController
         $roles = new Role();
         $superRole = $roles->where('name', 'Super Admin')->first();
         $this->superRole = $superRole->name;
-        
+
         try {
             $results = DB::select(DB::raw('select version()'));
             $this->mysql_version = $results[0]->{'version()'};

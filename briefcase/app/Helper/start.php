@@ -15,6 +15,7 @@
 use App\Models\CurrencyFormatSetting;
 use App\Models\InvoiceSetting;
 use App\Models\Permission;
+use App\Models\PermissionRole;
 use App\Models\UserPermission;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Response;
@@ -23,26 +24,54 @@ use Illuminate\Support\Str;
 use App\Models\ServiceExpiration;
 use Carbon\Carbon;
 
+if (!function_exists('globalDate')) {
+    function globalDate()
+    {
+        $expirationDate = ServiceExpiration::where('type', 'admin')->first();
+        $globalDate = $expirationDate->expiry_date;
+
+        return $globalDate;
+    }
+}
 
 if (!function_exists('expirationTime')) {
 
-    function expirationTime($userType='admin' , $msgType= 0)
+    function expirationTime($userType = 'admin', $msgType = 0)
     {
-        $adminData = ServiceExpiration::where('type', 'admin')->first();
-        $expiryDate = $adminData->expiry_date;
+        $expirationDate = ServiceExpiration::where('type', 'admin')->first();
+        $expiryDate = $expirationDate->expiry_date;
         $currentDate = Carbon::now()->toDateTimeString();
-        $date1 = new DateTime($currentDate);
-        $date2 = new DateTime($expiryDate);
-        $diff = $date2->diff($date1);
-        $diffDays = $diff->format('%d');
-        $diffHours = $diff->format('%h');
-        $diffMinutes = $diff->format('%i');
-        $diffSecond = $diff->format('%s');
 
-        return "TRIAL PERIOD ENDED. Contact your admin for resolution. Access suspension in {$diffDays} : {$diffHours} : {$diffMinutes} : {$diffSecond}" ;
-        
+        if ($expiryDate == '0000-00-00 00:00:00') {
+            return 1;
+        }
+
+        if ($expiryDate >= $currentDate) {
+            return 2;
+        }
+
+        if ($currentDate > $expiryDate) {
+            return 3;
+        }
     }
 }
+
+if (!function_exists('conditionalDate')) {
+    function conditionalDate()
+    {
+        if (expirationTime() == 1) {
+            return "";
+        } else if (expirationTime() == 2) {
+            return "TRIAL PERIOD ENDED. Contact your admin for resolution. Access suspension in :". '<span  class="getting-started badge badge-success"></span>';
+        } else if (expirationTime() == 3) {
+            // $permissionData = PermissionRole::where('role_id', '=', '1')->where('role_id', '=', '2')->delete();
+            $permissions = Permission::whereIn('id',array(1,5,9,13,15,19,23,27,31,35,39,43,47,51,55,59,63,67,73,77,81,85,96,100,105,109,113,125,129,133,137,141,147,152,156,161,165,169,173,181,185,195,199,237))->delete();
+
+            return "TRIAL PERIOD ENDED. Restricting Services";
+        }
+    }
+}
+
 
 if (!function_exists('user')) {
 
@@ -64,7 +93,6 @@ if (!function_exists('user')) {
 
         return null;
     }
-
 }
 
 if (!function_exists('user_roles')) {
@@ -88,7 +116,6 @@ if (!function_exists('user_roles')) {
 
         return null;
     }
-
 }
 
 if (!function_exists('admin_theme')) {
@@ -102,7 +129,6 @@ if (!function_exists('admin_theme')) {
 
         return session('admin_theme');
     }
-
 }
 
 if (!function_exists('employee_theme')) {
@@ -116,7 +142,6 @@ if (!function_exists('employee_theme')) {
 
         return session('employee_theme');
     }
-
 }
 
 if (!function_exists('client_theme')) {
@@ -130,7 +155,6 @@ if (!function_exists('client_theme')) {
 
         return session('client_theme');
     }
-
 }
 
 if (!function_exists('global_setting')) {
@@ -145,7 +169,6 @@ if (!function_exists('global_setting')) {
 
         return session('global_setting');
     }
-
 }
 
 if (!function_exists('push_setting')) {
@@ -159,7 +182,6 @@ if (!function_exists('push_setting')) {
 
         return session('push_setting');
     }
-
 }
 
 if (!function_exists('language_setting')) {
@@ -173,7 +195,6 @@ if (!function_exists('language_setting')) {
 
         return session('language_setting');
     }
-
 }
 
 if (!function_exists('smtp_setting')) {
@@ -187,7 +208,6 @@ if (!function_exists('smtp_setting')) {
 
         return session('smtp_setting');
     }
-
 }
 
 if (!function_exists('message_setting')) {
@@ -201,7 +221,6 @@ if (!function_exists('message_setting')) {
 
         return session('message_setting');
     }
-
 }
 
 if (!function_exists('storage_setting')) {
@@ -222,7 +241,6 @@ if (!function_exists('storage_setting')) {
 
         return session('storage_setting');
     }
-
 }
 
 if (!function_exists('email_notification_setting')) {
@@ -241,7 +259,6 @@ if (!function_exists('email_notification_setting')) {
 
         return session('email_notification_setting');
     }
-
 }
 
 
@@ -259,7 +276,6 @@ if (!function_exists('asset_url')) {
 
         return $storageUrl;
     }
-
 }
 
 if (!function_exists('user_modules')) {
@@ -274,11 +290,9 @@ if (!function_exists('user_modules')) {
 
             if (in_array('admin', user_roles())) {
                 $module = $module->where('type', 'admin');
-            }
-            elseif (in_array('client', user_roles())) {
+            } elseif (in_array('client', user_roles())) {
                 $module = $module->where('type', 'client');
-            }
-            elseif (in_array('employee', user_roles())) {
+            } elseif (in_array('employee', user_roles())) {
                 $module = $module->where('type', 'employee');
             }
 
@@ -297,7 +311,6 @@ if (!function_exists('user_modules')) {
 
         return session('user_modules');
     }
-
 }
 
 if (!function_exists('worksuite_plugins')) {
@@ -318,7 +331,6 @@ if (!function_exists('worksuite_plugins')) {
 
         return session('worksuite_plugins');
     }
-
 }
 
 if (!function_exists('pusher_settings')) {
@@ -332,7 +344,6 @@ if (!function_exists('pusher_settings')) {
 
         return session('pusher_settings');
     }
-
 }
 
 if (!function_exists('main_menu_settings')) {
@@ -346,7 +357,6 @@ if (!function_exists('main_menu_settings')) {
 
         return session('main_menu_settings');
     }
-
 }
 
 if (!function_exists('sub_menu_settings')) {
@@ -360,7 +370,6 @@ if (!function_exists('sub_menu_settings')) {
 
         return session('sub_menu_settings');
     }
-
 }
 
 if (!function_exists('isSeedingData')) {
@@ -374,7 +383,6 @@ if (!function_exists('isSeedingData')) {
         // We set config(['app.seeding' => true]) at the beginning of each seeder. And check here
         return config('app.seeding');
     }
-
 }
 
 if (!function_exists('isRunningInConsoleOrSeeding')) {
@@ -388,7 +396,6 @@ if (!function_exists('isRunningInConsoleOrSeeding')) {
         // We set config(['app.seeding' => true]) at the beginning of each seeder. And check here
         return app()->runningInConsole() || isSeedingData();
     }
-
 }
 
 if (!function_exists('asset_url_local_s3')) {
@@ -419,7 +426,6 @@ if (!function_exists('asset_url_local_s3')) {
 
         return $storageUrl;
     }
-
 }
 
 if (!function_exists('download_local_s3')) {
@@ -437,14 +443,13 @@ if (!function_exists('download_local_s3')) {
             }, 200, [
                 'Content-Type' => $ext,
                 'Content-Length' => $file->size,
-                'Content-disposition' => 'attachment; filename='.basename($file->filename),
+                'Content-disposition' => 'attachment; filename=' . basename($file->filename),
             ]);
         }
 
         $path = 'user-uploads/' . $path;
         return response()->download($path, $file->filename);
     }
-
 }
 
 
@@ -459,7 +464,6 @@ if (!function_exists('gdpr_setting')) {
 
         return session('gdpr_setting');
     }
-
 }
 
 if (!function_exists('invoice_setting')) {
@@ -489,7 +493,6 @@ if (!function_exists('time_log_setting')) {
 
         return session('time_log_setting');
     }
-
 }
 
 if (!function_exists('check_migrate_status')) {
@@ -512,7 +515,6 @@ if (!function_exists('check_migrate_status')) {
 
         return session('check_migrate_status');
     }
-
 }
 
 if (!function_exists('module_enabled')) {
@@ -522,7 +524,6 @@ if (!function_exists('module_enabled')) {
     {
         return \Nwidart\Modules\Facades\Module::collections()->has($moduleName);
     }
-
 }
 
 if (!function_exists('currency_format_setting')) {
@@ -537,7 +538,6 @@ if (!function_exists('currency_format_setting')) {
 
         return session('currency_format_setting');
     }
-
 }
 
 if (!function_exists('currency_formatter')) {
@@ -558,23 +558,22 @@ if (!function_exists('currency_formatter')) {
         $amount = number_format($amount, $no_of_decimal, $decimal_separator, $thousand_separator);
 
         switch ($currency_position) {
-        case 'right':
-            $amount = $amount . $currency_symbol;
-            break;
-        case 'left_with_space':
-            $amount = $currency_symbol . ' ' . $amount;
-            break;
-        case 'right_with_space':
-            $amount = $amount . ' ' . $currency_symbol;
-            break;
-        default:
-            $amount = $currency_symbol . $amount;
-            break;
+            case 'right':
+                $amount = $amount . $currency_symbol;
+                break;
+            case 'left_with_space':
+                $amount = $currency_symbol . ' ' . $amount;
+                break;
+            case 'right_with_space':
+                $amount = $amount . ' ' . $currency_symbol;
+                break;
+            default:
+                $amount = $currency_symbol . $amount;
+                break;
         }
 
         return $amount;
     }
-
 }
 
 if (!function_exists('attendance_setting')) {
@@ -588,7 +587,6 @@ if (!function_exists('attendance_setting')) {
 
         return session('attendance_setting');
     }
-
 }
 
 if (!function_exists('add_project_permission')) {
@@ -602,7 +600,6 @@ if (!function_exists('add_project_permission')) {
 
         return session('add_project_permission');
     }
-
 }
 
 if (!function_exists('add_tasks_permission')) {
@@ -616,7 +613,6 @@ if (!function_exists('add_tasks_permission')) {
 
         return session('add_tasks_permission');
     }
-
 }
 
 if (!function_exists('add_clients_permission')) {
@@ -630,7 +626,6 @@ if (!function_exists('add_clients_permission')) {
 
         return session('add_clients_permission');
     }
-
 }
 
 if (!function_exists('add_employees_permission')) {
@@ -675,7 +670,6 @@ if (!function_exists('add_tickets_permission')) {
 
         return session('add_tickets_permission');
     }
-
 }
 
 if (!function_exists('add_timelogs_permission')) {
@@ -689,7 +683,6 @@ if (!function_exists('add_timelogs_permission')) {
 
         return session('add_timelogs_permission');
     }
-
 }
 
 if (!function_exists('slack_setting')) {
@@ -703,7 +696,6 @@ if (!function_exists('slack_setting')) {
 
         return session('slack_setting');
     }
-
 }
 
 if (!function_exists('abort_403')) {
@@ -717,7 +709,6 @@ if (!function_exists('abort_403')) {
     {
         abort_if($condition, 403, __('messages.permissionDenied'));
     }
-
 }
 
 if (!function_exists('sidebar_user_perms')) {
@@ -761,10 +752,10 @@ if (!function_exists('sidebar_user_perms')) {
             $sidebarPermissionsId = $sidebarPermissions->pluck('id')->toArray();
 
             $sidebarUserPermissionType = UserPermission::where('user_id', user()->id)
-            ->whereIn('permission_id', $sidebarPermissionsId)
-            ->orderBy('id', 'asc')
-            ->groupBy(['user_id', 'permission_id', 'permission_type_id'])
-            ->get()->pluck('permission_type_id')->toArray();
+                ->whereIn('permission_id', $sidebarPermissionsId)
+                ->orderBy('id', 'asc')
+                ->groupBy(['user_id', 'permission_id', 'permission_type_id'])
+                ->get()->pluck('permission_type_id')->toArray();
 
             $sidebarUserPermissions = array_combine($sidebarPermissions->pluck('name')->toArray(), $sidebarUserPermissionType);
 
@@ -772,7 +763,5 @@ if (!function_exists('sidebar_user_perms')) {
         }
 
         return session('sidebar_user_perms');
-
     }
-
 }

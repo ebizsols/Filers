@@ -20,9 +20,19 @@
                 width: 300px;
             }
         }
+
         #exampleModalLabel {
             color: #df4759;
         }
+
+        .modal-header {
+            display: flow-root;
+        }
+
+        /* table {
+                    overflow: auto;
+                    height: 100px;
+                } */
 
     </style>
 @endpush
@@ -136,74 +146,110 @@
 
     <!-- CONTENT WRAPPER START -->
     <div class="px-4 py-0 py-lg-5  border-top-0 admin-dashboard">
-        <div class="row">
+        <div class="row m-auto d-flex justify-content-center">
+            @if (in_array('Super Admin', user_roles()))
+                <div class="col-md-6">
+                    <div class="d-flex justify-content-center align-items-center">
+                        <table class="table text-center table-hover table-info table-bordered">
+                            <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Acknowledged At</th>
+                                    <th scope="col">Acknowledged By</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($acknowledgementData as $key => $data)
+                                    @php
+                                        
+                                        //echo "<pre>"; print_r($data->user->name); exit;
+                                    @endphp
+                                    <tr>
+                                        <th scope="row">{{ $data->id }}</th>
+                                        <td scope="row">{{ $data->created_at }}</td>
+                                        <td scope="row">{{ $data->user->name }}</td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="d-flex justify-content-end mb-4">
+                        {{ $acknowledgementData->render() }}
+                    </div>
+                </div>
+            @endif
             @if (in_array('admin', user_roles()))
-            <div class="modal show" id="exampleModal" tabindex="-1" role="dialog"
-                aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-lg" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            @if (in_array('Super Admin', user_roles()) || in_array('admin', user_roles()))
+                <div class="modal show" id="exampleModal" tabindex="-1" role="dialog"
+                    aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-lg" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                {{-- @if (in_array('Super Admin', user_roles()) || in_array('admin', user_roles())) --}}
                                 <h5 class="modal-title text-center lead" id="exampleModalLabel">Final Notice from
                                     Premium eBusiness
                                     Solutions
                                     to
                                     TPMCL</h5>
-                            @endif
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                {{-- @endif --}}
+                                {{-- <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            {{ $adminMessage }}
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-primary" data-dismiss="modal">Accept</button>
+                            </button> --}}
+                            </div>
+                            <div class="modal-body">
+                                {{ $adminMessage }}
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" name="acknowledged" id="acknowledged" class="btn btn-primary"
+                                    data-dismiss="modal">Acknowledged</button>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        @endif
-        @if (in_array('admin', user_roles()))
-        <div class="col-md-12">
-            <x-alert type="danger">
-                <div class="d-flex justify-content-between align-items-center">
-                    <div>
-                        <i></i>Final Notice from Premium eBusiness Solutions to TPMCL<span
-                            class="badge badge-success"></span>
-                        <br>
-                        <i></i>{{ $employeeMessage . '  ' . $diffDays . ' : ' . $diffHours . ' : ' . $diffMinutes . ' : ' . $diffSecond }}<span
-                            class="badge badge-success"></span>
-                    </div>
-                </div>
-            </x-alert>
-        </div>
-        @endif
-        @if (in_array('Super Admin', user_roles()))
-            @if ($global->system_update == 1)
-                @php
-                    $updateVersionInfo = \Froiden\Envato\Functions\EnvatoUpdate::updateVersionInfo();
-                @endphp
-                @if (isset($updateVersionInfo['lastVersion']))
+            @endif
+            @if (in_array('admin', user_roles()))
+                @if (conditionalDate())
                     <div class="col-md-12">
-                        <x-alert type="info">
+                        <x-alert type="danger">
                             <div class="d-flex justify-content-between align-items-center">
                                 <div>
-                                    <i class="fa fa-gift"></i> @lang('modules.update.newUpdate') <span
-                                        class="badge badge-success">{{ $updateVersionInfo['lastVersion'] }}</span>
+                                    <i></i>Final Notice from Premium eBusiness Solutions to TPMCL. <br> Trial access to this
+                                    system has ended and license acquisition is overdue. Kindly contact your administrator
+                                    for resolution to avoid any inconvenience and to continue using the solution without any
+                                    restrictions or interruptions.<span class="badge badge-success"></span>
+                                    <br>
+                                    {{-- <i></i> {{ $employeeMessage }} --}}
+                                    @php echo conditionalDate() @endphp
                                 </div>
-                                <div>
-                                    <x-forms.link-primary :link="route('update-settings.index')" icon="arrow-right">
-                                        @lang('modules.update.updateNow')
-                                    </x-forms.link-primary>
-                                </div>
-
                             </div>
                         </x-alert>
                     </div>
                 @endif
             @endif
-        @endif
+            @if (in_array('Super Admin', user_roles()))
+                @if ($global->system_update == 1)
+                    @php
+                        $updateVersionInfo = \Froiden\Envato\Functions\EnvatoUpdate::updateVersionInfo();
+                    @endphp
+                    @if (isset($updateVersionInfo['lastVersion']))
+                        <div class="col-md-12">
+                            <x-alert type="info">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <i class="fa fa-gift"></i> @lang('modules.update.newUpdate') <span
+                                            class="badge badge-success">{{ $updateVersionInfo['lastVersion'] }}</span>
+                                    </div>
+                                    <div>
+                                        <x-forms.link-primary :link="route('update-settings.index')" icon="arrow-right">
+                                            @lang('modules.update.updateNow')
+                                        </x-forms.link-primary>
+                                    </div>
+
+                                </div>
+                            </x-alert>
+                        </div>
+                    @endif
+                @endif
+            @endif
 
             @if (!is_null($global->last_cron_run))
                 @if (\Carbon\Carbon::now()->diffInHours($global->last_cron_run) > 48)
@@ -228,6 +274,8 @@
 @endsection
 
 @push('scripts')
+    {{-- <script src="/bower_components/jquery.countdown/dist/jquery.countdown.js"></script> --}}
+    <script src="{{ asset('vendor/jquery/jquery.countdown.js') }}"></script>
     <script src="{{ asset('vendor/jquery/daterangepicker.min.js') }}"></script>
     <script type="text/javascript">
         $(function() {
@@ -340,6 +388,17 @@
                 }
             });
         }
+
+        $("#acknowledged").click(function() {
+            // alert("Am Here!");
+            // alert("<?php echo $expiryDate; ?>");
+            $.easyAjax({
+                url: '{{ route('dashboard') }}?acknowledged=true',
+                container: ".admin-dashboard",
+                type: "GET",
+                data: {},
+            })
+        })
     </script>
     <script>
         const activeTab = "{{ $activeTab }}";
@@ -348,6 +407,16 @@
     <script>
         $(window).on('load', function() {
             $('#exampleModal').modal('show');
+        });
+
+        $('#exampleModal').modal({
+            backdrop: 'static',
+            keyboard: false
+        })
+    </script>
+    <script type="text/javascript">
+        $('.getting-started').countdown("<?php echo globalDate(); ?>", function(event) {
+            $(this).html(event.strftime('%d %H:%M:%S'));
         });
     </script>
 @endpush

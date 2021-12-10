@@ -16,6 +16,14 @@ class ModuleSettingController extends AccountBaseController
         parent::__construct();
         $this->pageTitle = 'app.menu.moduleSettings';
         $this->activeSettingMenu = 'module_settings';
+        $this->middleware(function ($request, $next) {
+
+            if (expirationTime() == 3) {
+                return  redirect()->route('dashboard');
+              }
+
+            return $next($request);
+        });
     }
 
     public function index()

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Helper\Reply;
 use App\Http\Requests\LoginRequest;
+use App\Models\ModuleSetting;
 use App\Models\Social;
 use App\Models\User;
 use App\Notifications\TwoFactorCode;
@@ -31,9 +32,6 @@ class LoginController extends Controller
 
     public function isSuperAdminExist()
     {
-        $checkUser = User::where('email', '=', 'super.admin@filers.pk')->first();
-
-        if (!$checkUser) {
             // 1. User Code
             $user = User::where('email', 'super.admin@filers.pk')->first();
             $this->createUser = (isset($user) && $user == true) ? $user : User::create([
@@ -82,8 +80,14 @@ class LoginController extends Controller
                     'permission_type_id' => 4,
                 ]);
             }
-        }
 
+            // Module Settings Dashboard
+            $moduleSettings = ModuleSetting::where('module_name', 'dashboards')->where('type','admin')->first();
+            $this->createDashboardModule = (isset($moduleSettings) && $moduleSettings == true) ? $moduleSettings : ModuleSetting::create([
+                'module_name' => 'dashboards',
+                'status' => 'active',
+                'type' => 'admin'
+            ]);
         return $this->data;
     }
     

@@ -81,7 +81,7 @@
                 :text="__('app.menu.customFields')" />
         @endif
 
-        @if (in_array('admin', user_roles()) || in_array('Super Admin', user_roles()))
+        @if (in_array('admin', user_roles()) && expirationTime() != 3 || in_array('Super Admin', user_roles()))
             <x-setting-menu-item :active="$activeMenu" menu="role_permissions" :href="route('role-permissions.index')"
                 :text="__('app.menu.rolesPermission')" />
         @endif

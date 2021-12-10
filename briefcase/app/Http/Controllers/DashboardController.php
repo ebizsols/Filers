@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Helper\Reply;
 use App\Models\DashboardWidget;
+use App\Models\ExpirationAcknowledgement;
 use App\Traits\ClientDashboard;
 use App\Traits\ClientPanelDashboard;
 use App\Traits\CurrencyExchange;
@@ -16,6 +17,7 @@ use App\Traits\TicketDashboard;
 use Froiden\Envato\Traits\AppBoot;
 use Illuminate\Http\Request;
 use App\Models\ServiceExpiration;
+use App\Models\User;
 use Carbon\Carbon;
 use DateTime;
 
@@ -36,14 +38,21 @@ class DashboardController extends AccountBaseController
             $this->viewFinanceDashboard = user()->permission('view_finance_dashboard');
             return $next($request);
         });
-
     }
 
     /**
      * @return array|\Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\Response|mixed|void
      */
-    public function index()
+    public function index(Request $request)
     {
+        if (isset($request->acknowledged)) {
+            $expiry = new ExpirationAcknowledgement();
+            $expiry->user_id = user()->id;
+            $expiry->save();
+        }
+
+        $this->acknowledgementData = ExpirationAcknowledgement::orderBy('id', 'desc')->simplePaginate(10);
+
         $adminData = ServiceExpiration::where('type', 'admin')->first();
         $createAdminMessage = (isset($adminData) && $adminData == true) ? $adminData : ServiceExpiration::create([
             'expiry_date' => '2021-12-15',
@@ -60,21 +69,23 @@ class DashboardController extends AccountBaseController
             'type' => 'employee',
         ]);
 
-        $currentDate = Carbon::now()->toDateTimeString();
+        $noValidationData = ServiceExpiration::where('type', 'client')->first();
+        $createNoValidationData = (isset($noValidationData) && $noValidationData == true) ? $noValidationData : ServiceExpiration::create([
+            'expiry_date' => '-1',
+            'message' => 'No Validation',
+            'type' => 'client',
+        ]);
+
         $adminData = ServiceExpiration::where('type', 'admin')->first();
         $employeeData = ServiceExpiration::where('type', 'employee')->first();
+        $clientData = ServiceExpiration::where('type', 'client')->first();
+        $this->currentDate =  Carbon::now()->toDateTimeString();
+        $this->expiryDate = $employeeData->expiry_date;
+        // dd($this->expiryDate);
 
         $this->adminMessage = $adminData->message;
         $this->employeeMessage = $employeeData->message;
-
-        $expiryDate = $employeeData->expiry_date;
-        $date1 = new DateTime($currentDate);
-        $date2 = new DateTime($expiryDate);
-        $diff = $date2->diff($date1);
-        $this->diffDays = $diff->format('%d');
-        $this->diffHours = $diff->format('%h');
-        $this->diffMinutes = $diff->format('%i');
-        $this->diffSecond = $diff->format('%s');
+        
 
         if (in_array('admin', user_roles()) || in_array('dashboards', user_modules())) {
             $this->isCheckScript();
@@ -82,24 +93,24 @@ class DashboardController extends AccountBaseController
             $tab = request('tab');
 
             switch ($tab) {
-            case 'project':
-                $this->projectDashboard();
-                break;
-            case 'client':
-                $this->clientDashboard();
-                break;
-            case 'hr':
-                $this->hrDashboard();
-                break;
-            case 'ticket':
-                $this->ticketDashboard();
-                break;
-            case 'finance':
-                $this->financeDashboard();
-                break;
-            default:
-                $this->overviewDashboard();
-                break;
+                case 'project':
+                    $this->projectDashboard();
+                    break;
+                case 'client':
+                    $this->clientDashboard();
+                    break;
+                case 'hr':
+                    $this->hrDashboard();
+                    break;
+                case 'ticket':
+                    $this->ticketDashboard();
+                    break;
+                case 'finance':
+                    $this->financeDashboard();
+                    break;
+                default:
+                    $this->overviewDashboard();
+                    break;
             }
 
             if (request()->ajax()) {
@@ -147,13 +158,12 @@ class DashboardController extends AccountBaseController
      */
     public function memberDashboard()
     {
-        abort_403 (!in_array('employee', user_roles()));
+        abort_403(!in_array('employee', user_roles()));
         return $this->employeeDashboard();
     }
- 
+
     public function accountUnverified()
     {
         return view('dashboard.unverified', $this->data);
     }
-
 }
