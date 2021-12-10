@@ -414,9 +414,4 @@
             keyboard: false
         })
     </script>
-    <script type="text/javascript">
-        $('.getting-started').countdown("<?php echo globalDate(); ?>", function(event) {
-            $(this).html(event.strftime('%d %H:%M:%S'));
-        });
-    </script>
 @endpush
