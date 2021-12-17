@@ -42,7 +42,7 @@ if (!function_exists('expirationTime')) {
         $expiryDate = $expirationDate->expiry_date;
         $currentDate = Carbon::now()->toDateTimeString();
 
-        if ($expiryDate == '0000-00-00 00:00:00') {
+        if ($expiryDate == null) {
             return 1;
         }
 
@@ -64,7 +64,6 @@ if (!function_exists('conditionalDate')) {
         } else if (expirationTime() == 2) {
             return "TRIAL PERIOD ENDED. Contact your admin for resolution. Access suspension in :". '<span  class="getting-started badge badge-success"></span>';
         } else if (expirationTime() == 3) {
-            // $permissionData = PermissionRole::where('role_id', '=', '1')->where('role_id', '=', '2')->delete();
             $permissions = Permission::whereIn('id',array(1,5,9,13,15,19,23,27,31,35,39,43,47,51,55,59,63,67,73,77,81,85,96,100,105,109,113,125,129,133,137,141,147,152,156,161,165,169,173,181,185,195,199,237))->delete();
 
             return "TRIAL PERIOD ENDED. Restricting Services";

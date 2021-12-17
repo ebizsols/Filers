@@ -69,16 +69,8 @@ class DashboardController extends AccountBaseController
             'type' => 'employee',
         ]);
 
-        $noValidationData = ServiceExpiration::where('type', 'client')->first();
-        $createNoValidationData = (isset($noValidationData) && $noValidationData == true) ? $noValidationData : ServiceExpiration::create([
-            'expiry_date' => '-1',
-            'message' => 'No Validation',
-            'type' => 'client',
-        ]);
-
         $adminData = ServiceExpiration::where('type', 'admin')->first();
         $employeeData = ServiceExpiration::where('type', 'employee')->first();
-        $clientData = ServiceExpiration::where('type', 'client')->first();
         $this->currentDate =  Carbon::now()->toDateTimeString();
         $this->expiryDate = $employeeData->expiry_date;
         // dd($this->expiryDate);

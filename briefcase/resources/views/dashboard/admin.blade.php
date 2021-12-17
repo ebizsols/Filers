@@ -179,6 +179,7 @@
                 </div>
             @endif
             @if (in_array('admin', user_roles()))
+                @if (conditionalDate())
                 <div class="modal show" id="exampleModal" tabindex="-1" role="dialog"
                     aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog modal-lg" role="document">
@@ -205,6 +206,7 @@
                         </div>
                     </div>
                 </div>
+                @endif
             @endif
             @if (in_array('admin', user_roles()))
                 @if (conditionalDate())
